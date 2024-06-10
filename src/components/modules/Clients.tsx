@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import { companyItems, testimonialItems } from "@/lib/assets/index";
