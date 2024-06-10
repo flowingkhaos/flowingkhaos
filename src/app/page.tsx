@@ -21,11 +21,11 @@ export default function Page() {
   //! so we can return null or a loading state here.
   if (!searchParams?.get("slug")) {
     return (
-      <section className="flex justify-center items-center h-screen px-4">
-        <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12">
-          <Suspense fallback={<DecryptLoader />}></Suspense>
-        </div>
-      </section>
+      <Suspense fallback={<DecryptLoader />}>
+        <section className="flex justify-center items-center h-screen px-4">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12"></div>
+        </section>
+      </Suspense>
     );
   }
 
