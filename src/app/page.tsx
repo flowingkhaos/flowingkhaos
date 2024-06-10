@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
-import { Suspense } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -20,13 +19,14 @@ export default function Page() {
   //! If the `slug` is not present, we can assume the redirect will happen,
   //! so we can return null or a loading state here.
   if (!searchParams?.get("slug")) {
-    return (
-      <Suspense fallback={<DecryptLoader />}>
-        <section className="flex justify-center items-center h-screen px-4">
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12"></div>
-        </section>
-      </Suspense>
-    );
+    return <DecryptLoader />;
+    // return (
+    //   <Suspense fallback={<DecryptLoader />}>
+    //     <section className="flex justify-center items-center h-screen px-4">
+    //       <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-12"></div>
+    //     </section>
+    //   </Suspense>
+    // );
   }
 
   // Rest of your code remains unchanged, using searchParams.get('slug') if needed...
