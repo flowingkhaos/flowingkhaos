@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { GET_CATEGORY_POSTS, Post } from "@/lib/gql/queries/blog/categories";
+import {
+  GET_CATEGORIES,
+  GET_CATEGORY_POSTS,
+  Post,
+} from "@/lib/gql/queries/blog/categories";
 import { notFound } from "next/navigation";
 import { getRelativeTime, isOlderThanAdayAgo } from "@/lib/actions/utils";
 import { Metadata, ResolvingMetadata } from "next";
@@ -39,12 +43,19 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateStaticParams({ params: { slug } }: Props) {
-  const articles = await GET_CATEGORY_POSTS(slug);
-  //console.log("articles: ", articles);
-  //console.log(typeof articles);
-  return articles.map((article) => ({
-    slug: article.slug,
+// export async function generateStaticParams({ params: { slug } }: Props) {
+//   const articles = await GET_CATEGORY_POSTS(slug);
+//   //console.log("articles: ", articles);
+//   //console.log(typeof articles);
+//   return articles.map((article) => ({
+//     slug: article.slug,
+//   }));
+// }
+
+export async function generateStaticParams() {
+  const categories = await GET_CATEGORIES();
+  return categories.map((category) => ({
+    slug: category.slug,
   }));
 }
 
