@@ -218,7 +218,7 @@ export const BentoGridItem = ({
                 }
                 icon={<IoDownload />}
                 position="left"
-                handleClick={() => handleDownload("web_curriculum_vitae.pdf")}
+                handleClick={() => handleDownload("web_curriculum.pdf")}
                 otherClasses="!bg-[#161A31]"
               />
             </div>
