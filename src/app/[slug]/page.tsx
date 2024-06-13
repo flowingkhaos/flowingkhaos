@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.vercel.app";
+  const site = "https://flowingkhaos.com";
   const robots = "index, follow";
 
   return {

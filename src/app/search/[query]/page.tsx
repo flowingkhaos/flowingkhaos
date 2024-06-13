@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Params) {
   const robots = "index, follow";
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.vercel.app";
+  const site = "https://flowingkhaos.com";
 
   // Check if there are any search results to include an image in metadata
   if (searchResults.length > 0) {

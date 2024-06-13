@@ -30,7 +30,7 @@ const openGraphImage = {
 const robots = "index, follow";
 const twitterCard = "summary_large_image";
 const twitterHandle = "@flowingkhaos";
-const site = "https://flowingkhaos.vercel.app";
+const site = "https://flowingkhaos.com";
 const type = "website";
 
 export const metadata: Metadata = {

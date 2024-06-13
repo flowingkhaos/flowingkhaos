@@ -74,7 +74,7 @@ export async function generateMetadata({
     width: 1200,
     height: 630,
   };
-  const site = "https://flowingkhaos.vercel.app";
+  const site = "https://flowingkhaos.com";
   const robots = "index, follow";
   const type = "website";
   const twitterCard = "summary_large_image";

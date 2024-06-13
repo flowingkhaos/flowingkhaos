@@ -103,7 +103,7 @@ export async function generateMetadata({ params: { slug } }: Props) {
   //console.log(article);
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.vercel.app";
+  const site = "https://flowingkhaos.com";
   const robots = "index, follow";
 
   return {
