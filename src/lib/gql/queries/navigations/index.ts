@@ -31,7 +31,7 @@ export const GET_SINGLE_NAV = async ({
   try {
     const result: SingleNavResponse = await request(apiRequest, query, {
       navId,
-      next: { revalidate: 60 },
+      //next: { revalidate: 3600 },
     });
     //console.log("GraphQL query result:", result);
     return result.navigation;

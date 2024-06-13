@@ -123,7 +123,7 @@ export async function GET_PROJECTS(): Promise<Project[]> {
       },
       body: JSON.stringify({
         query: ProjectQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -210,7 +210,7 @@ export async function GET_TESTIMONIALS(): Promise<Testimonial[]> {
       },
       body: JSON.stringify({
         query: TestimonialQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -284,7 +284,7 @@ export async function GET_COMPANIES(): Promise<Company[]> {
       },
       body: JSON.stringify({
         query: CompanyQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -355,7 +355,7 @@ export async function GET_EXPERIENCE(): Promise<Experiences[]> {
       },
       body: JSON.stringify({
         query: ExperienceQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -429,7 +429,7 @@ export async function GET_SOCIALS(): Promise<Socials[]> {
       },
       body: JSON.stringify({
         query: SocialQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -493,7 +493,7 @@ export async function GET_APPROACH(): Promise<Approach[]> {
       },
       body: JSON.stringify({
         query: ApproachQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -558,7 +558,7 @@ export async function GET_FOOTER(): Promise<Footer[]> {
       },
       body: JSON.stringify({
         query: FooterQuery,
-        next: { revalidate: 3400 },
+        //next: { revalidate: 3400 },
       }),
     });
 

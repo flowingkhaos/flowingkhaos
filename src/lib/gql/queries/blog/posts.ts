@@ -47,7 +47,7 @@ export async function GET_POSTS(): Promise<Articles> {
       },
       body: JSON.stringify({
         query: AllPosts,
-        next: { revalidate: 120 },
+        next: { revalidate: 3600 },
       }),
     });
 

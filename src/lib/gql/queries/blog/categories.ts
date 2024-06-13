@@ -21,8 +21,7 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
       },
       body: JSON.stringify({
         query: Categories,
-        next: { revalidate: 60 },
-        // No variables are needed for this query.
+        //next: { revalidate: 3600 },
       }),
     });
 

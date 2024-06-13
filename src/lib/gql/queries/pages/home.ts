@@ -97,7 +97,7 @@ export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 36 },
+      //next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
