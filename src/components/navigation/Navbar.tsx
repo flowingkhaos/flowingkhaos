@@ -77,6 +77,14 @@ export default async function Navbar() {
                         </Suspense>
                       </Button>
                     </li>
+
+                    <li className="">
+                      <Button className="my-2 w-2/3" variant="default">
+                        <Suspense fallback={<DecryptLoader />}>
+                          <SingleNav navId="terms" />
+                        </Suspense>
+                      </Button>
+                    </li>
                   </ul>
                 </SheetDescription>
               </SheetHeader>
@@ -98,6 +106,11 @@ export default async function Navbar() {
             <li className="hover:text-accent font-semibold">
               <Suspense fallback={<DecryptLoader />}>
                 <SingleNav navId="about" />
+              </Suspense>
+            </li>
+            <li className="hover:text-accent font-semibold">
+              <Suspense fallback={<DecryptLoader />}>
+                <SingleNav navId="terms" />
               </Suspense>
             </li>
           </ul>
