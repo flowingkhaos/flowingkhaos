@@ -138,7 +138,7 @@ export async function SEARCH_QUERY(
     body: JSON.stringify({
       query,
       variables,
-      next: { revalidate: 3600 },
+      //next: { revalidate: 3600 },
     }),
   }).then((res) => res.json());
   //console.log("GraphQL Response:", result); // Debugging: Log the full GraphQL response

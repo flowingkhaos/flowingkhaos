@@ -109,7 +109,7 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
     },
     body: JSON.stringify({
       query: FeaturedPosts,
-      next: { revalidate: 25 },
+      //next: { revalidate: 3600 },
     }),
   }).then((res) => res.json());
 
@@ -213,7 +213,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
     body: JSON.stringify({
       query: SinglePost,
       variables: { slug: slug },
-      next: { revalidate: 105 },
+      //next: { revalidate: 3600 },
     }),
   })
     .then((res) => res.json())

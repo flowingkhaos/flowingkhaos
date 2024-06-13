@@ -21,23 +21,6 @@ export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
         width
         height
       }
-      sections {
-        title
-        subtitle
-        content {
-          json
-        }
-        image {
-          url
-          id
-          width
-          height
-        }
-        buttons {
-          text
-          slug
-        }
-      }
       hero {
         title
         subtitle
@@ -108,7 +91,7 @@ export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
 
     const data = await response.json();
 
-    //console.log("Raw fetchAPI response data:", data);
+    console.log("Raw fetchAPI response data:", data);
 
     //? Access page data within the response
     return data?.data?.page;
