@@ -65,7 +65,7 @@ const Hero: React.FC<HeroProps> = async ({
                 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl"
               />
             </Suspense>
-            <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
+            <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl font-montserrat">
               {description ||
                 "Hey! I'm Wilson, a Web Developer & entrepreneur based in Canada."}
             </p>
