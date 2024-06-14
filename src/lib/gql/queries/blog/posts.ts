@@ -116,86 +116,136 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
   return featuredPosts.data;
 }
 //? query
+// const SinglePost = `
+// query SinglePost($slug: String!) {
+//   article(where: {slug: $slug}) {
+//     id
+//     createdAt
+//     publishedAt
+//     updatedAt
+//     title
+//     slug
+//     date
+//     excerpt
+//     content {
+//       json
+//     }
+//     image {
+//       id
+//       url
+//       width
+//       height
+//     }
+//     author {
+//       ... on Author {
+//         remoteTypeName: __typename
+//         remoteId: id
+//         name
+//         role
+//         image {
+//           id
+//           url
+//           width
+//           height
+//         }
+//       }
+//     }
+//     buttons {
+//       id
+//       slug
+//       text
+//     }
+//     category {
+//       name
+//       slug
+//     }
+//     faq {
+//       id
+//       answer
+//       question
+//       title
+//     }
+//     comments(orderBy: publishedAt_DESC) {
+//       id
+//       username
+//       email
+//       comment
+//       likes
+//       createdAt
+//     }
+//     seoOverride {
+//       description
+//       title
+//       image {
+//         id
+//         height
+//         width
+//         url
+//       }
+//     }
+//     downloadableContentBucket {
+//       id
+//       name
+//       slug
+//       publishedAt
+//       file {
+//         fileName
+//         handle
+//         height
+//         id
+//         size
+//         url
+//         width
+//       }
+//     }
+//   }
+// }
+// `;
+
 const SinglePost = `
-query SinglePost($slug: String!) {
-  article(where: {slug: $slug}) {
-    id
-    createdAt
-    publishedAt
-    updatedAt
-    title
-    slug
-    date
-    excerpt
-    content {
-      json
-    }
-    image {
-      id
-      url
-      width
-      height
-    }
-    author {
-      ... on Author {
-        remoteTypeName: __typename
-        remoteId: id
-        name
-        role
-        image {
+query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
+  articlesConnection(
+    locales: en
+    where: {category: {slug: $categorySlug}}
+    skip: $skip
+    first: $first
+    orderBy: createdAt_DESC
+  ) {
+    edges {
+      node {
+        author {
+          role
+          name
           id
+          image {
+            url
+            width
+            height
+            id
+          }
+        }
+        id
+        createdAt
+        publishedAt
+        updatedAt
+        slug
+        title
+        excerpt
+        image {
           url
           width
           height
+          id
         }
-      }
-    }
-    buttons {
-      id
-      slug
-      text
-    }
-    category {
-      name
-      slug
-    }
-    faq {
-      id
-      answer
-      question
-      title
-    }
-    comments(orderBy: publishedAt_DESC) {
-      id
-      username
-      email
-      comment
-      likes
-      createdAt
-    }
-    seoOverride {
-      description
-      title
-      image {
-        id
-        height
-        width
-        url
-      }
-    }
-    downloadableContentBucket {
-      id
-      name
-      slug
-      publishedAt
-      file {
-        fileName
-        handle
-        height
-        id
-        size
-        url
-        width
+        category {
+          name
+          slug
+        }
+        buttons {
+          id
+          slug
+          text
+        }
       }
     }
   }
@@ -220,7 +270,25 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
     .then((res) => res.data);
   //console.log(post);
   //console.log("image: ", post.image);
-  return post.article;
+  return post?.articlesConnection?.edges?.map((edge: any) => ({
+    id: edge.node.id,
+    createdAt: edge.node.createdAt,
+    publishedAt: edge.node.publishedAt,
+    updatedAt: edge.node.updateAt,
+    title: edge.node.title,
+    slug: edge.node.slug,
+    date: edge.node.data,
+    excerpt: edge.node.excerpt,
+    content: edge.node.content,
+    image: edge.node.image,
+    author: edge.node.author,
+    buttons: edge.node.buttons,
+    category: edge.node.category,
+    faq: edge.node.faq,
+    comments: edge.node.comments,
+    seoOverride: edge.node.seoOverride,
+    downloadableContentBucket: edge.node.downloadableContentBucket,
+  }));
 }
 
 interface Author {

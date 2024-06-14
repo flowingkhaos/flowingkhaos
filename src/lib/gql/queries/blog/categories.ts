@@ -47,50 +47,99 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
 }
 
 //? query
+// export const CategoryPost = `
+// query CategoryPost($categorySlug: String!, $skip: Int, $first: Int) {
+//     articles(
+//       where: {category: {slug: $categorySlug}}
+//       skip: $skip
+//       first: $first
+//       orderBy: createdAt_DESC
+//     ) {
+//       author {
+//         role
+//         name
+//         id
+//         image {
+//           url
+//           width
+//           height
+//           id
+//         }
+//       }
+//       id
+//       createdAt
+//       publishedAt
+//       updatedAt
+//       slug
+//       title
+//       excerpt
+//       image {
+//         url
+//         width
+//         height
+//         id
+//       }
+//       category {
+//         name
+//         slug
+//       }
+//       buttons {
+//         id
+//         slug
+//         text
+//       }
+//     }
+//   }
+//   `;
 export const CategoryPost = `
-query CategoryPost($categorySlug: String!, $skip: Int, $first: Int) {
-    articles(
-      where: {category: {slug: $categorySlug}}
-      skip: $skip
-      first: $first
-      orderBy: createdAt_DESC
-    ) {
-      author {
-        role
-        name
+query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
+  articlesConnection(
+    locales: en
+    where: {category: {slug: $categorySlug}}
+    skip: $skip
+    first: $first
+    orderBy: createdAt_DESC
+  ) {
+    edges {
+      node {
+        author {
+          role
+          name
+          id
+          image {
+            url
+            width
+            height
+            id
+          }
+        }
         id
+        createdAt
+        publishedAt
+        updatedAt
+        slug
+        title
+        excerpt
         image {
           url
           width
           height
           id
         }
-      }
-      id
-      createdAt
-      publishedAt
-      updatedAt
-      slug
-      title
-      excerpt
-      image {
-        url
-        width
-        height
-        id
-      }
-      category {
-        name
-        slug
-      }
-      buttons {
-        id
-        slug
-        text
+        category {
+          name
+          slug
+        }
+        buttons {
+          id
+          slug
+          text
+        }
       }
     }
   }
-  `;
+}
+`;
 
 //? fetch function
 export async function GET_CATEGORY_POSTS(
@@ -119,15 +168,29 @@ export async function GET_CATEGORY_POSTS(
     const data = await response.json();
 
     // Handle potential data structure changes gracefully
-    const articles = data?.data?.articles || []; // Use optional chaining and default to an empty array
-    console.log(data.data.articles);
+    // const articles =
+    //   data?.data?.articlesConnection?.edges?.map((edge) => edge.node) || []; // Use optional chaining and default to an empty array
 
     if (data?.errors) {
       // Check if "errors" exist (optional)
       throw new Error(JSON.stringify(data.errors, null, 2));
     }
 
-    return articles; // Return the extracted articles
+    console.log(data.data.articles);
+
+    return data?.data?.articlesConnection?.edges?.map((edge: any) => ({
+      author: edge.node.author,
+      id: edge.node.id,
+      createdAt: edge.node.createdAt,
+      publishedAt: edge.node.publishedAt,
+      updatedAt: edge.node.updatedAt,
+      slug: edge.node.slug,
+      title: edge.node.title,
+      excerpt: edge.node.excerpt,
+      image: edge.node.image,
+      category: edge.node.category,
+      buttons: edge.node.buttons,
+    }));
   } catch (error) {
     console.error("Failed to fetch category posts:", error);
     return []; // Return an empty array or a more specific error object if needed

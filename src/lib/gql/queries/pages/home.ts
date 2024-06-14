@@ -4,73 +4,138 @@ import { RichTextContent } from "@graphcms/rich-text-types";
 export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
   const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
 
+  //   const query = `
+  //   query GET_PAGE($where: PageWhereUniqueInput!) {
+  //     page(where: $where) {
+  //       id
+  //       title
+  //       slug
+  //       subtitle
+  //       description
+  //       content {
+  //         json
+  //       }
+  //       image {
+  //         url
+  //         id
+  //         width
+  //         height
+  //       }
+  //       hero {
+  //         title
+  //         subtitle
+  //         description
+  //         buttons {
+  //           slug
+  //           text
+  //         }
+  //         image {
+  //           url
+  //           id
+  //           width
+  //           height
+  //         }
+  //       }
+  //       stat {
+  //         title
+  //         subtitle
+  //         description
+  //         value
+  //         analytic
+  //       }
+  //       buttons {
+  //         text
+  //         slug
+  //       }
+  //       faq {
+  //         title
+  //         question
+  //         answer
+  //       }
+  //       seoOverride {
+  //         description
+  //         id
+  //         title
+  //         image {
+  //           height
+  //           id
+  //           url
+  //           width
+  //         }
+  //       }
+  //     }
+  //   }
+  // `;
   const query = `
-  query GET_PAGE($where: PageWhereUniqueInput!) {
-    page(where: $where) {
-      id
-      title
-      slug
-      subtitle
-      description
-      content {
-        json
-      }
-      image {
-        url
+query GET_PAGE($slug: String!) {
+  pagesConnection(locales: en, where: { slug: $slug }) {
+    edges {
+      node {
         id
-        width
-        height
-      }
-      hero {
         title
-        subtitle
-        description
-        buttons {
-          slug
-          text
-        }
-        image {
-          url
-          id
-          width
-          height
-        }
-      }
-      stat {
-        title
-        subtitle
-        description
-        value
-        analytic
-      }
-      buttons {
-        text
         slug
-      }
-      faq {
-        title
-        question
-        answer
-      }
-      seoOverride {
+        subtitle
         description
-        id
-        title
+        content {
+          json
+        }
         image {
-          height
-          id
           url
+          id
           width
+          height
+        }
+        hero {
+          title
+          subtitle
+          description
+          buttons {
+            slug
+            text
+          }
+          image {
+            url
+            id
+            width
+            height
+          }
+        }
+        stat {
+          title
+          subtitle
+          description
+          value
+          analytic
+        }
+        buttons {
+          text
+          slug
+        }
+        faq {
+          title
+          question
+          answer
+        }
+        seoOverride {
+          description
+          id
+          title
+          image {
+            height
+            id
+            url
+            width
+          }
         }
       }
     }
   }
+}
 `;
-
   const params = new URLSearchParams({
     method: "POST",
     query,
-    variables: JSON.stringify({ where: { slug: slug } }),
+    variables: JSON.stringify({ slug: slug }),
   });
   //console.log(slug);
 
@@ -91,10 +156,23 @@ export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
 
     const data = await response.json();
 
-    console.log("Raw fetchAPI response data:", data);
+    //console.log("Raw fetchAPI response data:", data);
 
     //? Access page data within the response
-    return data?.data?.page;
+    return data?.data?.pagesConnection?.edges.map((edge: any) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      slug: edge.node.slug,
+      subtitle: edge.node.subtitle,
+      description: edge.node.description,
+      content: edge.node.content,
+      image: edge.node.image,
+      hero: edge.node.hero,
+      stat: edge.node.stat,
+      buttons: edge.node.buttons,
+      faq: edge.node.faq,
+      seoOverride: edge.node.seoOverride,
+    }))[0];
   } catch (error) {
     console.error(`Error fetching page with slug ${slug}:`, error);
     return undefined;
@@ -112,7 +190,6 @@ export interface Page {
     json: RichTextContent;
   };
   image?: Image;
-  sections?: SectionProps[];
   hero?: HeroProps;
   stat?: StatProps;
   buttons?: Button[];

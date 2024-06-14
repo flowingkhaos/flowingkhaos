@@ -3,6 +3,30 @@ import next from "next";
 
 const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
 
+// export const GET_SINGLE_NAV = async ({
+//   navId,
+// }: {
+//   navId: string;
+// }): Promise<Navigation> => {
+//   const query = gql`
+//     query GET_SINGLE_NAV($navId: String!) {
+//       navigation(where: { navId: $navId }) {
+//         id
+//         link {
+//           externalUrl
+//           text
+//           id
+//           page {
+//             ... on Page {
+//               id
+//               slug
+//             }
+//           }
+//         }
+//         navId
+//       }
+//     }
+//   `;
 export const GET_SINGLE_NAV = async ({
   navId,
 }: {
@@ -10,31 +34,47 @@ export const GET_SINGLE_NAV = async ({
 }): Promise<Navigation> => {
   const query = gql`
     query GET_SINGLE_NAV($navId: String!) {
-      navigation(where: { navId: $navId }) {
-        id
-        link {
-          externalUrl
-          text
-          id
-          page {
-            ... on Page {
+      navigationsConnection(locales: en, where: { navId: $navId }) {
+        edges {
+          node {
+            id
+            link {
+              externalUrl
+              text
               id
-              slug
+              page {
+                ... on Page {
+                  id
+                  slug
+                }
+              }
             }
+            navId
           }
         }
-        navId
       }
     }
   `;
 
   try {
-    const result: SingleNavResponse = await request(apiRequest, query, {
-      navId,
-      //next: { revalidate: 3600 },
-    });
-    //console.log("GraphQL query result:", result);
-    return result.navigation;
+    const result: { navigationsConnection: { edges: any[] } } = await request(
+      apiRequest,
+      query,
+      { navId }
+    );
+
+    // Access the first navigation object from edges (assuming single nav)
+    const navigation = result.navigationsConnection.edges[0]?.node;
+
+    if (!navigation) {
+      throw new Error("Navigation not found"); // Handle case where no nav found
+    }
+
+    return {
+      id: navigation.id,
+      link: navigation.link,
+      navId: navigation.navId,
+    };
   } catch (error) {
     console.error("Error fetching navigation:", error);
     throw new Error("Failed to fetch navigation");
@@ -60,5 +100,5 @@ export interface Navigation {
 }
 
 interface SingleNavResponse {
-  navigation: Navigation;
+  navigationsConnection: Navigation;
 }

@@ -575,7 +575,7 @@ export async function GET_FOOTER(): Promise<Footer[]> {
       );
       throw new Error("Errors occurred while fetching footer data");
     }
-    console.log(footerData.data.genericBlocksConnection.edges);
+    //console.log(footerData.data.genericBlocksConnection.edges);
     return footerData.data.genericBlocksConnection.edges.map((edge: any) => ({
       id: edge.node.id,
       description: edge.node.description,
