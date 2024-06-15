@@ -203,53 +203,93 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
 // `;
 
 const SinglePost = `
-query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
-  articlesConnection(
-    locales: en
-    where: {category: {slug: $categorySlug}}
-    skip: $skip
-    first: $first
-    orderBy: createdAt_DESC
-  ) {
-    edges {
-      node {
-        author {
-          role
-          name
+  query GET_SINGLE_POST($slug: String!) {
+    articlesConnection(locales: en, where: { slug: $slug }) {
+      edges {
+        node {
           id
+          createdAt
+          publishedAt
+          updatedAt
+          title
+          slug
+          date
+          excerpt
+          content {
+            json
+          }
           image {
+            id
             url
             width
             height
-            id
           }
-        }
-        id
-        createdAt
-        publishedAt
-        updatedAt
-        slug
-        title
-        excerpt
-        image {
-          url
-          width
-          height
-          id
-        }
-        category {
-          name
-          slug
-        }
-        buttons {
-          id
-          slug
-          text
+          author {
+            ... on Author {
+              remoteTypeName: __typename
+              remoteId: id
+              name
+              role
+              image {
+                id
+                url
+                width
+                height
+              }
+            }
+          }
+          buttons {
+            id
+            slug
+            text
+          }
+          category {
+            name
+            slug
+          }
+          faq {
+            id
+            answer
+            question
+            title
+          }
+          comments(orderBy: publishedAt_DESC) {
+            id
+            username
+            email
+            comment
+            likes
+            createdAt
+          }
+          seoOverride {
+            description
+            title
+            image {
+              id
+              height
+              width
+              url
+            }
+          }
+          downloadableContentBucket {
+            id
+            name
+            slug
+            publishedAt
+            file {
+              fileName
+              handle
+              height
+              id
+              size
+              url
+              width
+            }
+          }
         }
       }
     }
   }
-}
 `;
 
 //? fetch function
@@ -268,7 +308,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
   })
     .then((res) => res.json())
     .then((res) => res.data);
-  //console.log(post);
+  console.log(post.articlesConnection.edges);
   //console.log("image: ", post.image);
   return post?.articlesConnection?.edges?.map((edge: any) => ({
     id: edge.node.id,
@@ -277,7 +317,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
     updatedAt: edge.node.updateAt,
     title: edge.node.title,
     slug: edge.node.slug,
-    date: edge.node.data,
+    date: edge.node.date,
     excerpt: edge.node.excerpt,
     content: edge.node.content,
     image: edge.node.image,
@@ -288,7 +328,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
     comments: edge.node.comments,
     seoOverride: edge.node.seoOverride,
     downloadableContentBucket: edge.node.downloadableContentBucket,
-  }));
+  }))[0];
 }
 
 interface Author {
