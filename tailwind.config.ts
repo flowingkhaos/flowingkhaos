@@ -20,8 +20,8 @@ const config = {
   prefix: "",
   theme: {
     fontFamily: {
-      inter: ["Inter"],
-      montserrat: ["Montserrat"],
+      inter: ["Inter", "sans-serif"],
+      montserrat: ["Montserrat", "sans-serif"],
     },
     container: {
       center: true,

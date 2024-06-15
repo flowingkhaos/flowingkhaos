@@ -135,6 +135,14 @@
     @apply border-border !scroll-smooth;
   }
 
+  .font-montserrat {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .font-inter {
+    font-family: "Inter", sans-serif;
+  }
+
   .inviz {
     background: rgba(255, 255, 255, 0);
     backdrop-filter: blur(2.5px);
