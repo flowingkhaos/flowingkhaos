@@ -62,6 +62,7 @@ export const SearchArticles = async (
         first: $first
         after: $after
         orderBy: createdAt_DESC
+        locales: en
       ) {
         edges {
           cursor

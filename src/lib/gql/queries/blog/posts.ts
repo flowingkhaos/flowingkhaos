@@ -1,39 +1,78 @@
 import { RichTextContent } from "@graphcms/rich-text-types";
 //? query
+// const AllPosts = `
+// query AllPosts($first: Int) {
+//     articles(orderBy: createdAt_DESC, first: $first) {
+//       id
+//       excerpt
+//       slug
+//       title
+//       date
+//       createdAt
+//       publishedAt
+//       updatedAt
+//       image {
+//         url
+//         width
+//         height
+//         id
+//       }
+//       buttons {
+//         id
+//         slug
+//         text
+//       }
+//       seoOverride {
+//         description
+//         title
+//         image {
+//           id
+//           height
+//           width
+//           url
+//         }
+//       }
+//     }
+//   }
+// `;
 const AllPosts = `
-query AllPosts($first: Int) {
-    articles(orderBy: createdAt_DESC, first: $first) {
-      id
-      excerpt
-      slug
-      title
-      date
-      createdAt
-      publishedAt
-      updatedAt
-      image {
-        url
-        width
-        height
+query GET_POSTS($first: Int) {
+  articlesConnection(locales: en, orderBy: createdAt_DESC, first: $first) {
+    edges {
+      node {
         id
-      }
-      buttons {
-        id
+        excerpt
         slug
-        text
-      }
-      seoOverride {
-        description
         title
+        date
+        createdAt
+        publishedAt
+        updatedAt
         image {
-          id
-          height
-          width
           url
+          width
+          height
+          id
+        }
+        buttons {
+          id
+          slug
+          text
+        }
+        seoOverride {
+          description
+          title
+          image {
+            id
+            height
+            width
+            url
+          }
         }
       }
     }
   }
+}
 `;
 
 //? fetch function
@@ -61,9 +100,32 @@ export async function GET_POSTS(): Promise<Articles> {
       console.error("Errors occurred while fetching posts:", allPosts.errors);
       throw new Error("Errors occurred while fetching posts");
     }
-    //console.log(allPosts.data);
+    //console.log(allPosts.data.articlesConnection.edges);
     //console.log(typeof allPosts);
-    return allPosts.data;
+    const articles: Articles = {
+      articles: allPosts.data.articlesConnection.edges.map((edge: any) => ({
+        id: edge.node.id,
+        createdAt: edge.node.createdAt,
+        publishedAt: edge.node.publishedAt,
+        updatedAt: edge.node.updatedAt,
+        title: edge.node.title,
+        slug: edge.node.slug,
+        date: edge.node.date,
+        excerpt: edge.node.excerpt,
+        content: edge.node.content,
+        image: edge.node.image,
+        author: edge.node.author,
+        buttons: edge.node.buttons,
+        category: edge.node.category,
+        faq: edge.node.faq,
+        comments: edge.node.comments,
+        seoOverride: edge.node.seoOverride,
+      })),
+      downloadableContentBucket: allPosts.data.downloadableContentBucket,
+      map: (post: any) => ({ slug: post.slug }),
+    };
+
+    return articles;
   } catch (error) {
     console.error("GET_POSTS error:", error);
     throw error; // Re-throw the error to be handled by the calling function.
@@ -71,32 +133,64 @@ export async function GET_POSTS(): Promise<Articles> {
 }
 
 //? query
+// export const FeaturedPosts = `
+// query FeaturedPosts{
+//     articles(
+//       where: {featuredPost: true}
+//       orderBy: publishedAt_DESC
+//       ) {
+//       id
+//       slug
+//       title
+//       updatedAt
+//       author {
+//         name
+//       }
+//       image {
+//         url
+//         width
+//         height
+//         id
+//       }
+//       buttons {
+//         id
+//         slug
+//         text
+//       }
+//     }
+//   }
+// `;
 export const FeaturedPosts = `
-query FeaturedPosts{
-    articles(
-      where: {featuredPost: true}
-      orderBy: publishedAt_DESC
-      ) {
-      id
-      slug
-      title
-      updatedAt
-      author {
-        name
-      }
-      image { 
-        url
-        width
-        height
-        id
-      }
-      buttons {
+query GET_FEATURED_POSTS {
+  articlesConnection(
+    locales: en
+    orderBy: publishedAt_DESC
+    where: {featuredPost: true}
+  ) {
+    edges {
+      node {
         id
         slug
-        text
+        title
+        updatedAt
+        author {
+          name
+        }
+        image {
+          url
+          width
+          height
+          id
+        }
+        buttons {
+          id
+          slug
+          text
+        }
       }
     }
   }
+}
 `;
 
 //? fetch function
@@ -113,8 +207,34 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
     }),
   }).then((res) => res.json());
 
-  return featuredPosts.data;
+  const articles: Articles = {
+    articles: featuredPosts?.data?.articlesConnection?.edges.map(
+      (edge: any) => ({
+        id: edge.node.id,
+        createdAt: edge.node.createdAt,
+        publishedAt: edge.node.publishedAt,
+        updatedAt: edge.node.updatedAt,
+        title: edge.node.title,
+        slug: edge.node.slug,
+        date: edge.node.date,
+        excerpt: edge.node.excerpt,
+        content: edge.node.content,
+        image: edge.node.image,
+        author: edge.node.author,
+        buttons: edge.node.buttons,
+        category: edge.node.category,
+        faq: edge.node.faq,
+        comments: edge.node.comments,
+        seoOverride: edge.node.seoOverride,
+      })
+    ),
+    downloadableContentBucket: featuredPosts?.data?.downloadableContentBucket,
+    map: (post: any) => ({ slug: post.slug }),
+  };
+
+  return articles;
 }
+
 //? query
 // const SinglePost = `
 // query SinglePost($slug: String!) {
@@ -308,7 +428,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
   })
     .then((res) => res.json())
     .then((res) => res.data);
-  console.log(post.articlesConnection.edges);
+  //console.log(post.articlesConnection.edges);
   //console.log("image: ", post.image);
   return post?.articlesConnection?.edges?.map((edge: any) => ({
     id: edge.node.id,
@@ -409,7 +529,7 @@ export interface Post {
   downloadableContentBucket?: DownloadableContentBucket[];
 }
 
-interface Articles {
+export interface Articles {
   map(arg0: (post: any) => { slug: any }): unknown;
   articles: {
     id: string;

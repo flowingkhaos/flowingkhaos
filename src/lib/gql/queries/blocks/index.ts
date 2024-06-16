@@ -1,30 +1,30 @@
 export const BentoQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "bento"}) {
-      edges {
-        node {
-          description
+query BENTO_QUERY {
+  genericBlocksConnection(where: {slug_contains: "bento"}, locales: en) {
+    edges {
+      node {
+        description
+        id
+        slug
+        title
+        className
+        titleClassName
+        imgClassName
+        image {
+          height
           id
-          slug
-          title
-          className
-          titleClassName
-          imgClassName
-          image {
-            height
-            id
-            url
-            width
-          }
-          spareImg {
-            id
-            url
-            width
-          }
+          url
+          width
+        }
+        spareImg {
+          id
+          url
+          width
         }
       }
     }
   }
+}
   `;
 
 export async function GET_BENTO_GRID(): Promise<Bento[]> {
@@ -85,8 +85,8 @@ export interface Bento {
 }
 
 export const ProjectQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "project"}) {
+query PROJECT_QUERY {
+    genericBlocksConnection(where: {slug_contains: "project"}, locales: en) {
       edges {
         node {
           description
@@ -178,8 +178,8 @@ export interface Project {
 }
 
 export const TestimonialQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "testimonial"}) {
+query TESTIMONIAL_QUERY {
+    genericBlocksConnection(where: {slug_contains: "testimonial"}, locales: en) {
       edges {
         node {
           description
@@ -253,8 +253,8 @@ export interface Testimonial {
 }
 
 export const CompanyQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "company"}) {
+query COMPANY_QUERY {
+    genericBlocksConnection(where: {slug_contains: "company"}, locales: en) {
       edges {
         node {
           description
@@ -323,8 +323,8 @@ export interface Company {
 }
 
 export const ExperienceQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "experience"}) {
+query EXPERIENCE_QUERY {
+    genericBlocksConnection(where: {slug_contains: "experience"}, locales: en) {
       edges {
         node {
           description
@@ -398,8 +398,8 @@ export interface Experiences {
 }
 
 export const SocialQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "social"}) {
+query SOCIAL_QUERY {
+    genericBlocksConnection(where: {slug_contains: "social"}, locales: en) {
       edges {
         node {
           id
@@ -468,8 +468,8 @@ export interface Socials {
 }
 
 export const ApproachQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "approach"}) {
+query APPROACH_QUERY {
+    genericBlocksConnection(where: {slug_contains: "approach"}, locales: en) {
       edges {
         node {
           id
@@ -532,8 +532,8 @@ export interface Approach {
 }
 
 export const FooterQuery = `
-query MyQuery {
-    genericBlocksConnection(where: {slug_contains: "footer"}) {
+query FOOTER_QUERY {
+    genericBlocksConnection(where: {slug_contains: "footer"}, locales: en) {
       edges {
         node {
           id

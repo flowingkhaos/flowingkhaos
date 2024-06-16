@@ -51,26 +51,26 @@ export async function GET_POPULAR_SEACH_TERMS() {
   return [
     "ai",
     "blog",
-    "generator",
+    "scrap",
     "image",
-    "intelligen",
+    "job",
     "agent",
     "model",
     "base",
     "data",
     "bot",
     "chatbot",
-    "outil",
-    "rédaction",
-    "write",
+    "code",
+    "typescript",
+    "javascript",
     "business",
-    "chatgpt",
+    "efficiency",
     "openai",
-    "gpt",
-    "art",
-    "mémoire",
-    "application",
-    "productivité",
+    "llm",
+    "seo",
+    "app",
+    "content",
+    "productivity",
   ];
 }
 
@@ -99,6 +99,7 @@ export async function SEARCH_QUERY(
         first: $first
         after: $after
         orderBy: createdAt_DESC
+        locales: en
       ) {
         edges {
           cursor

@@ -65,16 +65,16 @@ export async function generateMetadata({
   // Fetch the category details using the slug from params
   const categoryPosts = await GET_CATEGORY_POSTS(slug);
   // Generate a title using the search term
-  const title = `"${slug} Category Page"`;
+  const title = `${slug}`;
   // Generate a description
-  const description = `Browse through the ${slug} category for more accurate research on the topic`;
+  const description = `${slug}`;
   // Use a default Open Graph image
   const openGraphImage = {
     url: "/public/svg/question.svg", // Replace with your default Open Graph image URL
     width: 1200,
     height: 630,
   };
-  const site = "https://flowingkhaos.com";
+  const site = `https://flowingkhaos.com/category/${slug}`;
   const robots = "index, follow";
   const type = "website";
   const twitterCard = "summary_large_image";
@@ -92,6 +92,9 @@ export async function generateMetadata({
     title: title,
     description: description,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       type: type,
       url: site,
@@ -107,7 +110,46 @@ export async function generateMetadata({
       description: description, // Twitter card description
       images: [openGraphImage], // Add your Twitter image URL here
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+        "fr-FR": site,
+      },
+    },
+    metadataBase: new URL("https://flowingkhaos.com/category"),
   };
+}
+
+function generateSchemaMarkup(categoryPosts: Post[]) {
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `"${categoryPosts?.[0]?.category?.name} Category Page"`,
+    description: `${categoryPosts?.[0]?.category?.name}`,
+    url: `https://flowingkhaos.com/blog/categories/${categoryPosts?.[0]?.category?.slug}`,
+    mainEntity: categoryPosts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt,
+      url: `https://flowingkhaos.com/blog/articles/${post.slug}`,
+      image: post.image.url,
+      datePublished: post.createdAt,
+      dateModified: post.updatedAt,
+      author: {
+        "@type": "Person",
+        name: post.author.name,
+        url: `https://flowingkhaos.com/author/${post.author.name}`,
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+    />
+  );
 }
 
 export default async function CategoryPosts({ params: { slug } }: Props) {
@@ -182,6 +224,8 @@ export default async function CategoryPosts({ params: { slug } }: Props) {
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 py-24 inviz z-50">
+      <head>{generateSchemaMarkup(categoryPosts)}</head>
+
       {categoryPosts.map(async (article) => (
         <article
           key={article.id}

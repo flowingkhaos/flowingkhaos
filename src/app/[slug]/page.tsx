@@ -49,6 +49,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: pageData.seoOverride?.title || pageData.title,
     description: pageData.seoOverride?.description || pageData.description,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       type: "website",
       url: site,
@@ -80,7 +83,54 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         },
       ],
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+        "fr-FR": site,
+      },
+    },
+    metadataBase: new URL("https://flowingkhaos.com"),
   };
+}
+
+function generateSchemaMarkup(pageData: any) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: pageData.seoOverride?.title || pageData.title,
+          description:
+            pageData.seoOverride?.description || pageData.description,
+          url: `https://flowingkhaos.com/${pageData.slug}`,
+          image:
+            `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
+          author: {
+            "@type": "Person",
+            name: "Lou Sidney",
+            url: "https://flowingkhaos.com/author/lou-sidney",
+          },
+          datePublished: pageData.createdAt,
+          dateModified: pageData.updatedAt,
+          publisher: {
+            "@type": "Organization",
+            name: "Flowingkhaos",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://flowingkhaos.com/favicon.ico",
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://flowingkhaos.com/${pageData.slug}`,
+          },
+        }),
+      }}
+    />
+  );
 }
 
 export default async function Page({ params }: Params) {
@@ -101,6 +151,7 @@ export default async function Page({ params }: Params) {
 
   return (
     <section className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
+      <head>{generateSchemaMarkup(pageData)}</head>
       <div className="max-w-7xl w-full">
         <Suspense fallback={<DecryptLoader />}>
           {pageData?.hero && (

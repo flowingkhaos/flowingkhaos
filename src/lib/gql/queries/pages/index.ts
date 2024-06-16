@@ -1,14 +1,28 @@
 import { URLSearchParams } from "url";
 
+// export const AllPages = `
+//   query AllPages {
+//     pages {
+//       id
+//       slug
+//       title
+//       updatedAt
+//     }
+//   }
+// `;
 export const AllPages = `
-  query AllPages {
-    pages {
-      id
-      slug
-      title
-      updatedAt
+query GET_PAGES {
+  pagesConnection(locales: en) {
+    edges {
+      node {
+        id
+        slug
+        title
+        updatedAt
+      }
     }
   }
+}
 `;
 
 export async function GET_PAGES(slug: string): Promise<Page[]> {
@@ -19,7 +33,7 @@ export async function GET_PAGES(slug: string): Promise<Page[]> {
     AllPages,
     variables: JSON.stringify({ where: { slug: slug } }),
   });
-  console.log(slug);
+  //console.log(slug);
 
   try {
     const response = await fetch(`${apiRequest}?${params}`, {
@@ -34,9 +48,16 @@ export async function GET_PAGES(slug: string): Promise<Page[]> {
     }
 
     const data = await response.json();
-    console.log(data);
+    //console.log(data.data.pagesConnection.edges);
 
-    return data.data.pages;
+    const pages: Page[] = data.data.pagesConnection.edges.map((edge: any) => ({
+      id: edge.node.id,
+      slug: edge.node.slug,
+      title: edge.node.title,
+      updatedAt: edge.node.updatedAt,
+    }));
+    //console.log(pages);
+    return pages;
   } catch (error) {
     console.error(`GET_PAGES error with slug ${slug}:`, error);
     throw error; // Re-throw the error to be handled by the calling function.

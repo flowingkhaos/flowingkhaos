@@ -1,14 +1,12 @@
-import next from "next";
-
 //? query
 export const Categories = `
-      query Categories {
-          categories {
-            name
-            slug
-          }
-      }
-    `;
+  query Categories {
+    categories(locales: en) {
+      name
+      slug
+    }
+  }
+`;
 
 //? fetch function
 export async function GET_CATEGORIES(): Promise<Category[]> {
@@ -38,7 +36,7 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
       );
       throw new Error("Errors occurred while fetching categories");
     }
-
+    //console.log(categoriesData.data.categories);
     return categoriesData.data.categories;
   } catch (error) {
     console.error("GET_CATEGORIES error:", error);
@@ -152,6 +150,7 @@ export async function GET_CATEGORY_POSTS(
     const requestBody = {
       query: CategoryPost,
       variables: { categorySlug, skip, first },
+      //next: { revalidate: 3600 },
     };
 
     const response = await fetch(apiRequest, {
@@ -176,7 +175,7 @@ export async function GET_CATEGORY_POSTS(
       throw new Error(JSON.stringify(data.errors, null, 2));
     }
 
-    console.log(data.data.articles);
+    //console.log(data.data.articles);
 
     return data?.data?.articlesConnection?.edges?.map((edge: any) => ({
       author: edge.node.author,

@@ -103,13 +103,16 @@ export async function generateMetadata({ params: { slug } }: Props) {
   //console.log(article);
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.com";
+  const site = `https://flowingkhaos.com/articles/${slug}`;
   const robots = "index, follow";
 
   return {
     title: article?.seoOverride?.title || article?.title,
     description: article?.seoOverride?.description || article?.excerpt,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       publishedTime: article?.publishedAt,
       type: "article",
@@ -140,7 +143,55 @@ export async function generateMetadata({ params: { slug } }: Props) {
         },
       ],
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+        "fr-FR": site,
+      },
+    },
+    metadataBase: new URL("https://flowingkhaos.com/articles"),
   };
+}
+
+function generateSchemaMarkup(article: Post) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: article.seoOverride?.title || article.title,
+          description: article.seoOverride?.description || article.excerpt,
+          image: [
+            `${article.seoOverride?.image?.url}` || `${article.image?.url}`,
+          ],
+          datePublished: article.publishedAt,
+          dateModified: article.updatedAt,
+          author: {
+            "@type": "Person",
+            name: article.author?.name,
+            url: `https://flowingkhaos.com/author/${article.author?.name}`,
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Flowingkhaos",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://flowingkhaos.com/favicon.ico",
+              width: 600,
+              height: 60,
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://flowingkhaos.com/blog/${article.slug}`,
+          },
+        }),
+      }}
+    />
+  );
 }
 
 export default async function Page({ params: { slug } }: Props) {
@@ -161,6 +212,7 @@ export default async function Page({ params: { slug } }: Props) {
   return (
     <article>
       <header className="pt-24 mx-2 lg:pb-10">
+        <head>{generateSchemaMarkup(article)}</head>
         <div className="space-y-1">
           <div>
             {article?.image && (

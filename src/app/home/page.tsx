@@ -27,13 +27,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.com/home";
+  const site = `https://flowingkhaos.com/${slug}`;
   const robots = "index, follow";
 
   return {
     title: pageData.seoOverride?.title || pageData.title,
     description: pageData.seoOverride?.description || pageData.description,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       type: "website",
       url: site,
@@ -65,7 +68,42 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       ],
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+        "fr-FR": site,
+      },
+    },
+    metadataBase: new URL("https://flowingkhaos.com"),
   };
+}
+
+function generateSchemaMarkup(pageData: any) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: pageData.seoOverride?.title || pageData.title,
+          description:
+            pageData.seoOverride?.description || pageData.description,
+          url: `https://flowingkhaos.com/${slug}`,
+          image:
+            `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
+          creator: {
+            "@type": "Person",
+            name: "Lou Sidney",
+            url: "https://flowingkhaos.com/author/lou-sidney",
+          },
+          datePublished: pageData.createdAt,
+          dateModified: pageData.updatedAt,
+        }),
+      }}
+    />
+  );
 }
 
 export default async function Page() {
@@ -83,6 +121,7 @@ export default async function Page() {
       id="home"
       className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5"
     >
+      <head>{generateSchemaMarkup(pageData)}</head>
       <div className="max-w-7xl w-full">
         <FloatingNav navItems={navItems} />
         <Suspense fallback={<DecryptLoader />}>

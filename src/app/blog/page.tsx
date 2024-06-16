@@ -4,7 +4,12 @@ import { GET_PAGE } from "@/lib/gql/queries/pages/home";
 import notFound from "@/app/not-found";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
-import { GET_POSTS, Post, PostButton } from "@/lib/gql/queries/blog/posts";
+import {
+  Articles,
+  GET_POSTS,
+  Post,
+  PostButton,
+} from "@/lib/gql/queries/blog/posts";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
@@ -63,6 +68,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: pageData.seoOverride?.title || pageData.title,
     description: pageData.seoOverride?.description || pageData.description,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       type: "website",
       url: site,
@@ -94,7 +102,60 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       ],
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+        "fr-FR": site,
+      },
+    },
+    metadataBase: new URL("https://flowingkhaos.com"),
   };
+}
+
+function generateSchemaMarkup(pageData: any, allPosts: Articles) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: pageData.seoOverride?.title || pageData.title,
+          description:
+            pageData.seoOverride?.description || pageData.description,
+          url: `https://flowingkhaos.com/${slug}`,
+          image:
+            `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
+          author: {
+            "@type": "Person",
+            name: "Lou Sidney",
+            url: "https://flowingkhaos.com/author/lou-sidney",
+          },
+          datePublished: pageData.createdAt,
+          dateModified: pageData.updatedAt,
+          publisher: {
+            "@type": "Organization",
+            name: "Flowingkhaos",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://flowingkhaos.com/favicon.ico",
+              width: 600,
+              height: 60,
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://flowingkhaos.com/${slug}`,
+          },
+          articleSection: "Blog",
+          keywords: allPosts.articles
+            .map((article) => article.title)
+            .join(", "),
+        }),
+      }}
+    />
+  );
 }
 
 export default async function Page() {
@@ -122,6 +183,8 @@ export default async function Page() {
   }
   return (
     <section className=" mx-4">
+      <head>{generateSchemaMarkup(pageData, allPosts)}</head>
+
       <div className="pt-72 md:pt-48 pb-8 space-y-2 md:space-y-5">
         <Suspense fallback={<DecryptLoader />}>
           {pageData?.hero && (

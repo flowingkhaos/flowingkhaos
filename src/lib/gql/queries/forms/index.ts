@@ -1,39 +1,81 @@
 import { ReactNode } from "react";
 
+// export const AllForms = `
+// query AllForms {
+//     forms {
+//       id
+//       title
+//       subtitle
+//       modal
+//       fields {
+//         __typename
+//         ... on FormInput {
+//           name
+//           type
+//           inputLabel: label
+//           placeholder
+//         }
+//         ... on FormTextarea {
+//           name
+//           textareaLabel: label
+//           placeholder
+//         }
+//         ... on FormSelect {
+//           name
+//           inputLabel: label
+//           choices {
+//             ... on FormOption {
+//               id
+//             }
+//           }
+//         }
+//       }
+//       buttons {
+//         id
+//         text
+//         slug
+//       }
+//     }
+//   }
+// `;
 export const AllForms = `
-query AllForms {
-    forms {
-      id
-      title
-      subtitle
-      modal
-      fields {
-        __typename
-        ... on FormInput {
-          name
-          type
-          inputLabel: label
-          placeholder
-        }
-        ... on FormTextarea {
-          name
-          textareaLabel: label
-          placeholder
-        }
-        ... on FormSelect {
-          name
-          inputLabel: label
-          choices {
-            ... on FormOption {
-              id
+  query GET_FORMS {
+    formsConnection(locales: en) {
+      edges {
+        node {
+          id
+          title
+          subtitle
+          modal
+          fields {
+            __typename
+            ... on FormInput {
+              name
+              type
+              inputLabel: label
+              placeholder
+            }
+            ... on FormTextarea {
+              name
+              textareaLabel: label
+              placeholder
+            }
+            ... on FormSelect {
+              name
+              inputLabel: label
+              choices {
+                ... on FormOption {
+                  id
+                }
+              }
             }
           }
+          buttons {
+            id
+            text
+            slug
+          }
         }
-      }
-      buttons {
-        id
-        text
-        slug
       }
     }
   }
@@ -56,18 +98,59 @@ export async function GET_FORMS(): Promise<Form[]> {
       throw new Error(`Error fetching forms: ${response.statusText}`);
     }
 
-    const formsData = await response.json();
-    //console.log("Received Forms Data:", formsData.data?.forms);
+    const formsData: FormsResponse = await response.json();
 
     if (formsData.errors) {
       console.error("Errors occurred while fetching forms:", formsData.errors);
       throw new Error("Errors occurred while fetching forms");
     }
 
-    return formsData.data.forms;
+    const forms: Form[] = formsData?.data?.formsConnection?.edges.map(
+      ({ node }: { node: any }) => ({
+        id: node.id,
+        title: node.title,
+        subtitle: node.subtitle,
+        modal: node.modal,
+        fields: node.fields.map((field: any) => {
+          switch (field.__typename) {
+            case "FormInput":
+              return {
+                __typename: field.__typename,
+                name: field.name,
+                type: field.type,
+                inputLabel: field.inputLabel,
+                placeholder: field.placeholder,
+              };
+            case "FormTextarea":
+              return {
+                __typename: field.__typename,
+                name: field.name,
+                textareaLabel: field.textareaLabel,
+                placeholder: field.placeholder,
+              };
+            case "FormSelect":
+              return {
+                __typename: field.__typename,
+                name: field.name,
+                inputLabel: field.inputLabel,
+                choices: field.choices,
+              };
+            default:
+              throw new Error(`Unknown field type: ${field.__typename}`);
+          }
+        }),
+        buttons: node.buttons.map((button: any) => ({
+          id: button.id,
+          text: button.text,
+          slug: button.slug,
+        })),
+      })
+    );
+
+    return forms;
   } catch (error) {
     console.error("GET_FORMS error:", error);
-    throw error; // Re-throw the error to be handled by the calling function.
+    throw error;
   }
 }
 
@@ -123,6 +206,7 @@ export interface Form {
 
 export interface FormsResponse {
   data: {
+    formsConnection: any;
     forms: Form[];
   };
   errors?: any;
