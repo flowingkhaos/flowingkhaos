@@ -10,7 +10,7 @@ import {
   SearchTerm,
 } from "@/lib/gql/queries/search/dynamicSearch";
 import Footer from "@/components/modules/Footer";
-import { footerItems } from "@/lib/assets";
+import { searchItems } from "@/lib/assets";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import { Button } from "@/components/ui/button";
 import { getRelativeTime, isOlderThanAdayAgo } from "@/lib/actions/utils";
@@ -122,25 +122,33 @@ const SearchPage = (): JSX.Element => {
     );
   };
 
+  const specificItem = searchItems.find(
+    (item) => item.id === "clxm8q08m39i908r9jizcf4i6"
+  );
+
   return (
     <>
       {renderMetaData()}
       <section className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5 py-24">
         <div className="max-w-7xl w-full">
-          <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
-            Advanced search tool
-          </h1>
-          <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl py-12">
-            <span className="text-secondary p-2 rounded border border-accent">
-              {searchTerm}
-            </span>
-          </h1>
-          <p className="lg:text-xl max-lg:text-md leading-7 text-primary pb-2">
-            looking for something... But you forgot what it was?
-          </p>
-          <p className="lg:text-xl max-lg:text-md leading-7 text-primary pb-2">
-            Don&#39;t worry, this search bar does magic !
-          </p>
+          {specificItem && (
+            <div key={specificItem.id}>
+              <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
+                {specificItem.name}
+              </h1>
+              <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl py-12">
+                <span className="text-secondary p-4 rounded border border-accent inviz shadow-xl">
+                  {searchTerm}
+                </span>
+              </h1>
+              <h1 className="lg:text-xl max-lg:text-md leading-7 text-primary pb-2">
+                {specificItem.title}
+              </h1>
+              <p className="lg:text-xl max-lg:text-md leading-7 text-primary pb-2">
+                {specificItem.description}
+              </p>
+            </div>
+          )}
           <form onSubmit={handleSearch} className="py-6">
             <Label className="">
               <span className="font-montserrat">

@@ -111,7 +111,7 @@ function generateSchemaMarkup(pageData: any) {
             `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
           author: {
             "@type": "Person",
-            name: "Lou Sidney",
+            name: "Luke Sidney",
             url: `https://flowingkhaos.com/authors/${pageData.slug}`,
           },
           datePublished: pageData.createdAt,

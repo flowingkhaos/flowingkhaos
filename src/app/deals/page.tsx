@@ -9,13 +9,15 @@ import Clients from "@/components/modules/Clients";
 import Experience from "@/components/modules/Experience";
 import Approach from "@/components/modules/Approach";
 import { FloatingNav } from "@/components/aceternity/FloatingNavbar";
-import { footerItems, navItems } from "@/lib/assets";
+import { dealItems, footerItems, navItems } from "@/lib/assets";
 import { Suspense } from "react";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import StatBar from "@/components/modules/Stat";
 import { Metadata, ResolvingMetadata } from "next";
+import Faq from "@/components/modules/Faq";
+import DealBox from "@/components/modules/DealBox";
 
-const slug = "home";
+const slug = "deals";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageData = await GET_PAGE(slug);
@@ -134,11 +136,25 @@ export default async function Page() {
             />
           )}
         </Suspense>
-        <Grid />
-        <RecentProjects />
-        <Clients />
-        <Experience />
-        <Approach />
+
+        <div className="flex flex-wrap gap-10 mb-10">
+          {dealItems.map((deal) => (
+            <DealBox
+              key={deal.id}
+              id={deal.id}
+              slug={deal.slug}
+              title={deal.title}
+              description={deal.description}
+              name={deal.name}
+              link={deal.link}
+              className={deal.className}
+              titleClassName={deal.titleClassName}
+              img={deal.img}
+              spareImg={deal.spareImg}
+            />
+          ))}
+        </div>
+
         <div className="py-4 lg:py-16">
           <Suspense fallback={<DecryptLoader />}>
             {pageData?.stat && <StatBar {...pageData.stat} />}

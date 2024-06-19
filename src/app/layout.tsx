@@ -21,9 +21,9 @@ const montserrat = Montserrat({
 });
 
 const title = "FlowingKhaos - Change the way you learn.";
-const description = "Learn to navigate the web efficiently by Wilson Sidney";
+const description = "Learn to navigate the web efficiently by Luke Sidney";
 const openGraphImage = {
-  url: "/public/svg/question.svg",
+  url: "/favicon.ico",
   width: 1200,
   height: 630,
 };
@@ -36,7 +36,9 @@ const type = "website";
 export const metadata: Metadata = {
   title: title,
   description: description,
-  icons: "/favicon.ico",
+  icons: {
+    icon: "/favicon.ico",
+  },
   robots: robots,
   openGraph: {
     title: title,

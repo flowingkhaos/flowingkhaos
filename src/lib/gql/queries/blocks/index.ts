@@ -594,3 +594,168 @@ export interface Footer {
   description: string;
   name: string;
 }
+
+export const SearchQuery = `
+  query SEARCH_QUERY {
+    genericBlocksConnection(where: {slug_contains: "search"}, locales: en) {
+      edges {
+        node {
+          id
+          slug
+          title
+          description
+          name
+          link
+          className
+          titleClassName
+        }
+      }
+    }
+  }
+`;
+
+export async function GET_SEARCH(): Promise<Search[]> {
+  const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
+
+  try {
+    const response = await fetch(apiRequest, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: SearchQuery,
+        //next: { revalidate: 3600 },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Footer data: ${response.statusText}`);
+    }
+
+    const searchData = await response.json();
+
+    if (searchData.errors) {
+      console.error(
+        "Errors occurred while fetching footer data:",
+        searchData.errors
+      );
+      throw new Error("Errors occurred while fetching footer data");
+    }
+    //console.log(searchData.data.genericBlocksConnection.edges);
+    return searchData.data.genericBlocksConnection.edges.map((edge: any) => ({
+      id: edge.node.id,
+      slug: edge.node.slug,
+      title: edge.node.title,
+      description: edge.node.description,
+      name: edge.node.name,
+      link: edge.node.link,
+      className: edge.node.className,
+      titleClassName: edge.node.titleClassName,
+    }));
+  } catch (error) {
+    console.error("GET_FOOTER error:", error);
+    throw error; // Re-throw the error to be handled by the calling function.
+  }
+}
+
+export interface Search {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  name: string;
+  link: string;
+  className: string;
+  titleClassName: string;
+}
+
+export const DealQuery = `
+  query DEAL_QUERY {
+    genericBlocksConnection(where: {slug_contains: "deal"}, locales: en) {
+      edges {
+        node {
+          id
+          slug
+          title
+          description
+          name
+          link
+          className
+          titleClassName
+          spareImg {
+            id
+            url
+            width
+          }
+          image {
+            height
+            id
+            url
+            width
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function GET_DEAL(): Promise<Deal[]> {
+  const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
+
+  try {
+    const response = await fetch(apiRequest, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: DealQuery,
+        //next: { revalidate: 3600 },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Footer data: ${response.statusText}`);
+    }
+
+    const dealData = await response.json();
+
+    if (dealData.errors) {
+      console.error(
+        "Errors occurred while fetching footer data:",
+        dealData.errors
+      );
+      throw new Error("Errors occurred while fetching footer data");
+    }
+    console.log(dealData.data.genericBlocksConnection.edges);
+    return dealData.data.genericBlocksConnection.edges.map((edge: any) => ({
+      id: edge.node.id,
+      slug: edge.node.slug,
+      title: edge.node.title,
+      description: edge.node.description,
+      name: edge.node.name,
+      link: edge.node.link,
+      className: edge.node.className,
+      titleClassName: edge.node.titleClassName,
+      img: edge.node.image?.url ?? "",
+      spareImg: edge.node.image?.url ?? "",
+    }));
+  } catch (error) {
+    console.error("GET_DEAL error:", error);
+    throw error; // Re-throw the error to be handled by the calling function.
+  }
+}
+
+export interface Deal {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  name: string;
+  link: string;
+  className: string;
+  titleClassName: string;
+  img: string;
+  spareImg: string;
+}

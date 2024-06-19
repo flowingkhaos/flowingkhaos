@@ -11,7 +11,7 @@ import DecryptLoader from "@/components/loaders/DecryptLoader";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/lib/gql/queries/blog/posts";
 import Footer from "@/components/modules/Footer";
-import { footerItems } from "@/lib/assets";
+import { footerItems, searchItems } from "@/lib/assets";
 
 function BlogButton({ article }: { article: SearchTerm }) {
   return (
@@ -137,8 +137,8 @@ async function generateSchemaMarkup({ params }: Params) {
           images: [openGraphImage],
           creator: {
             "@type": "Person",
-            name: "Lou Sidney",
-            url: "https://flowingkhaos.com/authors/lou-sidney",
+            name: "Luke Sidney",
+            url: "https://flowingkhaos.com/authors/luke-sidney",
           },
           dateModified: new Date(),
         }),
@@ -184,20 +184,25 @@ export default async function SearchPage({ params }: Params) {
       </div>
     );
   }
+  const specificItem = searchItems.find(
+    (item) => item.id === "clxmb6zfq3jg308r980oqyys6"
+  );
+
   return (
     <section className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5 py-24">
-      <head>
-        <head>{generateSchemaMarkup({ params: { query: params.query } })}</head>
-      </head>
+      <head>{generateSchemaMarkup({ params: { query: params.query } })}</head>
       <div className="max-w-7xl w-full">
-        <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
-          Search results for the term:
-          <span className="text-primary"> {params.query}</span>
-        </h1>
-        <h2 className="prose max-w-none text-content font-montserrat py-6 text-lg leading-7">
-          This page was created to help new users find their way through more
-          useful content.
-        </h2>
+        {specificItem && (
+          <div key={specificItem.id}>
+            <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
+              {specificItem.name}
+              <span className="text-primary"> {params.query}</span>
+            </h1>
+            <h1 className="prose max-w-none text-content font-montserrat py-6 text-lg leading-7">
+              {specificItem.title}
+            </h1>
+          </div>
+        )}
         <Button className="" type="button" variant="default">
           <Link href="/search">Use the search tool!</Link>
         </Button>
@@ -209,7 +214,7 @@ export default async function SearchPage({ params }: Params) {
                   <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base leading-6 font-bold">
-                      <p>Dernière mise à jour,</p>
+                      <p>last update,</p>
                       <time dateTime={article.updatedAt}>
                         {await getRelativeTime(article.updatedAt)}
                       </time>
@@ -234,11 +239,11 @@ export default async function SearchPage({ params }: Params) {
                   </Suspense>
                   <div className="flex-grow space-y-5">
                     <div className="space-y-6">
-                      <h2 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
+                      <h1 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
                         <Link href={`/blog/articles/${article.slug}`}>
                           {article.title}
                         </Link>
-                      </h2>
+                      </h1>
                       {article.excerpt && (
                         <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat">
                           {article.excerpt}
