@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.com";
+  const site = `https://flowingkhaos.com/${slug}`;
   const robots = "index, follow";
 
   return {
@@ -106,10 +106,9 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: site,
       languages: {
         "en-US": site,
-        "fr-FR": site,
       },
     },
-    metadataBase: new URL("https://flowingkhaos.com"),
+    metadataBase: new URL(`https://flowingkhaos.com/${slug}`),
   };
 }
 
@@ -130,7 +129,7 @@ function generateSchemaMarkup(pageData: any, allPosts: Articles) {
           author: {
             "@type": "Person",
             name: "Lou Sidney",
-            url: "https://flowingkhaos.com/author/lou-sidney",
+            url: `https://flowingkhaos.com/authors/${allPosts?.articles?.[0].author?.slug}`,
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
@@ -239,14 +238,19 @@ export default async function Page() {
                   </Suspense>
                   <div className="flex-grow space-y-5">
                     <div className="space-y-6">
-                      <h2 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
+                      <h1 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
                         <Link href={`/blog/articles/${article.slug}`}>
                           {article.title}
                         </Link>
-                      </h2>
+                      </h1>
+                      <Link href={`/authors/${article.author?.slug}`}>
+                        <p className="text-content font-montserrat font-bold leading-7 hover:text-accent hover:underline">
+                          {article.author?.name}
+                        </p>
+                      </Link>
                       {article.excerpt && (
                         <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat">
-                          {article.excerpt}
+                          <p>{article.excerpt}</p>
                         </div>
                       )}
                     </div>

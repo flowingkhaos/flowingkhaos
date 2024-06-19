@@ -74,7 +74,7 @@ export async function generateMetadata({
     width: 1200,
     height: 630,
   };
-  const site = `https://flowingkhaos.com/category/${slug}`;
+  const site = `https://flowingkhaos.com/blog/category/${slug}`;
   const robots = "index, follow";
   const type = "website";
   const twitterCard = "summary_large_image";
@@ -114,10 +114,9 @@ export async function generateMetadata({
       canonical: site,
       languages: {
         "en-US": site,
-        "fr-FR": site,
       },
     },
-    metadataBase: new URL("https://flowingkhaos.com/category"),
+    metadataBase: new URL(`https://flowingkhaos.com/blog/category/${slug}`),
   };
 }
 
@@ -139,7 +138,7 @@ function generateSchemaMarkup(categoryPosts: Post[]) {
       author: {
         "@type": "Person",
         name: post.author.name,
-        url: `https://flowingkhaos.com/author/${post.author.name}`,
+        url: `https://flowingkhaos.com/authors/${post.author.slug}`,
       },
     })),
   };
@@ -239,20 +238,42 @@ export default async function CategoryPosts({ params: { slug } }: Props) {
             height={720}
           />
           <div className="flex-grow">
-            <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
-              <dt className="sr-only">Published on</dt>
-              <dd className="text-base leading-6 font-bold">
-                <p>Last update,</p>
-                <time dateTime={article.updatedAt}>
-                  {getRelativeTime(article.updatedAt)}
-                </time>
-                {(await isOlderThanAdayAgo(article.updatedAt)) && (
-                  <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
-                    {(await isOlderThanAdayAgo(article.updatedAt)) && "new!"}
-                  </span>
-                )}
-              </dd>
-            </dl>
+            <div className="flex">
+              <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
+                <dt className="sr-only">Published on</dt>
+                <dd className="text-base leading-6 font-bold">
+                  <p>Last update,</p>
+                  <time dateTime={article.updatedAt}>
+                    {getRelativeTime(article.updatedAt)}
+                  </time>
+                  {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                    <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
+                      {(await isOlderThanAdayAgo(article.updatedAt)) && "new!"}
+                    </span>
+                  )}
+                </dd>
+              </dl>
+              <ul className="px-6">
+                <Link href={`/authors/${article.author.slug}`}>
+                  <li key={article.author.id} className="flex hover:underline">
+                    <dl className="flex-1 text-sm leading-5">
+                      <dt className="sr-only">Name</dt>
+                      <dd className="text-primary text-base leading-6 font-bold">
+                        {article.author.name}
+                      </dd>
+                      {article.author.role && (
+                        <>
+                          <dt className="sr-only">Role</dt>
+                          <dd className="text-content font-bold">
+                            {article.author.role}
+                          </dd>
+                        </>
+                      )}
+                    </dl>
+                  </li>
+                </Link>
+              </ul>
+            </div>
             <h2 className="text-primary text-xl uppercase font-black mb-2 py-4">
               {article.title}
             </h2>

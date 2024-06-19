@@ -1,40 +1,5 @@
 import { RichTextContent } from "@graphcms/rich-text-types";
 //? query
-// const AllPosts = `
-// query AllPosts($first: Int) {
-//     articles(orderBy: createdAt_DESC, first: $first) {
-//       id
-//       excerpt
-//       slug
-//       title
-//       date
-//       createdAt
-//       publishedAt
-//       updatedAt
-//       image {
-//         url
-//         width
-//         height
-//         id
-//       }
-//       buttons {
-//         id
-//         slug
-//         text
-//       }
-//       seoOverride {
-//         description
-//         title
-//         image {
-//           id
-//           height
-//           width
-//           url
-//         }
-//       }
-//     }
-//   }
-// `;
 const AllPosts = `
 query GET_POSTS($first: Int) {
   articlesConnection(locales: en, orderBy: createdAt_DESC, first: $first) {
@@ -48,6 +13,18 @@ query GET_POSTS($first: Int) {
         createdAt
         publishedAt
         updatedAt
+        author {
+          role
+          name
+          id
+          slug
+          image {
+            url
+            width
+            height
+            id
+          }
+        }
         image {
           url
           width
@@ -133,33 +110,6 @@ export async function GET_POSTS(): Promise<Articles> {
 }
 
 //? query
-// export const FeaturedPosts = `
-// query FeaturedPosts{
-//     articles(
-//       where: {featuredPost: true}
-//       orderBy: publishedAt_DESC
-//       ) {
-//       id
-//       slug
-//       title
-//       updatedAt
-//       author {
-//         name
-//       }
-//       image {
-//         url
-//         width
-//         height
-//         id
-//       }
-//       buttons {
-//         id
-//         slug
-//         text
-//       }
-//     }
-//   }
-// `;
 export const FeaturedPosts = `
 query GET_FEATURED_POSTS {
   articlesConnection(
@@ -236,91 +186,6 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
 }
 
 //? query
-// const SinglePost = `
-// query SinglePost($slug: String!) {
-//   article(where: {slug: $slug}) {
-//     id
-//     createdAt
-//     publishedAt
-//     updatedAt
-//     title
-//     slug
-//     date
-//     excerpt
-//     content {
-//       json
-//     }
-//     image {
-//       id
-//       url
-//       width
-//       height
-//     }
-//     author {
-//       ... on Author {
-//         remoteTypeName: __typename
-//         remoteId: id
-//         name
-//         role
-//         image {
-//           id
-//           url
-//           width
-//           height
-//         }
-//       }
-//     }
-//     buttons {
-//       id
-//       slug
-//       text
-//     }
-//     category {
-//       name
-//       slug
-//     }
-//     faq {
-//       id
-//       answer
-//       question
-//       title
-//     }
-//     comments(orderBy: publishedAt_DESC) {
-//       id
-//       username
-//       email
-//       comment
-//       likes
-//       createdAt
-//     }
-//     seoOverride {
-//       description
-//       title
-//       image {
-//         id
-//         height
-//         width
-//         url
-//       }
-//     }
-//     downloadableContentBucket {
-//       id
-//       name
-//       slug
-//       publishedAt
-//       file {
-//         fileName
-//         handle
-//         height
-//         id
-//         size
-//         url
-//         width
-//       }
-//     }
-//   }
-// }
-// `;
 
 const SinglePost = `
   query GET_SINGLE_POST($slug: String!) {
@@ -350,6 +215,7 @@ const SinglePost = `
               remoteId: id
               name
               role
+              slug
               image {
                 id
                 url
@@ -456,6 +322,7 @@ interface Author {
   remoteId: string; //? "id" property
   name: string;
   role?: string;
+  slug: string;
   image?: {
     id: string;
     url: string;

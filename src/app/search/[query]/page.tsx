@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Params) {
   // Generate a title using the search term
   const title = `Search results for the term "${searchTerm}"`;
   // Generate a description
-  const description = `Explore articles and posts related to "${searchTerm}" on our blog.`;
+  const description = `Explore articles and posts related to "${searchTerm}" in our blog.`;
   // Use a default Open Graph image
   const openGraphImage = {
     url: "/public/svg/question.svg", // Replace with your default Open Graph image URL
@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Params) {
   const robots = "index, follow";
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = "https://flowingkhaos.com";
+  const site = `https://flowingkhaos.com/search/${searchTerm}`;
 
   // Check if there are any search results to include an image in metadata
   if (searchResults.length > 0) {
@@ -76,6 +76,9 @@ export async function generateMetadata({ params }: Params) {
     title: title,
     description: description,
     robots: robots,
+    icons: {
+      icon: "/favicon.ico",
+    },
     openGraph: {
       type: "website",
       url: site,
@@ -90,7 +93,58 @@ export async function generateMetadata({ params }: Params) {
       description: description, // Twitter card description
       images: [openGraphImage], // Add your Twitter image URL here
     },
+    alternates: {
+      canonical: site,
+      languages: {
+        "en-US": site,
+      },
+    },
+    metadataBase: new URL(`https://flowingkhaos.com/search/${searchTerm}`),
   };
+}
+
+async function generateSchemaMarkup({ params }: Params) {
+  const searchTerm = params.query;
+  const data = await SEARCH_QUERY(searchTerm); // Fetch search results
+  const searchResults = data.edges.map((edge) => edge.node);
+  // Generate a title using the search term
+  const title = `Search results for the term "${searchTerm}"`;
+  // Generate a description
+  const description = `Explore articles and posts related to "${searchTerm}" in our blog.`;
+  // Use a default Open Graph image
+  const openGraphImage = {
+    url: "/public/svg/question.svg", // Replace with your default Open Graph image URL
+    width: 1200,
+    height: 630,
+  };
+  const site = `https://flowingkhaos.com/search/${searchTerm}`;
+
+  // Check if there are any search results to include an image in metadata
+  if (searchResults.length > 0) {
+    // Use the image from the first search result as the Open Graph image
+    openGraphImage.url = searchResults[0].image.url;
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: title,
+          description: description,
+          url: site,
+          images: [openGraphImage],
+          creator: {
+            "@type": "Person",
+            name: "Lou Sidney",
+            url: "https://flowingkhaos.com/authors/lou-sidney",
+          },
+          dateModified: new Date(),
+        }),
+      }}
+    />
+  );
 }
 
 // The page component function that uses the fetched data to render the page
@@ -132,6 +186,9 @@ export default async function SearchPage({ params }: Params) {
   }
   return (
     <section className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5 py-24">
+      <head>
+        <head>{generateSchemaMarkup({ params: { query: params.query } })}</head>
+      </head>
       <div className="max-w-7xl w-full">
         <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
           Search results for the term:

@@ -72,10 +72,9 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: site,
       languages: {
         "en-US": site,
-        "fr-FR": site,
       },
     },
-    metadataBase: new URL("https://flowingkhaos.com"),
+    metadataBase: new URL(`https://flowingkhaos.com/${slug}`),
   };
 }
 
@@ -96,7 +95,7 @@ function generateSchemaMarkup(pageData: any) {
           creator: {
             "@type": "Person",
             name: "Lou Sidney",
-            url: "https://flowingkhaos.com/author/lou-sidney",
+            url: "https://flowingkhaos.com/authors/lou-sidney",
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,

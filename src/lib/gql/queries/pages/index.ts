@@ -1,15 +1,3 @@
-import { URLSearchParams } from "url";
-
-// export const AllPages = `
-//   query AllPages {
-//     pages {
-//       id
-//       slug
-//       title
-//       updatedAt
-//     }
-//   }
-// `;
 export const AllPages = `
 query GET_PAGES {
   pagesConnection(locales: en) {
@@ -25,22 +13,18 @@ query GET_PAGES {
 }
 `;
 
-export async function GET_PAGES(slug: string): Promise<Page[]> {
+export async function GET_PAGES(): Promise<Page[]> {
   const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
-
-  const params = new URLSearchParams({
-    method: "POST",
-    AllPages,
-    variables: JSON.stringify({ where: { slug: slug } }),
-  });
-  //console.log(slug);
-
   try {
-    const response = await fetch(`${apiRequest}?${params}`, {
+    const response = await fetch(apiRequest, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        query: AllPages,
+        next: { revalidate: 3600 },
+      }),
     });
 
     if (!response.ok) {
@@ -59,7 +43,7 @@ export async function GET_PAGES(slug: string): Promise<Page[]> {
     //console.log(pages);
     return pages;
   } catch (error) {
-    console.error(`GET_PAGES error with slug ${slug}:`, error);
+    console.error(`GET_PAGES error `, error);
     throw error; // Re-throw the error to be handled by the calling function.
   }
 }

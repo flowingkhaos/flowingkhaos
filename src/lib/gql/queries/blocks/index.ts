@@ -38,7 +38,7 @@ export async function GET_BENTO_GRID(): Promise<Bento[]> {
       },
       body: JSON.stringify({
         query: BentoQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 

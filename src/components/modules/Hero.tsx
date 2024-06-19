@@ -73,7 +73,7 @@ const Hero: React.FC<HeroProps> = async ({
             <div className="md:flex flex-col md:flex-row w-2/3">
               {buttons?.map((button, idx) => (
                 <div className="my-4" key={idx}>
-                  <a href={`${button.slug}`} className="md:px-4 block">
+                  <a href={`/${button.slug}`} className="md:px-4 block">
                     <MagicButton
                       title={`${button.text}` || "Show my work"}
                       icon={<FaLocationArrow />}

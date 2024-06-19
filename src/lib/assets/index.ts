@@ -16,6 +16,7 @@ import {
   Socials,
   Testimonial,
 } from "../gql/queries/blocks";
+import { Author, GET_AUTHORS } from "../gql/queries/blog/authors";
 
 export async function fetchGridItems(): Promise<Bento[]> {
   try {

@@ -103,7 +103,7 @@ export async function generateMetadata({ params: { slug } }: Props) {
   //console.log(article);
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/articles/${slug}`;
+  const site = `https://flowingkhaos.com/blog/articles/${slug}`;
   const robots = "index, follow";
 
   return {
@@ -147,10 +147,9 @@ export async function generateMetadata({ params: { slug } }: Props) {
       canonical: site,
       languages: {
         "en-US": site,
-        "fr-FR": site,
       },
     },
-    metadataBase: new URL("https://flowingkhaos.com/articles"),
+    metadataBase: new URL(`https://flowingkhaos.com/blog/articles/${slug}`),
   };
 }
 
@@ -172,7 +171,7 @@ function generateSchemaMarkup(article: Post) {
           author: {
             "@type": "Person",
             name: article.author?.name,
-            url: `https://flowingkhaos.com/author/${article.author?.name}`,
+            url: `https://flowingkhaos.com/author/${article.author?.slug}`,
           },
           publisher: {
             "@type": "Organization",
@@ -253,18 +252,23 @@ export default async function Page({ params: { slug } }: Props) {
                     height={article.author.image.height}
                     alt={article.author.name}
                   />
-                  <dl className="flex-1 text-sm leading-5">
-                    <dt className="sr-only">Name</dt>
-                    <dd className="text-accent">{article.author.name}</dd>
-                    {article.author.role && (
-                      <>
-                        <dt className="sr-only">Role</dt>
-                        <dd className="text-secondary font-bold">
-                          {article.author.role}
-                        </dd>
-                      </>
-                    )}
-                  </dl>
+                  <Link
+                    href={`/authors/${article.author.slug}`}
+                    className="hover:underline hover:text-content"
+                  >
+                    <dl className="flex-1 text-sm leading-5">
+                      <dt className="sr-only">Name</dt>
+                      <dd className="text-accent">{article.author.name}</dd>
+                      {article.author.role && (
+                        <>
+                          <dt className="sr-only">Role</dt>
+                          <dd className="text-secondary font-bold">
+                            {article.author.role}
+                          </dd>
+                        </>
+                      )}
+                    </dl>
+                  </Link>
                 </li>
               </ul>
             )}

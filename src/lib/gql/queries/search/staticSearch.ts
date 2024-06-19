@@ -51,7 +51,8 @@ export async function GET_POPULAR_SEACH_TERMS() {
   return [
     "ai",
     "blog",
-    "scrap",
+    "scraper",
+    "scraping",
     "image",
     "job",
     "agent",

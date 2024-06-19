@@ -17,6 +17,8 @@ import {
 } from "@graphcms/rich-text-types";
 import { Suspense } from "react";
 import { Metadata, ResolvingMetadata } from "next";
+import { GET_AUTHORS } from "@/lib/gql/queries/blog/authors";
+import Author, { AuthorProps } from "@/components/modules/Author";
 
 type Src = {
   src: ImageProps;
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const twitterCard = "summary_large_image";
   const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/${pageData.slug}`;
+  const site = `https://flowingkhaos.com/authors/${pageData.slug}`;
   const robots = "index, follow";
 
   return {
@@ -89,7 +91,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         "en-US": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/${pageData.slug}`),
+    metadataBase: new URL(`https://flowingkhaos.com/authors/${pageData.slug}`),
   };
 }
 
@@ -104,13 +106,13 @@ function generateSchemaMarkup(pageData: any) {
           name: pageData.seoOverride?.title || pageData.title,
           description:
             pageData.seoOverride?.description || pageData.description,
-          url: `https://flowingkhaos.com/${pageData.slug}`,
+          url: `https://flowingkhaos.com/authors/${pageData.slug}`,
           image:
             `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
           author: {
             "@type": "Person",
             name: "Lou Sidney",
-            url: "https://flowingkhaos.com/authors/lou-sidney",
+            url: `https://flowingkhaos.com/authors/${pageData.slug}`,
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
@@ -124,7 +126,7 @@ function generateSchemaMarkup(pageData: any) {
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://flowingkhaos.com/${pageData.slug}`,
+            "@id": `https://flowingkhaos.com/authors/${pageData.slug}`,
           },
         }),
       }}
@@ -134,19 +136,17 @@ function generateSchemaMarkup(pageData: any) {
 
 export default async function Page({ params }: Params) {
   //? Fetch data on the server-side (SSR)
-  const pageData = await GET_PAGE(params.slug);
   //console.log(pageData);
   //console.log(pageData?.slug);
+  console.log(params.slug);
 
-  if (typeof pageData === "undefined") {
-    return <div>Error fetching page</div>; // Handle potential errors
-  }
-  if (!params.slug) {
-    return <div>Error: Missing slug</div>;
-  }
-  if (!pageData) {
+  const pageData = await GET_PAGE(params.slug);
+  if (!params.slug || !pageData) {
     return notFound();
   }
+
+  // Fetch author data
+  const authorData = await GET_AUTHORS(params.slug);
 
   return (
     <section className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
@@ -163,6 +163,13 @@ export default async function Page({ params }: Params) {
             />
           )}
         </Suspense>
+        <article>
+          <Suspense fallback={<DecryptLoader />}>
+            {authorData.map((author: AuthorProps) => (
+              <Author key={author.id} author={author} />
+            ))}
+          </Suspense>
+        </article>
         <article className="prose md:prose-lg lg:prose-xl lg:py-48 mt-6 pb-8 lg:pb-0 lg:row-span-2">
           <Suspense fallback={<DecryptLoader />}>
             {pageData?.content?.json && (

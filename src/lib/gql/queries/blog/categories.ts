@@ -1,6 +1,6 @@
 //? query
 export const Categories = `
-  query Categories {
+  query CATEGORIES {
     categories(locales: en) {
       name
       slug
@@ -45,50 +45,6 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
 }
 
 //? query
-// export const CategoryPost = `
-// query CategoryPost($categorySlug: String!, $skip: Int, $first: Int) {
-//     articles(
-//       where: {category: {slug: $categorySlug}}
-//       skip: $skip
-//       first: $first
-//       orderBy: createdAt_DESC
-//     ) {
-//       author {
-//         role
-//         name
-//         id
-//         image {
-//           url
-//           width
-//           height
-//           id
-//         }
-//       }
-//       id
-//       createdAt
-//       publishedAt
-//       updatedAt
-//       slug
-//       title
-//       excerpt
-//       image {
-//         url
-//         width
-//         height
-//         id
-//       }
-//       category {
-//         name
-//         slug
-//       }
-//       buttons {
-//         id
-//         slug
-//         text
-//       }
-//     }
-//   }
-//   `;
 export const CategoryPost = `
 query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
   articlesConnection(
@@ -104,6 +60,7 @@ query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
           role
           name
           id
+          slug
           image {
             url
             width
@@ -205,6 +162,7 @@ interface Author {
   name: string;
   id: string;
   role: string;
+  slug: string;
   image: {
     url: string;
     width: number;
