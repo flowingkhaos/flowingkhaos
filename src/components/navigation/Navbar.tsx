@@ -25,7 +25,7 @@ export default async function Navbar() {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <Image
-            src="https://flowbite.com/docs/images/logo.svg"
+            src="/favicon.ico"
             width={33}
             height={33}
             className="h-8"
