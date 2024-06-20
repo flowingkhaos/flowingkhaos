@@ -3,69 +3,6 @@ import { RichTextContent } from "@graphcms/rich-text-types";
 
 export const GET_PAGE = async (slug: string): Promise<Page | undefined> => {
   const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
-
-  //   const query = `
-  //   query GET_PAGE($where: PageWhereUniqueInput!) {
-  //     page(where: $where) {
-  //       id
-  //       title
-  //       slug
-  //       subtitle
-  //       description
-  //       content {
-  //         json
-  //       }
-  //       image {
-  //         url
-  //         id
-  //         width
-  //         height
-  //       }
-  //       hero {
-  //         title
-  //         subtitle
-  //         description
-  //         buttons {
-  //           slug
-  //           text
-  //         }
-  //         image {
-  //           url
-  //           id
-  //           width
-  //           height
-  //         }
-  //       }
-  //       stat {
-  //         title
-  //         subtitle
-  //         description
-  //         value
-  //         analytic
-  //       }
-  //       buttons {
-  //         text
-  //         slug
-  //       }
-  //       faq {
-  //         title
-  //         question
-  //         answer
-  //       }
-  //       seoOverride {
-  //         description
-  //         id
-  //         title
-  //         image {
-  //           height
-  //           id
-  //           url
-  //           width
-  //         }
-  //       }
-  //     }
-  //   }
-  // `;
   const query = `
 query GET_PAGE($slug: String!) {
   pagesConnection(locales: en, where: { slug: $slug }) {
@@ -145,7 +82,7 @@ query GET_PAGE($slug: String!) {
       headers: {
         "Content-Type": "application/json",
       },
-      //next: { revalidate: 3600 },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
