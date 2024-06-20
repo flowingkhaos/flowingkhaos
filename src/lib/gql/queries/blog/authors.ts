@@ -47,7 +47,7 @@ export async function GET_ALL_AUTHORS(): Promise<Author[]> {
 
     const authors = await response.json();
 
-    console.log(authors.data.authorsConnection.edges);
+    //console.log(authors.data.authorsConnection.edges);
     return authors.data.authorsConnection.edges.map((edge: any) => ({
       biography: edge.node.biography,
       id: edge.node.id,
@@ -107,6 +107,7 @@ export async function GET_AUTHORS(slug: string): Promise<Author[]> {
       body: JSON.stringify({
         query: AUTHORS_QUERY,
         variables: { slug: slug },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -117,7 +118,7 @@ export async function GET_AUTHORS(slug: string): Promise<Author[]> {
     }
 
     const authorsData = await response.json();
-    console.log("Authors Data:", authorsData);
+    //console.log("Authors Data:", authorsData.data.authorsConnection.edges);
 
     if (authorsData.errors) {
       console.error(
@@ -126,7 +127,7 @@ export async function GET_AUTHORS(slug: string): Promise<Author[]> {
       );
       throw new Error("Errors occurred while fetching authors data");
     }
-    console.log("Authors Connection:", authorsData.data.authorsConnection);
+    //console.log("Authors Connection:", authorsData.data.authorsConnection);
     //console.log(authorsData.data.authorsConnection.edge);
     return authorsData.data.authorsConnection.edges.map((edge: any) => ({
       biography: edge.node.biography,

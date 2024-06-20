@@ -12,7 +12,7 @@ export default async function sitemap() {
   const authorsConnection = await GET_ALL_AUTHORS();
   const terms = await generateStaticParams();
   //console.log(terms);
-  const excludedSlugs = ["lou-sidney"];
+  const excludedSlugs = ["luke-sidney"];
   return [
     ...articlesConnection.articles.map((article) => ({
       url: `${baseUrl}blog/articles/${article.slug}`,
