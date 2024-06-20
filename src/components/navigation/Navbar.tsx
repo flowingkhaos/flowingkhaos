@@ -86,14 +86,6 @@ export default async function Navbar() {
                       </Button>
                     </li>
 
-                    <li className="">
-                      <Button className="my-2 w-2/3" variant="default">
-                        <Suspense fallback={<DecryptLoader />}>
-                          <SingleNav navId="deals" />
-                        </Suspense>
-                      </Button>
-                    </li>
-
                     <li className="hover:text-accent font-semibold">
                       <Button className="my-2 w-2/3" variant="default">
                         <Suspense fallback={<DecryptLoader />}>

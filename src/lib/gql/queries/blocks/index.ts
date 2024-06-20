@@ -711,7 +711,7 @@ export async function GET_DEAL(): Promise<Deal[]> {
       },
       body: JSON.stringify({
         query: DealQuery,
-        //next: { revalidate: 3600 },
+        //next: { revalidate: 3100 },
       }),
     });
 
@@ -728,7 +728,7 @@ export async function GET_DEAL(): Promise<Deal[]> {
       );
       throw new Error("Errors occurred while fetching footer data");
     }
-    console.log(dealData.data.genericBlocksConnection.edges);
+    //console.log(dealData.data.genericBlocksConnection.edges);
     return dealData.data.genericBlocksConnection.edges.map((edge: any) => ({
       id: edge.node.id,
       slug: edge.node.slug,

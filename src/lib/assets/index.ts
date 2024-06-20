@@ -196,7 +196,7 @@ fetchSearchItem().then((items) => {
 export async function fetchDealItem(): Promise<Deal[]> {
   try {
     const dealItems = await GET_DEAL();
-    //console.log(searchItems);
+    //console.log(dealItems);
     return dealItems;
   } catch (error) {
     console.error("Error fetching deal items:", error);

@@ -23,7 +23,7 @@ export async function GET_PAGES(): Promise<Page[]> {
       },
       body: JSON.stringify({
         query: AllPages,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 

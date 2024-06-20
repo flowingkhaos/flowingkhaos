@@ -124,7 +124,6 @@ export default async function Page() {
     >
       <head>{generateSchemaMarkup(pageData)}</head>
       <div className="max-w-7xl w-full">
-        <FloatingNav navItems={navItems} />
         <Suspense fallback={<DecryptLoader />}>
           {pageData?.hero && (
             <Hero
@@ -136,25 +135,28 @@ export default async function Page() {
             />
           )}
         </Suspense>
-
+        <h1 className="pt-24 text-3xl leading-9 font-black tracking-tight sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+          {pageData.description}
+        </h1>
         <div className="flex flex-wrap gap-10 mb-10">
-          {dealItems.map((deal) => (
-            <DealBox
-              key={deal.id}
-              id={deal.id}
-              slug={deal.slug}
-              title={deal.title}
-              description={deal.description}
-              name={deal.name}
-              link={deal.link}
-              className={deal.className}
-              titleClassName={deal.titleClassName}
-              img={deal.img}
-              spareImg={deal.spareImg}
-            />
-          ))}
+          <Suspense fallback={<DecryptLoader />}>
+            {dealItems.map((deal) => (
+              <DealBox
+                key={deal.id}
+                id={deal.id}
+                slug={deal.slug}
+                title={deal.title}
+                description={deal.description}
+                name={deal.name}
+                link={deal.link}
+                className={deal.className}
+                titleClassName={deal.titleClassName}
+                img={deal.img}
+                spareImg={deal.spareImg}
+              />
+            ))}
+          </Suspense>
         </div>
-
         <div className="py-4 lg:py-16">
           <Suspense fallback={<DecryptLoader />}>
             {pageData?.stat && <StatBar {...pageData.stat} />}

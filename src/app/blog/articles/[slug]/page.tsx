@@ -171,7 +171,7 @@ function generateSchemaMarkup(article: Post) {
           author: {
             "@type": "Person",
             name: article.author?.name,
-            url: `https://flowingkhaos.com/author/${article.author?.slug}`,
+            url: `https://flowingkhaos.com/authors/${article.author?.slug}`,
           },
           publisher: {
             "@type": "Organization",
