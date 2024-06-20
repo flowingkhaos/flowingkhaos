@@ -54,6 +54,7 @@ const DOWNLOADABLE_CONTENT_BUCKET: React.FC<DownloadableContentProps> = ({
           </p>
           <Button
             size="lg"
+            className="bg-accent"
             type="button"
             onClick={() =>
               handleDownload(content.file.url, content.file.fileName)

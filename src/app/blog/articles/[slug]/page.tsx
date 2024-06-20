@@ -246,7 +246,7 @@ export default async function Page({ params: { slug } }: Props) {
               <ul className="space-x-8 sm:space-x-12 lg:space-x-0 lg:space-y-8">
                 <li key={article.author.remoteId} className="flex space-x-2">
                   <Image
-                    className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+                    className="w-10 h-10 rounded-full ring ring-accent ring-offset-base-100 ring-offset-2"
                     src={article.author.image.url}
                     width={article.author.image.width}
                     height={article.author.image.height}

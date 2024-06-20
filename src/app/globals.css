@@ -7,11 +7,11 @@
     --primary: 48.82% 0.217 264.38;
     --primary-foreground: 224.28 76% 10%;
 
-    --secondary: 73.29% 0.166 35.18;
-    --secondary-foreground: 12 100% 10%;
+    --secondary: 69.48% 0.3096272090630441 331.87470678167324;
+    --secondary-foreground: 304.01 100% 13%;
 
-    --accent: 85.61% 0.2223 148.23;
-    --accent-foreground: 136.73 90% 10%;
+    --accent: 86.03% 0.141 139.49;
+    --accent-foreground: 107.99 66% 13%;
 
     --neutral: 30.83% 0.024 264.14;
     --neutral-foreground: 20.85% 0.013 264.25;
@@ -45,7 +45,7 @@
   }
 
   .light {
-    --primary: 88.89% 0.18150158333819424 95.64361437672957;
+    --primary: 88.58% 0.21 95.64361437672957;
     --primary-foreground: 50.41 100% 10%;
 
     --secondary: 65.31% 0.186 275.91;
@@ -89,11 +89,11 @@
     --primary: 48.82% 0.217 264.38;
     --primary-foreground: 224.28 76% 10%;
 
-    --secondary: 55.01% 0.2223 24.04;
-    --secondary-foreground: 349.14 99% 12%;
+    --secondary: 69.48% 0.3096272090630441 331.87470678167324;
+    --secondary-foreground: 304.01 100% 13%;
 
-    --accent: 71.97% 0.146 293.19;
-    --accent-foreground: 254.11 86% 17%;
+    --accent: 68.72% 0.207 38.89;
+    --accent-foreground: 107.99 66% 13%;
 
     --neutral: 30.83% 0.024 264.14;
     --neutral-foreground: 20.85% 0.013 264.25;

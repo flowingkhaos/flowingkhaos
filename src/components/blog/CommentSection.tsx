@@ -55,7 +55,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
             <Button
               variant="outline"
               size="lg"
-              className="inline-flex items-center justify-center text-sm text-content"
+              className="inline-flex items-center justify-center text-sm text-content hover:bg-accent border-accent"
             >
               {formState.modal}
             </Button>
