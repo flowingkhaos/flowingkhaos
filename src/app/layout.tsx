@@ -63,6 +63,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="bgdpGL1HGN5C9laV0KRHDClTQSTE2hNePwFqMLIJ-xQ"
+        />
+      </head>
       <body className={`${inter.variable} ${montserrat.variable}`}>
         <header>
           <Navbar />
