@@ -37,7 +37,7 @@ export async function GET_ALL_AUTHORS(): Promise<Author[]> {
       },
       body: JSON.stringify({
         query: Authors,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -107,7 +107,7 @@ export async function GET_AUTHORS(slug: string): Promise<Author[]> {
       body: JSON.stringify({
         query: AUTHORS_QUERY,
         variables: { slug: slug },
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 

@@ -138,7 +138,7 @@ export default async function Page({ params }: Params) {
   //? Fetch data on the server-side (SSR)
   //console.log(pageData);
   //console.log(pageData?.slug);
-  console.log(params.slug);
+  //console.log(params.slug);
 
   const pageData = await GET_PAGE(params.slug);
   if (!params.slug || !pageData) {

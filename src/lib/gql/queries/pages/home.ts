@@ -82,7 +82,7 @@ query GET_PAGE($slug: String!) {
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 3600 },
+      //next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
