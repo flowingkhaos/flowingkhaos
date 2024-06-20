@@ -258,11 +258,13 @@ export default async function Page({ params: { slug } }: Props) {
                   >
                     <dl className="flex-1 text-sm leading-5">
                       <dt className="sr-only">Name</dt>
-                      <dd className="text-accent">{article.author.name}</dd>
+                      <dd className="text-accent font-bold">
+                        {article.author.name}
+                      </dd>
                       {article.author.role && (
                         <>
                           <dt className="sr-only">Role</dt>
-                          <dd className="text-secondary font-bold">
+                          <dd className="text-secondary font-semibold">
                             {article.author.role}
                           </dd>
                         </>
@@ -277,7 +279,7 @@ export default async function Page({ params: { slug } }: Props) {
             <dt className="text-sm font-bold leading-5 text-secondary">
               Published on
             </dt>
-            <dd className="text-base leading-6 text-accent">
+            <dd className="text-base leading-6 text-accent font-semibold">
               <time dateTime={article.date}>
                 {new Date(article.date).toLocaleDateString("en-us", {
                   year: "numeric",
