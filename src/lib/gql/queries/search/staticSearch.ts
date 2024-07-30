@@ -1,4 +1,5 @@
 import { request, gql } from "graphql-request";
+import { Author, Category } from "../blog/posts";
 
 const graphqlAPI = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
 
@@ -18,8 +19,11 @@ export interface SearchTerm {
     id: string;
     text: string;
   }[];
-  publishedAt: string;
+  createdAt: string;
+  publishedAt?: string;
   updatedAt: string;
+  author?: Author;
+  category?: Category;
 }
 
 interface Edge {
@@ -49,29 +53,27 @@ interface SearchArticlesResult {
 export async function GET_POPULAR_SEACH_TERMS() {
   // Replace with actual logic to fetch popular search terms
   return [
-    "ai",
+    "ia",
     "blog",
     "scraper",
     "scraping",
     "image",
-    "job",
+    "emploi",
     "agent",
-    "model",
+    "modèle",
     "base",
-    "data",
+    "donnée",
     "bot",
-    "chatbot",
     "code",
     "typescript",
     "javascript",
-    "business",
-    "efficiency",
+    "entreprise",
     "openai",
     "llm",
     "seo",
     "app",
-    "content",
-    "productivity",
+    "contenu",
+    "productivité",
   ];
 }
 
@@ -100,7 +102,6 @@ export async function SEARCH_QUERY(
         first: $first
         after: $after
         orderBy: createdAt_DESC
-        locales: en
       ) {
         edges {
           cursor
@@ -110,18 +111,36 @@ export async function SEARCH_QUERY(
             slug
             excerpt
             date
-            image {
+            createdAt
+            publishedAt
+            updatedAt
+            category {
+              name
+              slug
+            }
+            author {
+              role
+              name
               id
+              slug
+              image {
+                url
+                width
+                height
+                id
+              }
+            }
+            image {
               url
-              height
               width
+              height
+              id
             }
             buttons {
               id
+              slug
               text
             }
-            publishedAt
-            updatedAt
           }
         }
         pageInfo {

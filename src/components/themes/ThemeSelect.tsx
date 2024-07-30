@@ -18,7 +18,7 @@ export function ThemeSelect() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default" size="icon">
+        <Button variant="secondary" type="button">
           <Coffee className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Rocket className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
@@ -26,10 +26,10 @@ export function ThemeSelect() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Latte
+          Modern
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          cosmic
+          Space
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System

@@ -1,10 +1,8 @@
 import React from "react";
 
-import { workExperience } from "@/lib/assets/index";
+import { experienceItems } from "@/lib/assets/index";
 import { Button } from "@/components/aceternity/MovingBorders";
 import Image from "next/image";
-import { TextGenerateEffect } from "../aceternity/TextGenerateEffect";
-//import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 type StaticImport = any;
 
@@ -17,7 +15,7 @@ const Experience = () => {
       </h1>
 
       <div className="w-full mt-12 grid lg:grid-cols-4 grid-cols-1 gap-10">
-        {workExperience.map(
+        {experienceItems.map(
           (card: {
             id: any;
             thumbnail: string | StaticImport;
@@ -62,21 +60,23 @@ const Experience = () => {
                 borderRadius: `calc(1.75rem* 0.96)`,
               }}
               // remove bg-white dark:bg-slate-900
-              className="flex-1 text-content border-neutral-200 dark:border-slate-800 inviz"
+              className="flex-1 text-content border-neutral-200 dark:border-slate-800 inviz shadow-xl"
             >
-              <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
+              <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-7 gap-2">
                 <Image
                   src={card.thumbnail}
                   alt={card.thumbnail}
                   width={150}
                   height={150}
-                  className="lg:w-32 md:w-20 w-16"
+                  className="lg:w-52 md:w-20 w-24"
+                  blurDataURL={card.thumbnail}
+                  placeholder="blur"
                 />
                 <div className="lg:ms-5">
                   <h1 className="text-start text-xl md:text-2xl font-bold">
                     {card.title}
                   </h1>
-                  <p className="text-start text-white-100 mt-3 font-semibold">
+                  <p className="text-start text-white-100 mt-3 font-montserrat">
                     {card.desc}
                   </p>
                 </div>

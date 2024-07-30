@@ -3,7 +3,7 @@ import { URLSearchParams } from "url";
 //? query
 export const Authors = `
 query AUTHORS {
-  authorsConnection(locales: en) {
+  authorsConnection {
     edges {
       node {
         biography
@@ -37,7 +37,7 @@ export async function GET_ALL_AUTHORS(): Promise<Author[]> {
       },
       body: JSON.stringify({
         query: Authors,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 43200 },
       }),
     });
 
@@ -65,7 +65,7 @@ export async function GET_ALL_AUTHORS(): Promise<Author[]> {
 
 export const AUTHORS_QUERY = `
 query AUTHORS_QUERY($slug: String!) {
-  authorsConnection(locales: en, where: { slug: $slug }) {
+  authorsConnection(where: { slug: $slug }) {
     edges {
       node {
         biography
@@ -107,7 +107,7 @@ export async function GET_AUTHORS(slug: string): Promise<Author[]> {
       body: JSON.stringify({
         query: AUTHORS_QUERY,
         variables: { slug: slug },
-        //next: { revalidate: 3600 },
+        next: { revalidate: 43200 },
       }),
     });
 

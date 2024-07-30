@@ -22,39 +22,37 @@ export async function fetchCommentForm() {
 // in actions/commentForm.js
 
 export async function submitCommentForm(
-  slug: string,
+  id: string,
   prevState: any,
   formData: FormData
 ) {
-  console.log(
-    "submitCommentForm called with slug:",
-    slug,
-    "and formData:",
-    formData
-  );
+  // console.log(
+  //   "submitCommentForm called with id:",
+  //   id,
+  //   "and formData:",
+  //   formData
+  // );
 
   // Corrected extraction from FormData object
-  const username = formData.get("username"); // corrected from formData.name
-  const email = formData.get("email"); // corrected from formData.email
-  const comment = formData.get("comment"); // corrected from formData.comment
+  const username = formData.get("nom d'utilisateur"); // corrected from formData.name
+  const comment = formData.get("commentaire"); // corrected from formData.comment
 
-  if (!username || !email || !comment) {
+  if (!username || !comment) {
     throw new Error("All fields are required.");
   }
 
   const mutation = JSON.stringify({
     query: `
-            mutation CreateComment($username: String!, $email: String!, $comment: String!, $slug: String!) {
-                createComment(data: {username: $username, email: $email, comment: $comment, article: {connect: {slug: $slug}}}) { 
+            mutation CreateComment($username: String!, $comment: String!, $id: ID!) {
+                createComment(data: {username: $username, comment: $comment, article: {connect: {id: $id}}}) { 
                     id 
                 }
             }
         `,
     variables: {
       username,
-      email,
       comment,
-      slug,
+      id,
     },
   });
 
@@ -84,8 +82,8 @@ export async function submitCommentForm(
     // Parsing the successful JSON response
     const responseData = await response.json();
     const newCommentId = responseData.data.createComment.id;
-    console.log("Hygraph Response:", responseData);
-    console.log("Hygraph Response:", responseData.data.createComment.id);
+    //console.log("Hygraph Response:", responseData);
+    //console.log("Hygraph Response:", responseData.data.createComment.id);
 
     const publishMutation = JSON.stringify({
       query: `
@@ -115,7 +113,7 @@ export async function submitCommentForm(
     }
 
     const publishResponseData = await publishResponse.json();
-    console.log("Hygraph Publish Response:", publishResponseData);
+    //console.log("Hygraph Publish Response:", publishResponseData);
 
     //revalidatePath(`/posts/${slug}`);
     return {

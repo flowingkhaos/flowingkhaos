@@ -38,7 +38,7 @@ export async function GET_BENTO_GRID(): Promise<Bento[]> {
       },
       body: JSON.stringify({
         query: BentoQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3400 },
       }),
     });
 
@@ -86,7 +86,7 @@ export interface Bento {
 
 export const ProjectQuery = `
 query PROJECT_QUERY {
-    genericBlocksConnection(where: {slug_contains: "project"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "project"}) {
       edges {
         node {
           description
@@ -123,7 +123,7 @@ export async function GET_PROJECTS(): Promise<Project[]> {
       },
       body: JSON.stringify({
         query: ProjectQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -179,7 +179,7 @@ export interface Project {
 
 export const TestimonialQuery = `
 query TESTIMONIAL_QUERY {
-    genericBlocksConnection(where: {slug_contains: "testimonial"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "testimonial"}) {
       edges {
         node {
           description
@@ -187,6 +187,7 @@ query TESTIMONIAL_QUERY {
           name
           slug
           title
+          link
           image {
             height
             id
@@ -210,7 +211,7 @@ export async function GET_TESTIMONIALS(): Promise<Testimonial[]> {
       },
       body: JSON.stringify({
         query: TestimonialQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -219,7 +220,7 @@ export async function GET_TESTIMONIALS(): Promise<Testimonial[]> {
     }
 
     const TestimonialsData = await response.json();
-    //console.log(TestimonialsData);
+    //console.log(TestimonialsData.data.genericBlocksConnection.edges);
 
     if (TestimonialsData.errors) {
       console.error(
@@ -235,6 +236,7 @@ export async function GET_TESTIMONIALS(): Promise<Testimonial[]> {
         name: edge.node.name,
         title: edge.node.title,
         quote: edge.node.description,
+        link: edge.node.link,
         img: edge.node.image?.url ?? "",
       })
     );
@@ -248,13 +250,14 @@ export interface Testimonial {
   id: string;
   name: string;
   title: string;
+  link: string;
   quote: string;
   img: string;
 }
 
 export const CompanyQuery = `
 query COMPANY_QUERY {
-    genericBlocksConnection(where: {slug_contains: "company"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "company"}) {
       edges {
         node {
           description
@@ -284,7 +287,7 @@ export async function GET_COMPANIES(): Promise<Company[]> {
       },
       body: JSON.stringify({
         query: CompanyQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -324,7 +327,7 @@ export interface Company {
 
 export const ExperienceQuery = `
 query EXPERIENCE_QUERY {
-    genericBlocksConnection(where: {slug_contains: "experience"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "experience"}) {
       edges {
         node {
           description
@@ -344,7 +347,7 @@ query EXPERIENCE_QUERY {
   }
   `;
 
-export async function GET_EXPERIENCE(): Promise<Experiences[]> {
+export async function GET_EXPERIENCE(): Promise<Experience[]> {
   const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
 
   try {
@@ -355,7 +358,7 @@ export async function GET_EXPERIENCE(): Promise<Experiences[]> {
       },
       body: JSON.stringify({
         query: ExperienceQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -384,12 +387,12 @@ export async function GET_EXPERIENCE(): Promise<Experiences[]> {
       })
     );
   } catch (error) {
-    console.error("GET_BENTO error:", error);
+    console.error("GET_Experience error:", error);
     throw error; // Re-throw the error to be handled by the calling function.
   }
 }
 
-export interface Experiences {
+export interface Experience {
   id: string;
   title: string;
   desc: string;
@@ -399,7 +402,7 @@ export interface Experiences {
 
 export const SocialQuery = `
 query SOCIAL_QUERY {
-    genericBlocksConnection(where: {slug_contains: "social"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "social"}) {
       edges {
         node {
           id
@@ -429,7 +432,7 @@ export async function GET_SOCIALS(): Promise<Socials[]> {
       },
       body: JSON.stringify({
         query: SocialQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -467,73 +470,9 @@ export interface Socials {
   img: string;
 }
 
-export const ApproachQuery = `
-query APPROACH_QUERY {
-    genericBlocksConnection(where: {slug_contains: "approach"}, locales: en) {
-      edges {
-        node {
-          id
-          slug
-          title
-          description
-        }
-      }
-    }
-  }
-  `;
-
-export async function GET_APPROACH(): Promise<Approach[]> {
-  const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
-
-  try {
-    const response = await fetch(apiRequest, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: ApproachQuery,
-        //next: { revalidate: 3600 },
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error fetching Approach data: ${response.statusText}`);
-    }
-
-    const approachesData = await response.json();
-    //console.log(approachesData);
-
-    if (approachesData.errors) {
-      console.error(
-        "Errors occurred while fetching approach data:",
-        approachesData.errors
-      );
-      throw new Error("Errors occurred while fetching approach data");
-    }
-
-    return approachesData.data.genericBlocksConnection.edges.map(
-      (edge: any) => ({
-        id: edge.node.id,
-        des: edge.node.description,
-        title: edge.node.title,
-      })
-    );
-  } catch (error) {
-    console.error("GET_APPROACH error:", error);
-    throw error; // Re-throw the error to be handled by the calling function.
-  }
-}
-
-export interface Approach {
-  id: string;
-  title: string;
-  des: string;
-}
-
 export const FooterQuery = `
 query FOOTER_QUERY {
-    genericBlocksConnection(where: {slug_contains: "footer"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "footer"}) {
       edges {
         node {
           id
@@ -558,7 +497,7 @@ export async function GET_FOOTER(): Promise<Footer[]> {
       },
       body: JSON.stringify({
         query: FooterQuery,
-        //next: { revalidate: 3400 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -597,7 +536,7 @@ export interface Footer {
 
 export const SearchQuery = `
   query SEARCH_QUERY {
-    genericBlocksConnection(where: {slug_contains: "search"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "search"}) {
       edges {
         node {
           id
@@ -625,7 +564,7 @@ export async function GET_SEARCH(): Promise<Search[]> {
       },
       body: JSON.stringify({
         query: SearchQuery,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -672,7 +611,7 @@ export interface Search {
 
 export const DealQuery = `
   query DEAL_QUERY {
-    genericBlocksConnection(where: {slug_contains: "deal"}, locales: en) {
+    genericBlocksConnection(where: {slug_contains: "deal"}) {
       edges {
         node {
           id
@@ -711,7 +650,7 @@ export async function GET_DEAL(): Promise<Deal[]> {
       },
       body: JSON.stringify({
         query: DealQuery,
-        //next: { revalidate: 3100 },
+        next: { revalidate: 3600 },
       }),
     });
 
@@ -758,4 +697,182 @@ export interface Deal {
   titleClassName: string;
   img: string;
   spareImg: string;
+}
+
+export const TypewriterQuery = `
+  query TYPEWRITER_QUERY {
+    genericBlocksConnection(where: {slug_contains: "typewriter"}) {
+      edges {
+        node {
+          id
+          slug
+          title
+          description
+          name
+          link
+          className
+          titleClassName
+          spareImg {
+            id
+            url
+            width
+          }
+          image {
+            height
+            id
+            url
+            width
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function GET_TYPEWRITER(): Promise<Typewriter[]> {
+  const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
+
+  try {
+    const response = await fetch(apiRequest, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: TypewriterQuery,
+        next: { revalidate: 3500 },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Typewriter data: ${response.statusText}`);
+    }
+
+    const typewriterData = await response.json();
+
+    if (typewriterData.errors) {
+      console.error(
+        "Errors occurred while fetching Typewriter data:",
+        typewriterData.errors
+      );
+      throw new Error("Errors occurred while fetching Typewriter data");
+    }
+    //console.log(typewriterData.data.genericBlocksConnection.edges);
+    return typewriterData.data.genericBlocksConnection.edges.map(
+      (edge: any) => ({
+        id: edge.node.id,
+        slug: edge.node.slug,
+        title: edge.node.title,
+        description: edge.node.description,
+        name: edge.node.name,
+        link: edge.node.link,
+        className: edge.node.className,
+        titleClassName: edge.node.titleClassName,
+        img: edge.node.image?.url ?? "",
+      })
+    );
+  } catch (error) {
+    console.error("GET_DEAL error:", error);
+    throw error; // Re-throw the error to be handled by the calling function.
+  }
+}
+
+export interface Typewriter {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  name: string;
+  link: string;
+  className: string;
+  titleClassName: string;
+  img: string;
+}
+
+export const GlobeQuery = `
+  query GLOBE_QUERY {
+    genericBlocksConnection(where: {slug_contains: "globe"}) {
+      edges {
+        node {
+          id
+          slug
+          title
+          description
+          name
+          link
+          className
+          titleClassName
+          spareImg {
+            id
+            url
+            width
+          }
+          image {
+            height
+            id
+            url
+            width
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function GET_GLOBE(): Promise<Globe[]> {
+  const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
+
+  try {
+    const response = await fetch(apiRequest, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: GlobeQuery,
+        next: { revalidate: 3600 },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Globe data: ${response.statusText}`);
+    }
+
+    const globeData = await response.json();
+
+    if (globeData.errors) {
+      console.error(
+        "Errors occurred while fetching Typewriter data:",
+        globeData.errors
+      );
+      throw new Error("Errors occurred while fetching Typewriter data");
+    }
+    //console.log(globeData.data.genericBlocksConnection.edges);
+    return globeData.data.genericBlocksConnection.edges.map((edge: any) => ({
+      id: edge.node.id,
+      slug: edge.node.slug,
+      title: edge.node.title,
+      description: edge.node.description,
+      name: edge.node.name,
+      link: edge.node.link,
+      className: edge.node.className,
+      titleClassName: edge.node.titleClassName,
+      img: edge.node.image?.url ?? "",
+    }));
+  } catch (error) {
+    console.error("GET_DEAL error:", error);
+    throw error; // Re-throw the error to be handled by the calling function.
+  }
+}
+
+export interface Globe {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  name: string;
+  link: string;
+  className: string;
+  titleClassName: string;
+  img: string;
 }

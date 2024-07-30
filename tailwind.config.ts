@@ -1,5 +1,4 @@
-import { info } from "console";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Sora, Inter } from "next/font/google";
 import type { Config } from "tailwindcss";
 
 const svgToDataUri = require("mini-svg-data-uri");
@@ -22,6 +21,7 @@ const config = {
     fontFamily: {
       inter: ["Inter", "sans-serif"],
       montserrat: ["Montserrat", "sans-serif"],
+      sora: ["Sora", "sans-serif"],
     },
     container: {
       center: true,
@@ -101,6 +101,10 @@ const config = {
             transform: "translate(-50%,-40%) scale(1)",
           },
         },
+        move: {
+          "0%": { transform: "translateX(-200px)" },
+          "100%": { transform: "translateX(200px)" },
+        },
         shimmer: {
           from: {
             backgroundPosition: "0 0",
@@ -153,17 +157,24 @@ const config = {
             transform: "translateX(-100%)",
           },
         },
+        gradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         spotlight: "spotlight 2s ease .75s 1 forwards",
+        move: "move 5s linear infinite",
         shimmer: "shimmer 2s linear infinite",
         first: "moveVertical 30s ease infinite",
         second: "moveInCircle 20s reverse infinite",
         third: "moveInCircle 40s linear infinite",
         fourth: "moveHorizontal 40s ease infinite",
         fifth: "moveInCircle 20s ease infinite",
+        gradient: "gradient 15s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       },

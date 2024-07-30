@@ -10,7 +10,7 @@ import { getRelativeTime, isOlderThanAdayAgo } from "@/lib/actions/utils";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/lib/gql/queries/blog/posts";
-import Footer from "@/components/modules/Footer";
+import Footer from "@/components/modules/FooterBlock";
 import { footerItems, searchItems } from "@/lib/assets";
 
 function BlogButton({ article }: { article: SearchTerm }) {
@@ -62,8 +62,8 @@ export async function generateMetadata({ params }: Params) {
   };
   const robots = "index, follow";
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/search/${searchTerm}`;
+  const twitterHandle = "@newmediaintelligence";
+  const site = `https://newmediaintelligence.com/search/${searchTerm}`;
 
   // Check if there are any search results to include an image in metadata
   if (searchResults.length > 0) {
@@ -96,53 +96,87 @@ export async function generateMetadata({ params }: Params) {
     alternates: {
       canonical: site,
       languages: {
-        "en-US": site,
+        "fr-FR": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/search/${searchTerm}`),
+    metadataBase: new URL(
+      `https://newmediaintelligence.com/search/${searchTerm}`
+    ),
   };
 }
 
 async function generateSchemaMarkup({ params }: Params) {
   const searchTerm = params.query;
-  const data = await SEARCH_QUERY(searchTerm); // Fetch search results
+  const data = await SEARCH_QUERY(searchTerm);
   const searchResults = data.edges.map((edge) => edge.node);
-  // Generate a title using the search term
-  const title = `Search results for the term "${searchTerm}"`;
-  // Generate a description
+  const title = `Search results for "${searchTerm}" - New Media Intelligence`;
   const description = `Explore articles and posts related to "${searchTerm}" in our blog.`;
-  // Use a default Open Graph image
-  const openGraphImage = {
-    url: "/public/svg/question.svg", // Replace with your default Open Graph image URL
-    width: 1200,
-    height: 630,
-  };
-  const site = `https://flowingkhaos.com/search/${searchTerm}`;
+  const site = `https://newmediaintelligence.com/search/${searchTerm}`;
 
-  // Check if there are any search results to include an image in metadata
-  if (searchResults.length > 0) {
-    // Use the image from the first search result as the Open Graph image
-    openGraphImage.url = searchResults[0].image.url;
-  }
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          name: title,
-          description: description,
-          url: site,
-          images: [openGraphImage],
-          creator: {
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "SearchResultsPage",
+    name: title,
+    description: description,
+    url: site,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: searchResults.map((result, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Article",
+          headline: result.title,
+          description: result.excerpt,
+          url: `https://newmediaintelligence.com/blog/articles/${result.slug}`,
+          image: result.image?.url,
+          datePublished: result.publishedAt,
+          dateModified: result.updatedAt,
+          author: {
             "@type": "Person",
             name: "Luke Sidney",
             url: "https://flowingkhaos.com/authors/luke-sidney",
+            sameAs: [
+              "https://newmediaintelligence.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
-          dateModified: new Date(),
-        }),
-      }}
+          publisher: {
+            "@type": "Organization",
+            name: "New Media Intelligence",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://newmediaintelligence.com/logo.png", // Replace with your actual logo URL
+            },
+          },
+        },
+      })),
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate:
+          "https://newmediaintelligence.com/search/{search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+    creator: {
+      "@type": "Person",
+      name: "Luke Sidney",
+      url: "https://flowingkhaos.com/authors/luke-sidney",
+      sameAs: [
+        "https://newmediaintelligence.com/authors/luke-sidney",
+        "https://linkedin.com/in/luke-sidney",
+      ],
+    },
+    dateModified: new Date().toISOString(),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
     />
   );
 }
@@ -194,7 +228,7 @@ export default async function SearchPage({ params }: Params) {
       <div className="max-w-7xl w-full">
         {specificItem && (
           <div key={specificItem.id}>
-            <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
+            <h1 className="leading-10 tracking-tight font-montserrat font-black text-[40px] md:text-3xl lg:text-5xl text-center">
               {specificItem.name}
               <span className="text-primary"> {params.query}</span>
             </h1>
@@ -203,58 +237,96 @@ export default async function SearchPage({ params }: Params) {
             </h1>
           </div>
         )}
-        <Button className="" type="button" variant="default">
+        <Button className="" type="button" variant="secondary">
           <Link href="/search">Use the search tool!</Link>
         </Button>
-        <ul className="divide-y divide-secondary py-6">
+        <ul className="py-6">
           <Suspense fallback={<DecryptLoader />}>
             {searchResults.map(async (article) => (
-              <li key={article.id} className="py-12">
-                <article className="flex items-center space-x-5">
-                  <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base leading-6 font-bold">
-                      <p>last update,</p>
-                      <time dateTime={article.updatedAt}>
-                        {await getRelativeTime(article.updatedAt)}
-                      </time>
-                      <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
-                        {(await isOlderThanAdayAgo(article.updatedAt)) &&
-                          "new!"}
-                      </span>
-                    </dd>
-                  </dl>
+              <li
+                key={article.id}
+                className="my-4 py-8 px-2 border-b border-slate-500"
+              >
+                <article className="max-md:flex-col flex items-center md:space-x-5">
                   <Suspense fallback={<DecryptLoader />}>
-                    {article.image && (
-                      <div className="w-50 h-50 overflow-hidden flex-shrink-0 hidden md:block shadow-xl">
+                    {article?.image && (
+                      <div className="max-md:w-full overflow-hidden flex-shrink-0 py-4">
                         <Image
-                          src={article.image.url}
-                          alt={article.slug}
-                          className="object-cover w-full h-full rounded"
-                          width={192}
-                          height={192}
+                          src={article?.image?.url}
+                          alt={article?.slug}
+                          className="object-cover w-full h-full rounded-xl"
+                          width={250}
+                          height={250}
+                          blurDataURL={article?.image?.url}
+                          placeholder="blur"
                         />
                       </div>
                     )}
                   </Suspense>
-                  <div className="flex-grow space-y-5">
+                  <div className="flex-grow w-full px-2">
+                    <div className="flex items-center">
+                      <Link
+                        href={`/blog/category/${article.category?.slug}`}
+                        className="hover:underline hover:text-accent antialiased font-semibold"
+                      >
+                        {article?.category?.name}
+                      </Link>
+                      <dl className="inline-block px-6 py-1 text-content text-xs font-montserrat rounded antialiased">
+                        <dt className="sr-only">Published on</dt>
+                        <dd className="leading-6">
+                          <time dateTime={article.updatedAt}>
+                            {await getRelativeTime(article.updatedAt)}
+                            {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="default"
+                                className="justify-center pointer-events-none mx-4 max-md:hidden"
+                                aria-label="New!"
+                              >
+                                New!
+                              </Button>
+                            )}
+                          </time>
+                        </dd>
+                      </dl>
+                    </div>
+                    <div className="flex justify-center animate-pulse md:hidden">
+                      {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="default"
+                          className="flex justify-center pointer-events-none w-full"
+                          aria-label="New!"
+                        >
+                          New!
+                        </Button>
+                      )}
+                    </div>
                     <div className="space-y-6">
-                      <h1 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
+                      <h1 className="text-2xl md:text-3xl leading-8 font-black tracking-tight text-primary font-montserrat hover:underline antialiased">
                         <Link href={`/blog/articles/${article.slug}`}>
                           {article.title}
                         </Link>
                       </h1>
+                      <Link href={`/authors/${article.author?.slug}`}>
+                        <p className="text-content font-montserrat font-semibold leading-7 hover:text-accent hover:underline">
+                          {article.author?.name}
+                        </p>
+                      </Link>
                       {article.excerpt && (
-                        <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat">
-                          {article.excerpt}
+                        <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat max-md:hidden">
+                          <p>{article.excerpt}</p>
                         </div>
                       )}
                     </div>
-                    <div className="text-base leading-6 font-medium">
-                      {article.buttons.length > 0 && (
-                        <BlogButton article={article} />
-                      )}
-                    </div>
+
+                    {/* <div className="text-base leading-6 font-medium">
+        {article.buttons.length > 0 && (
+          <BlogButton article={article} />
+        )}
+      </div> */}
                   </div>
                 </article>
               </li>

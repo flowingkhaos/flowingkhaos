@@ -15,6 +15,7 @@ import Faq from "@/components/modules/Faq";
 import CommentSection from "@/components/blog/CommentSection";
 import CommentList from "@/components/blog/CommentList";
 import DOWNLOADABLE_CONTENT_BUCKET from "@/components/modules/DownloadableContentBucket";
+import { lazy } from "react";
 
 type Params = {
   params: { slug: string };
@@ -35,7 +36,7 @@ type Props = {
 
 function BlogButton({ article }: { article: Post }) {
   return (
-    <Button className="my-2" type="button" variant="default">
+    <Button className="my-2" type="button" size="xl">
       <Link
         href={`/blog`}
         className="flex items-center"
@@ -63,7 +64,7 @@ function BlogButton({ article }: { article: Post }) {
 
 function CategoryButton({ article }: { article: Post }) {
   return (
-    <Button className="my-2" type="button" variant="default">
+    <Button className="my-2" type="button" size="xl">
       <Link
         href={`/blog/category/${article?.category?.slug}`}
         className="flex items-center"
@@ -102,8 +103,8 @@ export async function generateMetadata({ params: { slug } }: Props) {
   const article = await GET_POST_DATA(slug);
   //console.log(article);
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/blog/articles/${slug}`;
+  const twitterHandle = "@newmediaintelligence";
+  const site = `https://newmediaintelligence.com/blog/articles/${slug}`;
   const robots = "index, follow";
 
   return {
@@ -119,7 +120,7 @@ export async function generateMetadata({ params: { slug } }: Props) {
       url: site,
       title: article?.seoOverride?.title || article?.title,
       description: article?.seoOverride?.description || article?.excerpt,
-      siteName: "Flowingkhaos",
+      siteName: "newmediaintelligence",
       images: [
         {
           url:
@@ -146,48 +147,84 @@ export async function generateMetadata({ params: { slug } }: Props) {
     alternates: {
       canonical: site,
       languages: {
-        "en-US": site,
+        "fr-FR": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/blog/articles/${slug}`),
+    metadataBase: new URL(
+      `https://newmediaintelligence.com/blog/articles/${slug}`
+    ),
   };
 }
 
 function generateSchemaMarkup(article: Post) {
+  const schemaData: any = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: article.seoOverride?.title || article.title,
+    description: article.seoOverride?.description || article.excerpt,
+    image: [`${article.seoOverride?.image?.url}` || `${article.image?.url}`],
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    author: {
+      "@type": "Person",
+      name: article.author?.name,
+      url: `https://flowingkhaos.com/authors/${article.author?.slug}`,
+      sameAs: [
+        "https://newmediaintelligence.com/authors/luke-sidney",
+        "https://linkedin.com/in/luke-sidney",
+      ],
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "New Media Intelligence",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://newmediaintelligence.com/favicon.ico",
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://newmediaintelligence.com/blog/${article.slug}`,
+    },
+  };
+
+  // Add downloadable content if available
+  if (
+    article.downloadableContentBucket &&
+    article.downloadableContentBucket.length > 0
+  ) {
+    schemaData.hasPart = article.downloadableContentBucket.map((content) => ({
+      "@type": "DigitalDocument",
+      name: content.name,
+      identifier: content.file.fileName,
+      description: content.slug,
+      encodingFormat: content.file.mimeType,
+      url: content.file.url,
+    }));
+  }
+
+  // Add FAQ if available
+  if (article.faq) {
+    schemaData.mainEntity = {
+      "@type": "FAQPage",
+      mainEntity: article.faq.question.map((question, index) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: article?.faq?.answer[index],
+        },
+      })),
+    };
+  }
+
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: article.seoOverride?.title || article.title,
-          description: article.seoOverride?.description || article.excerpt,
-          image: [
-            `${article.seoOverride?.image?.url}` || `${article.image?.url}`,
-          ],
-          datePublished: article.publishedAt,
-          dateModified: article.updatedAt,
-          author: {
-            "@type": "Person",
-            name: article.author?.name,
-            url: `https://flowingkhaos.com/authors/${article.author?.slug}`,
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Flowingkhaos",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://flowingkhaos.com/favicon.ico",
-              width: 600,
-              height: 60,
-            },
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://flowingkhaos.com/blog/${article.slug}`,
-          },
-        }),
+        __html: JSON.stringify(schemaData),
       }}
     />
   );
@@ -222,12 +259,14 @@ export default async function Page({ params: { slug } }: Props) {
                   width={article.image.width || 1280}
                   height={article.image.height || 720}
                   alt={article.slug}
-                  priority={true}
+                  priority
+                  blurDataURL={article.image.url}
+                  placeholder="blur"
                 />
               </div>
             )}
 
-            <h1 className="text-3xl leading-9 font-black tracking-tight sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+            <h1 className="leading-10 tracking-tight font-montserrat font-black text-[40px] md:text-3xl lg:text-5xl">
               {article.title}
             </h1>
           </div>
@@ -251,6 +290,8 @@ export default async function Page({ params: { slug } }: Props) {
                     width={article.author.image.width}
                     height={article.author.image.height}
                     alt={article.author.name}
+                    blurDataURL={article.author.image.url}
+                    placeholder="blur"
                   />
                   <Link
                     href={`/authors/${article.author.slug}`}
@@ -290,23 +331,23 @@ export default async function Page({ params: { slug } }: Props) {
             </dd>
           </div>
         </dl>
-        <div className="prose lg:pb-0 lg:row-span-2 py-8">
+        <div className="prose lg:pb-0 lg:row-span-2 py-8 antialiased">
           {article.content.json && (
             <RichText
               content={article.content.json}
               renderers={{
                 h1: ({ children }) => (
-                  <h1 className="text-primary leading-9 tracking-tight font-montserrat font-black text-[40px] md:text-3xl lg:text-5xl">
+                  <h1 className="text-primary leading-10 tracking-tight font-montserrat font-black text-[37px] md:text-3xl lg:text-5xl">
                     {children}
                   </h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="text-secondary leading-7 text-[30px] font-bold font-montserrat">
+                  <h2 className="text-secondary leading-7 text-[25px] font-extrabold font-montserrat">
                     {children}
                   </h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="text-accent leading-5  text-[20px] font-semibold font-montserrat">
+                  <h3 className="text-accent leading-5  text-[22px] font-bold font-montserrat">
                     {children}
                   </h3>
                 ),
@@ -324,13 +365,13 @@ export default async function Page({ params: { slug } }: Props) {
                 a: ({ href, children }) => (
                   <a
                     href={href}
-                    className="text-primary hover:text-accent font-montserrat"
+                    className="text-primary hover:text-accent font-montserrat font-semibold"
                   >
                     {children}
                   </a>
                 ),
                 p: ({ children }) => (
-                  <p className="mb-3 leading-7 flex-grow text-content text-lg font-montserrat">
+                  <p className="mb-3 leading-6 flex-grow text-content font-montserrat font-semibold">
                     {children}
                   </p>
                 ),
@@ -340,12 +381,36 @@ export default async function Page({ params: { slug } }: Props) {
                   </li>
                 ),
                 code_block: ({ children }) => (
-                  <pre className="bg-accent-foreground text-btn">
+                  <pre className="bg-accent-foreground text-btn font-semibold">
                     {children}
                   </pre>
                 ),
                 code: ({ children }) => (
-                  <code className="text-accent">{children}</code>
+                  <code className="text-accent font-semibold">{children}</code>
+                ),
+                table: ({ children }) => (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-secondary my-4">
+                      {children}
+                    </table>
+                  </div>
+                ),
+                table_head: ({ children }) => (
+                  <thead className="bg-secondary text-primary">
+                    {children}
+                  </thead>
+                ),
+                table_body: ({ children }) => <tbody>{children}</tbody>,
+                table_row: ({ children }) => (
+                  <tr className="border-b border-secondary">{children}</tr>
+                ),
+                table_cell: ({ children }) => (
+                  <td className="px-4 py-2 text-sm">{children}</td>
+                ),
+                table_header_cell: ({ children }) => (
+                  <th className="px-4 py-2 font-bold text-left text-sm">
+                    {children}
+                  </th>
                 ),
               }}
             />
@@ -356,7 +421,7 @@ export default async function Page({ params: { slug } }: Props) {
             />
           )}
           {article.faq && <Faq faq={article.faq} />}
-          <CommentSection slug={article.slug} />
+          <CommentSection id={article.id} />
           {article.comments && <CommentList comments={article.comments} />}
           {!article.comments?.length && (
             <p className="text-secondary text-center text-sm font-bold pb-6">

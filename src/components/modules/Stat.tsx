@@ -11,7 +11,7 @@ const StatBar: React.FC<StatProps> = async ({ ...stat }) => {
   ];
   return (
     <>
-      <h1 className="text-2xl leading-7 tracking-tight sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 text-content font-montserrat font-black">
+      <h1 className="text-2xl leading-7 tracking-tight sm:text-3xl sm:leading-10 md:text-5xl md:leading-14 text-content font-montserrat font-black">
         {stat.title}
       </h1>
       <p className="mb-3 leading-7 flex-grow text-content font-montserrat py-2">

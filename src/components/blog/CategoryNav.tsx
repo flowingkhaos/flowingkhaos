@@ -14,7 +14,7 @@ async function fetchCategories() {
     },
     body: JSON.stringify({
       query: Categories,
-      next: { revalidate: 60 },
+      //next: { revalidate: 3600 },
     }),
   });
 
@@ -53,8 +53,8 @@ export default async function CategoryNav() {
   }
 
   return (
-    <section className="flex flex-col h-full p-4 inviz shadow-xl rounded border border-primary z-50 mb-8 lg:my-24 font-montserrat font-black">
-      <h1 className="text-xl leading-9 text-center tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 my-4">
+    <section className="flex flex-col h-full p-4 inviz shadow-xl rounded border border-primary z-50 mb-8 lg:my-24 font-black">
+      <h1 className="text-xl leading-9 text-center tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 my-4 font-montserrat">
         Categories
       </h1>
       <ul className="list-none list-inside space-y-4">

@@ -4,13 +4,14 @@ import { projectItems } from "@/lib/assets/index";
 import { PinContainer } from "@/components/aceternity/Pin";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 const RecentProjects = () => {
   return (
-    <div id="projects" className="py-20">
+    <div id="projects" className="mt-10">
       <h1 className="text-center font-black text-[40px] md:text-5xl lg:text-6xl">
-        A small selection of
-        <span className="text-primary"> recent projects</span>
+        Discover what I have
+        <span className="text-primary"> Built</span>
       </h1>
       <div className="flex flex-wrap items-center justify-center p-4 gap-x-24 gap-y-8 mt-10">
         {projectItems.map((item) => (
@@ -18,7 +19,7 @@ const RecentProjects = () => {
             className="lg:min-h-[42rem] h-[32rem] flex items-center justify-center sm:w-[520px] w-[80vw]"
             key={item.id}
           >
-            <PinContainer title="visit" href="https://twitter.com/mannupaaji">
+            <PinContainer title="visit" href={`${item.link}`}>
               <div className="relative flex items-center justify-center sm:w-[520px] w-[80vw] overflow-hidden h-[20vh] lg:h-[41vh] mb-10">
                 <div
                   className="relative w-full h-full overflow-hidden lg:rounded-3xl"
@@ -29,14 +30,18 @@ const RecentProjects = () => {
                     alt="bgimg"
                     width={500}
                     height={500}
+                    blurDataURL="/svg/bg.png"
+                    placeholder="blur"
                   />
                 </div>
                 <Image
                   src={item.img}
                   alt="cover"
-                  width={450}
-                  height={450}
-                  className="z-10 absolute bottom-0"
+                  width={475}
+                  height={475}
+                  className="z-10 absolute bottom-0 rounded-t-xl"
+                  blurDataURL={item.img}
+                  placeholder="blur"
                 />
               </div>
 
@@ -69,20 +74,19 @@ const RecentProjects = () => {
                         className="p-2"
                         width={450}
                         height={450}
+                        blurDataURL={icon}
+                        placeholder="blur"
                       />
                     </div>
                   ))}
                 </div>
 
-                <div className="flex justify-center items-center hover:bg-accent rounded p-1">
-                  <Link
-                    href={`https://${item.link}`}
-                    className="flex lg:text-xl md:text-xs text-sm text-content animate-pulse"
-                  >
-                    Check Live Site
+                <Button variant="secondary">
+                  <Link href={`${item.link}`} className="">
+                    Visit now
                   </Link>
-                  <FaLocationArrow className="ms-3" color="#CBACF9" />
-                </div>
+                  <FaLocationArrow className="ms-3 text-accent" />
+                </Button>
               </div>
             </PinContainer>
           </div>

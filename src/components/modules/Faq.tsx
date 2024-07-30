@@ -28,13 +28,13 @@ const Faq: React.FC<FaqProps> = ({ faq }) => {
 
   return (
     <section className="p-6">
-      <h1 className="text-3xl h1 text-center text-content uppercase lg:text-4xl font-montserrat">
+      <h1 className="text-3xl h1 text-center text-content uppercase lg:text-4xl font-black font-montserrat">
         {faq.title}
       </h1>
       <Accordion type="single" collapsible>
         {question.map((question, index) => (
           <AccordionItem key={index} value={`item-${index + 1}`}>
-            <AccordionTrigger className="text-secondary font-montserrat">
+            <AccordionTrigger className="text-primary font-montserrat font-semibold">
               {question}
             </AccordionTrigger>
             <AccordionContent className="text-content">

@@ -1,6 +1,6 @@
 export const AllPages = `
 query GET_PAGES {
-  pagesConnection(locales: en) {
+  pagesConnection {
     edges {
       node {
         id
@@ -23,7 +23,7 @@ export async function GET_PAGES(): Promise<Page[]> {
       },
       body: JSON.stringify({
         query: AllPages,
-        //next: { revalidate: 3600 },
+        next: { revalidate: 43200 },
       }),
     });
 

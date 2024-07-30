@@ -64,13 +64,9 @@ export function SearchTool() {
   return (
     <Dialog onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="lg"
-          className="inline-flex items-center max-md:p-2 max-md:w-10 max-md:h-10 justify-center text-sm rounded"
-        >
+        <Button variant="accent" size="lg">
           <p className="max-md:hidden">Quick Seach</p>
-          <IoSearchCircleOutline className="h-8 w-8 mx-1" />
+          <IoSearchCircleOutline className="h-6 w-6 lg:h-6 lg:w-6 ml-1" />
         </Button>
       </DialogTrigger>
       <DialogContent className="">
@@ -98,7 +94,10 @@ export function SearchTool() {
               />
             </div>
 
-            <Button type="submit" className="px-3 bg-secondary">
+            <Button
+              type="submit"
+              className="px-3 border border-secondary hover:text-btn"
+            >
               <IoSearchCircleOutline className="h-10 w-10" />
             </Button>
           </div>

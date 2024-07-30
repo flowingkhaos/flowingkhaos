@@ -9,7 +9,7 @@ import {
   SearchArticlesResult,
   SearchTerm,
 } from "@/lib/gql/queries/search/dynamicSearch";
-import Footer from "@/components/modules/Footer";
+import Footer from "@/components/modules/FooterBlock";
 import { searchItems } from "@/lib/assets";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import { Button } from "@/components/ui/button";
@@ -98,7 +98,7 @@ const SearchPage = (): JSX.Element => {
 
   const renderMetaData = () => {
     const defaultImage = "/favicon.ico";
-    const siteName = "flowingKhaos";
+    const siteName = "newmediaintelligence";
     const title = `Search results for "${searchTerm}" | ${siteName}`;
     const description = `Find the information you are looking for with our search tool. Results for "${searchTerm}".`;
     const image = articles.length > 0 ? articles[0].image.url : defaultImage;
@@ -118,6 +118,12 @@ const SearchPage = (): JSX.Element => {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={image} />
         <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={`https://${siteName}.com/search`}></link>
+        <link
+          rel="alternate"
+          hrefLang="fr-FR"
+          href={`https://${siteName}.com/search`}
+        ></link>
       </Head>
     );
   };
@@ -151,20 +157,18 @@ const SearchPage = (): JSX.Element => {
           )}
           <form onSubmit={handleSearch} className="py-6">
             <Label className="">
-              <span className="font-montserrat">
-                What are you thinking about?
-              </span>
+              <span className="font-montserrat">Search for content here .</span>
             </Label>
             <Input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search posts..."
-              className="w-full rounded font-montserrat font-bold text-secondary my-3"
+              placeholder="Search articles..."
+              className="w-full rounded font-bold text-secondary my-3"
             />
             <div className="py-4 lg:px-10 text-base leading-6 font-medium">
               <Button type="submit" className="mx-1 flex items-center">
-                Search Term
+                Search
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -183,55 +187,95 @@ const SearchPage = (): JSX.Element => {
             </div>
           </form>
 
-          <ul className="divide-y divide-secondary py-6">
+          <ul className="py-6">
             <Suspense fallback={<DecryptLoader />}>
               {articles.map(async (article) => (
-                <li key={article.id} className="py-12">
-                  <article className="flex items-center space-x-5">
-                    <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base leading-6 font-bold">
-                        <p>Last update,</p>
-                        <time dateTime={article.updatedAt}>
-                          {await getRelativeTime(article.updatedAt)}
-                        </time>
-                        <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
-                          {(await isOlderThanAdayAgo(article.updatedAt)) &&
-                            "new!"}
-                        </span>
-                      </dd>
-                    </dl>
+                <li
+                  key={article.id}
+                  className="my-4 py-8 px-2 border-b border-slate-500"
+                >
+                  <article className="max-md:flex-col flex items-center md:space-x-5">
                     <Suspense fallback={<DecryptLoader />}>
-                      {article.image && (
-                        <div className="w-50 h-50 overflow-hidden flex-shrink-0 hidden md:block shadow-lg">
+                      {article?.image && (
+                        <div className="max-md:w-full overflow-hidden flex-shrink-0 py-4">
                           <Image
-                            src={article.image.url}
-                            alt={article.slug}
-                            className="object-cover w-full h-full rounded"
-                            width={192}
-                            height={192}
+                            src={article?.image?.url}
+                            alt={article?.slug}
+                            className="object-cover w-full h-full rounded-xl"
+                            width={250}
+                            height={250}
+                            blurDataURL={article?.image?.url}
+                            placeholder="blur"
                           />
                         </div>
                       )}
                     </Suspense>
-                    <div className="flex-grow space-y-5">
+                    <div className="flex-grow w-full px-2">
+                      <div className="flex items-center">
+                        <Link
+                          href={`/blog/category/${article.category?.slug}`}
+                          className="hover:underline hover:text-accent antialiased font-semibold"
+                        >
+                          {article?.category?.name}
+                        </Link>
+                        <dl className="inline-block px-6 py-1 text-content text-xs font-montserrat rounded antialiased">
+                          <dt className="sr-only">Published on</dt>
+                          <dd className="leading-6">
+                            <time dateTime={article.updatedAt}>
+                              {await getRelativeTime(article.updatedAt)}
+                              {(await isOlderThanAdayAgo(
+                                article.updatedAt
+                              )) && (
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="default"
+                                  className="justify-center pointer-events-none mx-4 max-md:hidden"
+                                  aria-label="New!"
+                                >
+                                  New!
+                                </Button>
+                              )}
+                            </time>
+                          </dd>
+                        </dl>
+                      </div>
+                      <div className="flex justify-center animate-pulse md:hidden">
+                        {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="default"
+                            className="flex justify-center pointer-events-none w-full"
+                            aria-label="New!"
+                          >
+                            New!
+                          </Button>
+                        )}
+                      </div>
                       <div className="space-y-6">
-                        <h2 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
+                        <h1 className="text-2xl md:text-3xl leading-8 font-black tracking-tight text-primary font-montserrat hover:underline antialiased">
                           <Link href={`/blog/articles/${article.slug}`}>
                             {article.title}
                           </Link>
-                        </h2>
+                        </h1>
+                        <Link href={`/authors/${article.author?.slug}`}>
+                          <p className="text-content font-montserrat font-semibold leading-7 hover:text-accent hover:underline">
+                            {article.author?.name}
+                          </p>
+                        </Link>
                         {article.excerpt && (
-                          <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat">
-                            {article.excerpt}
+                          <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat max-md:hidden">
+                            <p>{article.excerpt}</p>
                           </div>
                         )}
                       </div>
-                      <div className="text-base leading-6 font-medium">
-                        {article.buttons.length > 0 && (
-                          <BlogButton article={article} />
-                        )}
-                      </div>
+
+                      {/* <div className="text-base leading-6 font-medium">
+      {article.buttons.length > 0 && (
+        <BlogButton article={article} />
+      )}
+    </div> */}
                     </div>
                   </article>
                 </li>

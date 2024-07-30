@@ -19,7 +19,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "flowbite.com",
+        hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",
       },

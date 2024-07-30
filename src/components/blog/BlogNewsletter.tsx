@@ -17,7 +17,8 @@ function SubmitButton({ buttons }: { buttons: FormButton[] }) {
 
   return (
     <Button
-      className="mt-5 rounded shadow-xl animate-bounce hover:animate-none"
+      variant="secondary"
+      className="mt-5"
       disabled={pending}
       aria-disabled={pending}
       type="submit"
@@ -93,11 +94,14 @@ const BlogNewsletter = () => {
       {!formState ? (
         <p>Loading form...</p>
       ) : (
-        <>
+        <div className="flex-col">
           <h1 className="text-xl leading-9 font-montserrat font-black text-center tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 my-4">
             {formState.title}
           </h1>
-          <form className="w-full" action={formAction}>
+          <p className="font-montserrat font-semibold mb-8 p-3">
+            {formState.subtitle}
+          </p>
+          {/* <form className="w-full" action={formAction}>
             <ul className="list-none">
               {formState.fields.map((field, id) => (
                 <li key={id}>
@@ -109,7 +113,7 @@ const BlogNewsletter = () => {
                     name={field.name}
                     placeholder={field.placeholder}
                     required
-                    className="w-full rounded font-montserrat font-bold text-secondary my-3"
+                    className="w-full rounded font-semibold text-accent my-3"
                   />
                 </li>
               ))}
@@ -124,8 +128,17 @@ const BlogNewsletter = () => {
             {formState.buttons.length > 0 && (
               <SubmitButton buttons={formState.buttons} />
             )}
-          </form>
-        </>
+          </form> */}
+
+          <iframe
+            src="https://embeds.beehiiv.com/c1dfd59b-a5f7-4d30-95eb-e0f995bdcd16?slim=true"
+            data-test-id="beehiiv-embed"
+            height="52"
+            frameBorder="0"
+            scrolling="no"
+            className="bg-background justify-center items-center rounded"
+          ></iframe>
+        </div>
       )}
     </section>
   );

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 
 async function BlogButton({ article }: { article: Post }) {
   return (
-    <Button className="my-2" size="sm" type="button" variant="default">
+    <Button className="my-2" size="sm" type="button" variant="secondary">
       <Link
         href={`/blog/articles/${article.slug}`}
         className="mx-1 flex items-center"
@@ -74,7 +74,7 @@ export async function generateMetadata({
     width: 1200,
     height: 630,
   };
-  const site = `https://flowingkhaos.com/blog/category/${slug}`;
+  const site = `https://newmediaintelligence.com/blog/category/${slug}`;
   const robots = "index, follow";
   const type = "website";
   const twitterCard = "summary_large_image";
@@ -98,7 +98,7 @@ export async function generateMetadata({
     openGraph: {
       type: type,
       url: site,
-      siteName: "Flowingkhaos",
+      siteName: "newmediaintelligence",
       title: title,
       description: description,
       images: [openGraphImage],
@@ -113,10 +113,12 @@ export async function generateMetadata({
     alternates: {
       canonical: site,
       languages: {
-        "en-US": site,
+        "fr-FR": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/blog/category/${slug}`),
+    metadataBase: new URL(
+      `https://newmediaintelligence.com/blog/category/${slug}`
+    ),
   };
 }
 
@@ -126,12 +128,12 @@ function generateSchemaMarkup(categoryPosts: Post[]) {
     "@type": "CollectionPage",
     name: `"${categoryPosts?.[0]?.category?.name} Category Page"`,
     description: `${categoryPosts?.[0]?.category?.name}`,
-    url: `https://flowingkhaos.com/blog/categories/${categoryPosts?.[0]?.category?.slug}`,
+    url: `https://newmediaintelligence.com/blog/categories/${categoryPosts?.[0]?.category?.slug}`,
     mainEntity: categoryPosts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
-      url: `https://flowingkhaos.com/blog/articles/${post.slug}`,
+      url: `https://newmediaintelligence.com/blog/articles/${post.slug}`,
       image: post.image.url,
       datePublished: post.createdAt,
       dateModified: post.updatedAt,
@@ -139,6 +141,24 @@ function generateSchemaMarkup(categoryPosts: Post[]) {
         "@type": "Person",
         name: post.author.name,
         url: `https://flowingkhaos.com/authors/${post.author.slug}`,
+        sameAs: [
+          "https://newmediaintelligence.com/authors/luke-sidney",
+          "https://linkedin.com/in/luke-sidney",
+        ],
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "New Media Intelligence",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://newmediaintelligence.com/favicon.ico",
+          width: 600,
+          height: 60,
+        },
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `https://newmediaintelligence.com/blog/${post.slug}`,
       },
     })),
   };
@@ -236,21 +256,30 @@ export default async function CategoryPosts({ params: { slug } }: Props) {
             alt={article.slug}
             width={1024}
             height={720}
+            blurDataURL={article.image.url}
+            placeholder="blur"
           />
           <div className="flex-grow">
             <div className="flex">
               <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded-md">
                 <dt className="sr-only">Published on</dt>
                 <dd className="text-base leading-6 font-bold">
-                  <p>Last update,</p>
                   <time dateTime={article.updatedAt}>
                     {getRelativeTime(article.updatedAt)}
                   </time>
-                  {(await isOlderThanAdayAgo(article.updatedAt)) && (
-                    <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
-                      {(await isOlderThanAdayAgo(article.updatedAt)) && "new!"}
-                    </span>
-                  )}
+                  <div className="flex justify-center animate-pulse">
+                    {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                      <Button
+                        type="button"
+                        size="lg"
+                        variant="default"
+                        className="flex justify-center pointer-events-none"
+                        aria-label="New!"
+                      >
+                        New!
+                      </Button>
+                    )}
+                  </div>
                 </dd>
               </dl>
               <ul className="px-6">
@@ -258,7 +287,7 @@ export default async function CategoryPosts({ params: { slug } }: Props) {
                   <li key={article.author.id} className="flex hover:underline">
                     <dl className="flex-1 text-sm leading-5">
                       <dt className="sr-only">Name</dt>
-                      <dd className="text-primary text-base leading-6 font-bold">
+                      <dd className="text-primary text-base font-montserrat leading-6 font-bold">
                         {article.author.name}
                       </dd>
                       {article.author.role && (
@@ -277,7 +306,7 @@ export default async function CategoryPosts({ params: { slug } }: Props) {
             <h2 className="text-primary text-xl uppercase font-black mb-2 py-4">
               {article.title}
             </h2>
-            <p className="text-content">{article.excerpt}</p>
+            <p className="text-content font-montserrat">{article.excerpt}</p>
           </div>
           {article.buttons.length > 0 && <BlogButton article={article} />}
         </article>

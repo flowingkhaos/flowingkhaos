@@ -16,13 +16,13 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { Button as NeonButton } from "@/components/aceternity/MovingBorders";
+import DecryptLoader from "../loaders/DecryptLoader";
 
 interface CommentSectionProps {
-  slug: string;
+  id: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ id }) => {
   const [formState, setFormState] = useState<Form | null>(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
     fetchForm();
   }, []);
 
-  if (!formState) return <p>Loading form...</p>;
+  if (!formState) return <DecryptLoader />;
 
   const closeButton = formState.buttons.find(
     (button) => button.slug === "close"
@@ -46,16 +46,16 @@ const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
 
   return (
     <>
-      <h2 className="text-2xl font-black font-montserrat mt-24 text-primary leading-7 md:text-2xl md:leading-7 p-5">
+      <h2 className="text-3xl h1 text-center text-content uppercase lg:text-4xl font-black font-montserrat">
         {formState.title}
       </h2>
       <div className="flex items-center justify-center">
         <Dialog>
           <DialogTrigger asChild>
             <Button
-              variant="outline"
+              variant="accent"
               size="lg"
-              className="inline-flex items-center justify-center text-sm text-content hover:bg-accent border-accent"
+              className="inline-flex items-center justify-center"
             >
               {formState.modal}
             </Button>
@@ -65,7 +65,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
               <DialogTitle className="mb-4 text-xl leading-14 font-black tracking-tight">
                 <h2>{formState.subtitle}</h2>
               </DialogTitle>
-              <DialogDescription className="max-w-none font-montserrat">
+              <DialogDescription className="text-3xl h1 text-center text-secondary uppercase lg:text-4xl font-black font-montserrat">
                 Comments section
               </DialogDescription>
             </DialogHeader>
@@ -74,11 +74,15 @@ const CommentSection: React.FC<CommentSectionProps> = ({ slug }) => {
               subtitle={formState.subtitle}
               fields={formState.fields}
               buttons={formState.buttons}
-              slug={slug}
+              id={id}
             />
             <DialogClose asChild>
               {closeButton && (
-                <Button type="button" className="bg-secondary w-full">
+                <Button
+                  type="button"
+                  variant="default"
+                  className="w-full hover:text-error"
+                >
                   {closeButton.text}
                 </Button>
               )}

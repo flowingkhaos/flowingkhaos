@@ -1,24 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --primary: 48.82% 0.217 264.38;
-    --primary-foreground: 224.28 76% 10%;
+    --primary: 58.77% 0.223 26.79;
+    --primary-foreground: 358.5 77% 25%;
 
-    --secondary: 69.48% 0.3096272090630441 331.87470678167324;
-    --secondary-foreground: 304.01 100% 13%;
+    --secondary: 48.83% 0.3079 268.29;
+    --secondary-foreground: 238.78 100% 17.99999999999999%;
 
-    --accent: 86.03% 0.141 139.49;
-    --accent-foreground: 107.99 66% 13%;
+    --accent: 82.72% 0.148 181.67;
+    --accent-foreground: 173.58 97% 13%;
 
     --neutral: 30.83% 0.024 264.14;
     --neutral-foreground: 20.85% 0.013 264.25;
 
-    --content: 97.35% 0.026 90.1;
+    --content: 28.42% 0.01 355.53;
 
-    --background: 9.72% 0.0664 265.754874;
+    --background: 97.94% 0.00819 301.358346;
     --foreground: 20.85% 0.013 264.25;
 
     --card: 240 10% 3.9%;
@@ -41,18 +44,18 @@
     --info: 46.74% 0.21 262.59;
     --success: 82.05% 0.2513 145.05;
     --warning: 82.64% 0.1696 83.64;
-    --error: 50.32% 0.203 29.77;
+    --error: 59.29% 0.2397718387190632 29.720408159362727;
   }
 
   .light {
-    --primary: 88.58% 0.21 95.64361437672957;
-    --primary-foreground: 50.41 100% 10%;
+    --primary: 58.77% 0.223 26.79;
+    --primary-foreground: 358.5 77% 25%;
 
-    --secondary: 65.31% 0.186 275.91;
-    --secondary-foreground: 234.82 100% 10%;
+    --secondary: 48.83% 0.3079 268.29;
+    --secondary-foreground: 238.78 100% 17.99999999999999%;
 
-    --accent: 86.03% 0.141 139.49;
-    --accent-foreground: 107.99 66% 10%;
+    --accent: 82.72% 0.148 181.67;
+    --accent-foreground: 173.58 97% 13%;
 
     --neutral: 30.83% 0.024 264.14;
     --neutral-foreground: 20.85% 0.013 264.25;
@@ -86,21 +89,21 @@
   }
 
   .dark {
-    --primary: 48.82% 0.217 264.38;
-    --primary-foreground: 224.28 76% 10%;
+    --primary: 58.77% 0.223 26.79;
+    --primary-foreground: 358.5 77% 25%;
 
-    --secondary: 69.48% 0.3096272090630441 331.87470678167324;
-    --secondary-foreground: 304.01 100% 13%;
+    --secondary: 48.83% 0.3079 268.29;
+    --secondary-foreground: 238.78 100% 17.99999999999999%;
 
-    --accent: 68.72% 0.207 38.89;
-    --accent-foreground: 107.99 66% 13%;
+    --accent: 82.72% 0.148 181.67;
+    --accent-foreground: 173.58 97% 13%;
 
     --neutral: 30.83% 0.024 264.14;
     --neutral-foreground: 20.85% 0.013 264.25;
 
     --content: 97.35% 0.026 90.1;
 
-    --background: 9.72% 0.0664 265.754874;
+    --background: 11.5% 0 0;
     --foreground: 20.85% 0.013 264.25;
 
     --card: 240 10% 3.9%;
@@ -130,6 +133,7 @@
     background-color: oklch(var(--background) / 1);
     color: oklch(var(--content) / 1);
     scroll-behavior: smooth;
+    font-family: "Inter", sans-serif;
   }
   * {
     @apply border-border !scroll-smooth;
@@ -141,6 +145,10 @@
 
   .font-inter {
     font-family: "Inter", sans-serif;
+  }
+
+  .font-sora {
+    font-family: "Sora", sans-serif;
   }
 
   .inviz {
@@ -182,6 +190,33 @@
   @keyframes l39 {
     100% {
       transform: translateY(-100%);
+    }
+  }
+
+  .gradient {
+    background: linear-gradient(
+      -45deg,
+      oklch(var(--color-primary)),
+      oklch(var(--color-secondary)),
+      oklch(var(--color-accent))
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  .gradient {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent animate-gradient;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
 }

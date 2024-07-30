@@ -60,8 +60,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/${slug}`;
+  const twitterHandle = "@newmediaintelligence";
+  const site = `https://newmediaintelligence.com/${pageData.slug}`;
   const robots = "index, follow";
 
   return {
@@ -76,7 +76,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site,
       title: pageData.seoOverride?.title || pageData.title,
       description: pageData.seoOverride?.description || pageData.description,
-      siteName: "Flowingkhaos",
+      siteName: "Newmediaintelligence",
       images: [
         {
           url:
@@ -105,10 +105,10 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: site,
       languages: {
-        "en-US": site,
+        "fr-FR": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/${slug}`),
+    metadataBase: new URL(`https://newmediaintelligence.com/${pageData.slug}`),
   };
 }
 
@@ -123,29 +123,33 @@ function generateSchemaMarkup(pageData: any, allPosts: Articles) {
           headline: pageData.seoOverride?.title || pageData.title,
           description:
             pageData.seoOverride?.description || pageData.description,
-          url: `https://flowingkhaos.com/${slug}`,
+          url: `https://newmediaintelligence.com/${slug}`,
           image:
             `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
           author: {
             "@type": "Person",
             name: "Luke Sidney",
             url: `https://flowingkhaos.com/authors/${allPosts?.articles?.[0].author?.slug}`,
+            sameAs: [
+              "https://newmediaintelligence.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
           publisher: {
             "@type": "Organization",
-            name: "Flowingkhaos",
+            name: "New Media Intelligence",
             logo: {
               "@type": "ImageObject",
-              url: "https://flowingkhaos.com/favicon.ico",
+              url: "https://newmediaintelligence.com/favicon.ico",
               width: 600,
               height: 60,
             },
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://flowingkhaos.com/${slug}`,
+            "@id": `https://newmediaintelligence.com/${slug}`,
           },
           articleSection: "Blog",
           keywords: allPosts.articles
@@ -181,7 +185,7 @@ export default async function Page() {
     );
   }
   return (
-    <section className=" mx-4">
+    <section className="mx-4">
       <head>{generateSchemaMarkup(pageData, allPosts)}</head>
 
       <div className="pt-72 md:pt-48 pb-8 space-y-2 md:space-y-5">
@@ -196,7 +200,7 @@ export default async function Page() {
             />
           )}
         </Suspense>
-        <h1 className="text-3xl leading-7 tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-content font-montserrat font-black">
+        <h1 className="leading-10 tracking-tight font-montserrat font-black text-[40px] md:text-3xl lg:text-5xl">
           {pageData?.subtitle}
         </h1>
       </div>
@@ -207,59 +211,94 @@ export default async function Page() {
             return (
               <li
                 key={article.id}
-                className="my-4 py-8 px-2 rounded border border-secondary inviz shadow-xl"
+                className="my-4 py-8 px-2 border-b border-slate-500"
               >
-                <article className="flex items-center space-x-5">
-                  <dl className="flex-shrink-0 px-2 py-1 text-secondary rounded">
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base leading-6 font-bold">
-                      <p>last update,</p>
-                      <time dateTime={article.updatedAt}>
-                        {await getRelativeTime(article.updatedAt)}
-                      </time>
-                      <span className="animate-pulse flex text-content justify-center border border-warning rounded mt-3 text-sm shadow-lg">
-                        {(await isOlderThanAdayAgo(article.updatedAt)) &&
-                          "new!"}
-                      </span>
-                    </dd>
-                  </dl>
+                <article className="max-md:flex-col flex items-center md:space-x-5">
                   <Suspense fallback={<DecryptLoader />}>
                     {article?.image && (
-                      <div className="w-50 h-50 overflow-hidden flex-shrink-0 hidden md:block shadow-xl">
+                      <div className="max-md:w-full overflow-hidden flex-shrink-0 py-4">
                         <Image
                           src={article?.image?.url}
                           alt={article?.slug}
-                          className="object-cover w-full h-full rounded"
-                          width={192}
-                          height={192}
+                          className="object-cover w-full h-full rounded-xl"
+                          width={250}
+                          height={250}
+                          blurDataURL={article.image.url}
+                          placeholder="blur"
                         />
                       </div>
                     )}
                   </Suspense>
-                  <div className="flex-grow space-y-5">
+                  <div className="flex-grow w-full px-2">
+                    <div className="flex items-center">
+                      <Link
+                        href={`/blog/category/${article.category?.slug}`}
+                        className="hover:underline hover:text-accent antialiased font-semibold"
+                      >
+                        {article?.category?.name}
+                      </Link>
+                      <dl className="inline-block px-6 py-1 text-content text-xs font-montserrat rounded antialiased">
+                        <dt className="sr-only">Published on</dt>
+                        <dd className="leading-6">
+                          <time dateTime={article.updatedAt}>
+                            {await getRelativeTime(article.updatedAt)}
+                            {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="default"
+                                className="justify-center pointer-events-none mx-4 max-md:hidden"
+                                aria-label="New!"
+                              >
+                                New!
+                              </Button>
+                            )}
+                          </time>
+                        </dd>
+                      </dl>
+                    </div>
+                    <div className="flex justify-center animate-pulse md:hidden">
+                      {(await isOlderThanAdayAgo(article.updatedAt)) && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="default"
+                          className="flex justify-center pointer-events-none w-full"
+                          aria-label="New!"
+                        >
+                          New!
+                        </Button>
+                      )}
+                    </div>
                     <div className="space-y-6">
-                      <h1 className="text-lg md:text-2xl leading-8 font-bold tracking-tight text-primary font-montserrat">
+                      <h1 className="text-2xl md:text-3xl leading-8 font-black tracking-tight text-primary font-montserrat hover:underline antialiased">
                         <Link href={`/blog/articles/${article.slug}`}>
                           {article.title}
                         </Link>
                       </h1>
-                      <Link href={`/authors/${article.author?.slug}`}>
-                        <p className="text-content font-montserrat font-bold leading-7 hover:text-accent hover:underline">
-                          {article.author?.name}
+                      <Link
+                        href={
+                          article.author
+                            ? `/authors/${article.author.slug}`
+                            : "#"
+                        }
+                      >
+                        <p className="text-content font-montserrat font-semibold leading-7 hover:text-accent hover:underline">
+                          {article.author?.name || "Unknown Author"}
                         </p>
                       </Link>
                       {article.excerpt && (
-                        <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat">
+                        <div className="text-sm lg:text-md prose max-w-none text-content font-montserrat max-md:hidden">
                           <p>{article.excerpt}</p>
                         </div>
                       )}
                     </div>
 
-                    <div className="text-base leading-6 font-medium">
+                    {/* <div className="text-base leading-6 font-medium">
                       {article.buttons.length > 0 && (
                         <BlogButton article={article} />
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </article>
               </li>

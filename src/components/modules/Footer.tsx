@@ -59,7 +59,7 @@ export default async function Footer({
           <p className="uppercase text-center md:tracking-widest mb-4 text-sm md:text-lg lg:text-xl pt-6">
             {description}
           </p>
-          <a href="mailto:wil.s@mtlonweb.com">
+          <a href="mailto:contact@newmediaintelligence.com">
             <MagicButton
               title="Let's get in touch"
               icon={<FaLocationArrow />}

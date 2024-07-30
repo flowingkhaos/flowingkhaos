@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { BiPurchaseTagAlt } from "react-icons/bi";
 
 interface DealBoxProps {
   id: string;
@@ -35,7 +36,7 @@ export default async function DealBox({
       key={id}
     >
       <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem]">
-        <h1 className="h5 mb-5 font-black text-secondary text-center z-50 uppercase">
+        <h1 className="h5 mb-5 font-black text-content hover:text-success text-center z-50 uppercase">
           {title}
         </h1>
         <p className="mb-6 text-sm leading-6 text-content font-montserrat">
@@ -48,28 +49,17 @@ export default async function DealBox({
             height={48}
             alt={title}
             className="rounded-full"
+            blurDataURL={img}
+            placeholder="blur"
           />
-          <Button className="flex ml-24 items-center hover:text-secondary">
+          <Button className="flex ml-24 items-center hover:text-success">
             <Link
               href={`${link}`}
-              className="ml-auto font-code text-xs font-bold uppercase tracking-wider font-montserrat"
+              className="ml-auto font-code text-xs font-bold uppercase tracking-wider"
             >
               Get Now !
             </Link>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59"
-              />
-            </svg>
+            <BiPurchaseTagAlt className="ml-2 w-6 h-6" />
           </Button>
         </div>
       </div>
@@ -82,6 +72,8 @@ export default async function DealBox({
             height={362}
             alt={title}
             className="w-full h-full object-cover"
+            blurDataURL={spareImg}
+            placeholder="blur"
           />
         </div>
       </div>

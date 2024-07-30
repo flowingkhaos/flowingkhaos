@@ -27,7 +27,7 @@ const DOWNLOADABLE_CONTENT_BUCKET: React.FC<DownloadableContentProps> = ({
 
   return (
     <div className="my-16">
-      <h1 className="text-3xl h1 text-center text-content uppercase lg:text-4xl">
+      <h1 className="text-3xl h1 text-center text-content uppercase lg:text-4xl font-black font-montserrat">
         Downloadable Content
       </h1>
       {downloadableContent.map((content) => (
@@ -52,16 +52,19 @@ const DOWNLOADABLE_CONTENT_BUCKET: React.FC<DownloadableContentProps> = ({
               {formatFileSize(content.file.size)}
             </span>
           </p>
-          <Button
-            size="lg"
-            className="bg-accent"
-            type="button"
-            onClick={() =>
-              handleDownload(content.file.url, content.file.fileName)
-            }
-          >
-            Download
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              size="xl"
+              variant="accent"
+              type="button"
+              className=""
+              onClick={() =>
+                handleDownload(content.file.url, content.file.fileName)
+              }
+            >
+              Download
+            </Button>
+          </div>
         </div>
       ))}
     </div>

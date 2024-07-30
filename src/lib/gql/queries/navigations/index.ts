@@ -34,7 +34,7 @@ export const GET_SINGLE_NAV = async ({
 }): Promise<Navigation> => {
   const query = gql`
     query GET_SINGLE_NAV($navId: String!) {
-      navigationsConnection(locales: en, where: { navId: $navId }) {
+      navigationsConnection(where: { navId: $navId }) {
         edges {
           node {
             id

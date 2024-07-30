@@ -2,7 +2,7 @@ import { RichTextContent } from "@graphcms/rich-text-types";
 //? query
 const AllPosts = `
 query GET_POSTS($first: Int) {
-  articlesConnection(locales: en, orderBy: createdAt_DESC, first: $first) {
+  articlesConnection(orderBy: createdAt_DESC, first: $first) {
     edges {
       node {
         id
@@ -13,6 +13,10 @@ query GET_POSTS($first: Int) {
         createdAt
         publishedAt
         updatedAt
+        category {
+          name
+          slug
+        }
         author {
           role
           name
@@ -63,7 +67,7 @@ export async function GET_POSTS(): Promise<Articles> {
       },
       body: JSON.stringify({
         query: AllPosts,
-        next: { revalidate: 3600 },
+        next: { revalidate: 43200 },
       }),
     });
 
@@ -113,7 +117,6 @@ export async function GET_POSTS(): Promise<Articles> {
 export const FeaturedPosts = `
 query GET_FEATURED_POSTS {
   articlesConnection(
-    locales: en
     orderBy: publishedAt_DESC
     where: {featuredPost: true}
   ) {
@@ -153,7 +156,7 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
     },
     body: JSON.stringify({
       query: FeaturedPosts,
-      //next: { revalidate: 3600 },
+      next: { revalidate: 43200 },
     }),
   }).then((res) => res.json());
 
@@ -189,7 +192,7 @@ export async function GET_FEATURED_POSTS(): Promise<Articles | undefined> {
 
 const SinglePost = `
   query GET_SINGLE_POST($slug: String!) {
-    articlesConnection(locales: en, where: { slug: $slug }) {
+    articlesConnection(where: { slug: $slug }) {
       edges {
         node {
           id
@@ -264,6 +267,7 @@ const SinglePost = `
             publishedAt
             file {
               fileName
+              mimeType
               handle
               height
               id
@@ -289,7 +293,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
     body: JSON.stringify({
       query: SinglePost,
       variables: { slug: slug },
-      //next: { revalidate: 3600 },
+      next: { revalidate: 43200 },
     }),
   })
     .then((res) => res.json())
@@ -317,7 +321,7 @@ export async function GET_POST_DATA(slug: string): Promise<Post | undefined> {
   }))[0];
 }
 
-interface Author {
+export interface Author {
   remoteTypeName: string; //? "__typename" property for type identification
   remoteId: string; //? "id" property
   name: string;
@@ -355,7 +359,7 @@ export interface PostButton {
   text: string;
 }
 
-interface Category {
+export interface Category {
   name: string;
   slug: string;
 }
@@ -447,6 +451,7 @@ export interface DownloadableContentBucket {
   publishedAt: string | null;
   file: {
     fileName: string;
+    mimeType: string;
     handle: string;
     height: number;
     id: string;

@@ -29,7 +29,7 @@ const Author: React.FC<{ author: AuthorProps }> = ({ author }) => {
           />
           <dl className="flex-1 text-sm leading-5">
             <dt className="sr-only">Name</dt>
-            <dd className="text-primary leading-5 text-[40px] font-semibold font-montserrat my-6 max-md:leading-9">
+            <dd className="text-primary leading-5 text-[40px] font-black font-montserrat my-6 max-md:leading-9">
               {author.name}
             </dd>
             {author.role && (
@@ -44,10 +44,12 @@ const Author: React.FC<{ author: AuthorProps }> = ({ author }) => {
         </li>
       </ul>
       <div className="">
-        <p className="text-content font-montserrat">{author.biography}</p>
+        <p className="text-content font-montserrat font-semibold">
+          {author.biography}
+        </p>
         <div className="my-8">
-          <h1 className="text-primary font-bold font-montserrat">
-            I wrote over {getArticleCount()}+ Articles
+          <h1 className="text-primary font-extrabold font-montserrat">
+            J&apos;ai rédigé plus de {getArticleCount()}+ Articles
           </h1>
         </div>
       </div>

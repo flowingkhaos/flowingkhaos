@@ -3,6 +3,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export const InfiniteMovingCards = ({
@@ -16,6 +17,7 @@ export const InfiniteMovingCards = ({
     quote: string;
     name: string;
     title: string;
+    link: string;
     img: string;
   }[];
   direction?: "left" | "right";
@@ -114,7 +116,7 @@ export const InfiniteMovingCards = ({
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
               ></div>
               {/* change text color, text-lg */}
-              <span className=" relative z-20 text-sm md:text-lg leading-[1.6] text-content font-normal">
+              <span className=" relative z-20 text-sm md:text-lg leading-[1.6] text-content font-normal font-montserrat">
                 {item.quote}
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
@@ -122,16 +124,20 @@ export const InfiniteMovingCards = ({
                 <div className="me-3">
                   <Image src={item.img} alt={item.img} width={50} height={50} />
                 </div>
-                <span className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 hover:underline">
                   {/* change text color, font-normal to font-bold, text-xl */}
-                  <span className="text-xl font-bold leading-[1.6] text-content">
+                  <Link
+                    href={`${item.link}`}
+                    target="_blank"
+                    className="text-xl font-bold text-accent leading-[1.6]"
+                  >
                     {item.name}
-                  </span>
+                  </Link>
                   {/* change text color */}
                   <span className=" text-sm leading-[1.6] text-content font-normal">
                     {item.title}
                   </span>
-                </span>
+                </div>
               </div>
             </blockquote>
           </li>

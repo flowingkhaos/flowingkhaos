@@ -1,7 +1,7 @@
 //? query
 export const Categories = `
   query CATEGORIES {
-    categories(locales: en) {
+    categories {
       name
       slug
     }
@@ -19,7 +19,7 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
       },
       body: JSON.stringify({
         query: Categories,
-        //next: { revalidate: 3600 },
+        //next: { revalidate: 3500 },
       }),
     });
 
@@ -48,7 +48,6 @@ export async function GET_CATEGORIES(): Promise<Category[]> {
 export const CategoryPost = `
 query CATEGORY_POST($categorySlug: String!, $skip: Int, $first: Int) {
   articlesConnection(
-    locales: en
     where: {category: {slug: $categorySlug}}
     skip: $skip
     first: $first

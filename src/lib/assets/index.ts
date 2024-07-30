@@ -1,26 +1,27 @@
 import {
-  Approach,
-  Bento,
   Company,
   Deal,
-  Experiences,
   Footer,
-  GET_APPROACH,
-  GET_BENTO_GRID,
   GET_COMPANIES,
   GET_DEAL,
-  GET_EXPERIENCE,
   GET_FOOTER,
+  GET_GLOBE,
   GET_PROJECTS,
   GET_SEARCH,
+  GET_EXPERIENCE,
   GET_SOCIALS,
   GET_TESTIMONIALS,
+  GET_TYPEWRITER,
+  Globe,
   Project,
   Search,
+  Experience,
   Socials,
   Testimonial,
+  Typewriter,
+  GET_BENTO_GRID,
+  Bento,
 } from "../gql/queries/blocks";
-import { Author, GET_AUTHORS } from "../gql/queries/blog/authors";
 
 export async function fetchGridItems(): Promise<Bento[]> {
   try {
@@ -98,23 +99,23 @@ fetchCompaniesItem().then((items) => {
   companyItems = items;
 });
 
-export async function fetchExperiencesItem(): Promise<Experiences[]> {
+export async function fetchExperiencesItem(): Promise<Experience[]> {
   try {
-    const workExperience = await GET_EXPERIENCE();
-    //console.log(workExperience);
-    return workExperience;
+    const experienceItems = await GET_EXPERIENCE();
+    //console.log(experienceItems);
+    return experienceItems;
   } catch (error) {
-    console.error("Error fetching experience items:", error);
+    console.error("Error fetching service items:", error);
     return [];
   }
 }
 
 // Placeholder grid items array, initial empty
-export let workExperience: Experiences[] = [];
+export let experienceItems: Experience[] = [];
 
 // Populate the gridItems array
 fetchExperiencesItem().then((items) => {
-  workExperience = items;
+  experienceItems = items;
 });
 
 export async function fetchSocialsItem(): Promise<Socials[]> {
@@ -134,25 +135,6 @@ export let socialItems: Socials[] = [];
 // Populate the gridItems array
 fetchSocialsItem().then((items) => {
   socialItems = items;
-});
-
-export async function fetchApproachesItem(): Promise<Approach[]> {
-  try {
-    const approachItems = await GET_APPROACH();
-    //console.log(approachItems);
-    return approachItems;
-  } catch (error) {
-    console.error("Error fetching approach items:", error);
-    return [];
-  }
-}
-
-// Placeholder grid items array, initial empty
-export let approachItems: Approach[] = [];
-
-// Populate the gridItems array
-fetchApproachesItem().then((items) => {
-  approachItems = items;
 });
 
 export async function fetchFooterItem(): Promise<Footer[]> {
@@ -212,10 +194,46 @@ fetchDealItem().then((items) => {
   dealItems = items;
 });
 
+export async function fetchTypewriterItem(): Promise<Typewriter[]> {
+  try {
+    const typewriterItems = await GET_TYPEWRITER();
+    //console.log(typewriterItems);
+    return typewriterItems;
+  } catch (error) {
+    console.error("Error fetching typewriter items:", error);
+    return [];
+  }
+}
+
+// Placeholder grid items array, initial empty
+export let typewriterItems: Typewriter[] = [];
+
+// Populate the gridItems array
+fetchTypewriterItem().then((items) => {
+  typewriterItems = items;
+});
+
+export async function fetchGlobeItem(): Promise<Globe[]> {
+  try {
+    const globeItems = await GET_GLOBE();
+    //console.log(globeItems);
+    return globeItems;
+  } catch (error) {
+    console.error("Error fetching globe items:", error);
+    return [];
+  }
+}
+
+// Placeholder grid items array, initial empty
+export let globeItems: Globe[] = [];
+
+// Populate the gridItems array
+fetchGlobeItem().then((items) => {
+  globeItems = items;
+});
+
 export const navItems = [
   { name: "Top", link: "#home" },
-  { name: "Projects", link: "#projects" },
-  { name: "Testimonials", link: "#testimonials" },
   { name: "experience", link: "#experience" },
   { name: "Contact", link: "#contact" },
 ];

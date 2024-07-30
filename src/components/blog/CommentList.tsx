@@ -1,6 +1,6 @@
 "use client";
 import { Comment } from "@/lib/gql/queries/blog/posts";
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { Button } from "@/components/aceternity/MovingBorders";
 
 interface CommentListProps {
@@ -31,97 +31,30 @@ export async function getRelativeTime(time: string | number | Date) {
 }
 
 function CommentList({ comments }: CommentListProps) {
-  console.log("comments for the comment section: ", comments);
+  //console.log("comments for the comment section: ", comments);
   return (
-    <section className="flex flex-col p-2 text-content space-y-10 py-10">
-      {comments.map(
-        async (comment: {
-          id: any;
-          username:
-            | string
-            | number
-            | bigint
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | Promise<React.AwaitedReactNode>
-            | null
-            | undefined;
-          comment:
-            | string
-            | number
-            | bigint
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | Promise<React.AwaitedReactNode>
-            | null
-            | undefined;
-          createdAt: string;
-          email: string;
-        }) => (
-          <Button
-            key={comment.id}
-            //   random duration will be fun , I think , may be not
-            duration={Math.floor(Math.random() * 10000) + 10000}
-            borderRadius="1.75rem"
-            style={{
-              //   add these two
-              //   you can generate the color from here https://cssgradient.io/
-              // add this border radius to make it more rounded so that the moving border is more realistic
-              borderRadius: `calc(1.75rem* 0.96)`,
-            }}
-            // remove bg-white dark:bg-slate-900
-            className="flex-1 border-primary dark:border-primary inviz"
-          >
-            <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
-              <div className="text-start lg:ms-5">
-                <h1 className=" text-2xl font-black font-montserrat text-content">
-                  {comment.username}
-                </h1>
-                <p className="mt-3 text-content font-montserrat">
-                  {comment.comment}
-                </p>
-                <time
-                  dateTime={comment.createdAt}
-                  className="text-accent text-xs p-4 lg:p-0 font-montserrat"
-                >
-                  {await getRelativeTime(comment.createdAt)}: <br />
-                  {comment.email}
-                </time>
-              </div>
-            </div>
-          </Button>
-        )
-      )}
-
-      {/* {comments.map(async (comment) => (
-        <div key={comment.id} className="lg:p-4 m-4">
+    <section className="flex flex-col p-2 text-content space-y-4 py-4">
+      {comments.map(async (comment) => (
+        <div
+          key={comment.id}
+          className="inviz rounded-xl shadow-xl hover:shadow-2xl hover:shadow-blue-700/[0.2] p-4"
+        >
           <div className="w-full">
-            {!comment.username ? (
-              <h1 className="flex px-4 text-lg font-extrabold">- Anon:</h1>
-            ) : (
-              <p className="flex px-4 text-lg font-extrabold">
-                - {comment.username}:
-              </p>
-            )}
-            <div className="text-left">
-              <p className="">{comment.comment}</p>
-            </div>
-            <div className=" max-md:ml-56 lg:ml-80">
+            <div className="">
               <time
                 dateTime={comment.createdAt}
-                className="text-accent text-xs font-bold p-4 lg:p-0"
+                className="text-xs text-content"
               >
-                {await getRelativeTime(comment.createdAt)}: <br />
-                {comment.email}
+                <p className="inline-block text-lg font-bold text-accent">{`@${comment.username}`}</p>{" "}
+                {`${await getRelativeTime(comment.createdAt)}`}
               </time>
+            </div>
+            <div className="text-left">
+              <p className="font-montserrat font-semibold">{comment.comment}</p>
             </div>
           </div>
         </div>
-      ))} */}
+      ))}
     </section>
   );
 }

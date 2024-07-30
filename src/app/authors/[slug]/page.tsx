@@ -1,7 +1,7 @@
 import { GET_PAGE } from "@/lib/gql/queries/pages/home";
 import React from "react";
 import notFound from "@/app/not-found";
-import Footer from "@/components/modules/Footer";
+import Footer from "@/components/modules/FooterBlock";
 import Hero from "@/components/modules/Hero";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import StatBar from "@/components/modules/Stat";
@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@flowingkhaos";
-  const site = `https://flowingkhaos.com/authors/${pageData.slug}`;
+  const twitterHandle = "@newmediaintelligence";
+  const site = `https://newmediaintelligence.com/authors/${pageData.slug}`;
   const robots = "index, follow";
 
   return {
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       url: site,
       title: pageData.seoOverride?.title || pageData.title,
       description: pageData.seoOverride?.description || pageData.description,
-      siteName: "Flowingkhaos",
+      siteName: "Newmediaintelligence",
       images: [
         {
           url:
@@ -88,10 +88,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     alternates: {
       canonical: site,
       languages: {
-        "en-US": site,
+        "fr-FR": site,
       },
     },
-    metadataBase: new URL(`https://flowingkhaos.com/authors/${pageData.slug}`),
+    metadataBase: new URL(
+      `https://newmediaintelligence.com/authors/${pageData.slug}`
+    ),
   };
 }
 
@@ -106,27 +108,31 @@ function generateSchemaMarkup(pageData: any) {
           name: pageData.seoOverride?.title || pageData.title,
           description:
             pageData.seoOverride?.description || pageData.description,
-          url: `https://flowingkhaos.com/authors/${pageData.slug}`,
+          url: `https://newmediaintelligence.com/authors/${pageData.slug}`,
           image:
             `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
           author: {
             "@type": "Person",
             name: "Luke Sidney",
-            url: `https://flowingkhaos.com/authors/${pageData.slug}`,
+            url: "https://flowingkhaos.com/authors/luke-sidney",
+            sameAs: [
+              "https://newmediaintelligence.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
           publisher: {
             "@type": "Organization",
-            name: "Flowingkhaos",
+            name: "Newmediaintelligence",
             logo: {
               "@type": "ImageObject",
-              url: "https://flowingkhaos.com/favicon.ico",
+              url: "https://newmediaintelligence.com/favicon.ico",
             },
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://flowingkhaos.com/authors/${pageData.slug}`,
+            "@id": `https://newmediaintelligence.com/authors/${pageData.slug}`,
           },
         }),
       }}
@@ -177,17 +183,17 @@ export default async function Page({ params }: Params) {
                 content={pageData.content.json}
                 renderers={{
                   h1: ({ children }) => (
-                    <h1 className="text-primary leading-9 tracking-tight font-montserrat font-black text-[40px] md:text-3xl lg:text-5xl">
+                    <h1 className="text-primary leading-9 tracking-tight font-montserrat font-black text-[37px] md:text-3xl lg:text-5xl">
                       {children}
                     </h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="text-secondary leading-7 text-[30px] font-bold font-montserrat">
+                    <h2 className="text-secondary leading-7 text-[25px] font-extrabold font-montserrat">
                       {children}
                     </h2>
                   ),
                   h3: ({ children }) => (
-                    <h3 className="text-accent leading-5  text-[20px] font-semibold font-montserrat">
+                    <h3 className="text-accent leading-5  text-[22px] font-bold font-montserrat">
                       {children}
                     </h3>
                   ),
@@ -205,13 +211,13 @@ export default async function Page({ params }: Params) {
                   a: ({ href, children }) => (
                     <a
                       href={href}
-                      className="text-primary hover:text-accent font-montserrat"
+                      className="text-primary hover:text-accent font-montserrat font-semibold"
                     >
                       {children}
                     </a>
                   ),
                   p: ({ children }) => (
-                    <p className="mb-3 leading-7 flex-grow text-content text-lg font-montserrat">
+                    <p className="mb-3 leading-6 flex-grow text-content font-montserrat font-semibold">
                       {children}
                     </p>
                   ),
@@ -221,12 +227,14 @@ export default async function Page({ params }: Params) {
                     </li>
                   ),
                   code_block: ({ children }) => (
-                    <pre className="bg-accent-foreground text-btn">
+                    <pre className="bg-accent-foreground text-btn font-semibold">
                       {children}
                     </pre>
                   ),
                   code: ({ children }) => (
-                    <code className="text-accent">{children}</code>
+                    <code className="text-accent font-semibold">
+                      {children}
+                    </code>
                   ),
                 }}
               />

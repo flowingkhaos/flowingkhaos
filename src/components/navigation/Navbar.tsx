@@ -29,10 +29,10 @@ export default async function Navbar() {
             width={33}
             height={33}
             className="h-8"
-            alt="FlowingKhaos Logo"
+            alt="Flowingkhaos Logo"
           />
           <span className="self-center text-2xl font-black whitespace-nowrap hover:text-accent">
-            Flowing Khaos
+            FlowingKhaos
           </span>
         </Link>
         <div className="flex items-center ml-auto space-x-4">
@@ -55,7 +55,7 @@ export default async function Navbar() {
                 <SheetDescription>
                   <ul className="font-medium flex flex-col p-4 mt-4 text-btn tracking-tight text-lg leading-7">
                     <li className="">
-                      <Button className="my-2 w-2/3" variant="default">
+                      <Button className="my-2 w-2/3" variant="secondary">
                         <Suspense fallback={<DecryptLoader />}>
                           <SingleNav navId="main" />
                         </Suspense>
@@ -63,31 +63,23 @@ export default async function Navbar() {
                     </li>
 
                     <li className="">
-                      <Button className="my-2 w-2/3" variant="default">
+                      <Button className="my-2 w-2/3" variant="secondary">
                         <Suspense fallback={<DecryptLoader />}>
                           <SingleNav navId="blog" />
                         </Suspense>
                       </Button>
                     </li>
 
-                    <li className="">
-                      <Button className="my-2 w-2/3" variant="default">
+                    <li className="hover:text-accent font-semibold">
+                      <Button className="my-2 w-2/3" variant="secondary">
                         <Suspense fallback={<DecryptLoader />}>
-                          <SingleNav navId="about" />
-                        </Suspense>
-                      </Button>
-                    </li>
-
-                    <li className="">
-                      <Button className="my-2 w-2/3" variant="default">
-                        <Suspense fallback={<DecryptLoader />}>
-                          <SingleNav navId="terms" />
+                          <SingleNav navId="deals" />
                         </Suspense>
                       </Button>
                     </li>
 
                     <li className="hover:text-accent font-semibold">
-                      <Button className="my-2 w-2/3" variant="default">
+                      <Button className="my-2 w-2/3" variant="secondary">
                         <Suspense fallback={<DecryptLoader />}>
                           <Link href="/search">Search</Link>
                         </Suspense>
@@ -100,7 +92,7 @@ export default async function Navbar() {
           </Sheet>
         </div>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border  rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+          <ul className="flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             <li className="hover:text-accent font-semibold">
               <Suspense fallback={<DecryptLoader />}>
                 <SingleNav navId="main" />
@@ -109,16 +101,6 @@ export default async function Navbar() {
             <li className="hover:text-accent font-semibold">
               <Suspense fallback={<DecryptLoader />}>
                 <SingleNav navId="blog" />
-              </Suspense>
-            </li>
-            <li className="hover:text-accent font-semibold">
-              <Suspense fallback={<DecryptLoader />}>
-                <SingleNav navId="about" />
-              </Suspense>
-            </li>
-            <li className="hover:text-accent font-semibold">
-              <Suspense fallback={<DecryptLoader />}>
-                <SingleNav navId="terms" />
               </Suspense>
             </li>
             <li className="hover:text-accent font-semibold">

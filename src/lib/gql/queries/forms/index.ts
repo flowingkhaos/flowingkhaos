@@ -1,3 +1,4 @@
+import next from "next";
 import { ReactNode } from "react";
 
 // export const AllForms = `
@@ -40,11 +41,12 @@ import { ReactNode } from "react";
 // `;
 export const AllForms = `
   query GET_FORMS {
-    formsConnection(locales: en) {
+    formsConnection {
       edges {
         node {
           id
           title
+          slug
           subtitle
           modal
           fields {
@@ -63,9 +65,12 @@ export const AllForms = `
             ... on FormSelect {
               name
               inputLabel: label
-              choices {
+              choices(first: 26) {
                 ... on FormOption {
                   id
+                  name
+                  timeSlot
+                  timeString
                 }
               }
             }
@@ -91,6 +96,7 @@ export async function GET_FORMS(): Promise<Form[]> {
       },
       body: JSON.stringify({
         query: AllForms,
+        next: { revalidate: 3300 },
       }),
     });
 
@@ -109,6 +115,7 @@ export async function GET_FORMS(): Promise<Form[]> {
       ({ node }: { node: any }) => ({
         id: node.id,
         title: node.title,
+        slug: node.slug,
         subtitle: node.subtitle,
         modal: node.modal,
         fields: node.fields.map((field: any) => {
@@ -171,6 +178,9 @@ export interface FormField {
 
 export interface FormOption {
   id: string;
+  name: string;
+  timeSlot: string;
+  timeString: string;
 }
 
 export interface FormInput extends FormField {
@@ -198,6 +208,7 @@ export interface FormButton {
 export interface Form {
   id: string;
   title: string;
+  slug: string;
   subtitle?: string; // Optional subtitle property
   modal?: boolean; // Optional modal property
   fields: FormField[];

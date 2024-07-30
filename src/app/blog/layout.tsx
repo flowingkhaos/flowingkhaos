@@ -1,6 +1,6 @@
 import React from "react";
 import CategoryNav from "@/components/blog/CategoryNav";
-import Footer from "@/components/modules/Footer";
+import Footer from "@/components/modules/FooterBlock";
 import BlogNewsletter from "@/components/blog/BlogNewsletter";
 import FeaturedPosts from "@/components/blog/FeaturedPosts";
 import { footerItems } from "@/lib/assets";

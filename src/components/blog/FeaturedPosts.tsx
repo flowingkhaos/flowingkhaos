@@ -19,7 +19,7 @@ function BlogButton({ article }: { article: Post }) {
       className="md:block hidden"
       size="sm"
       type="button"
-      variant="default"
+      variant="secondary"
     >
       <Link
         href={`/blog/articles/${article.slug}`}
@@ -52,7 +52,7 @@ export default async function FeaturedPosts() {
 
   return (
     <section className="">
-      <h1 className="text-xl leading-9 font-montserrat font-black text-center tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 my-4">
+      <h1 className="text-xl leading-9 font-montserrat font-black text-center tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 my-4 lg:my-14">
         Most popular!
       </h1>
       <div className="flex justify-center my-8">
@@ -75,13 +75,21 @@ export default async function FeaturedPosts() {
                             width={1024}
                             height={720}
                             className="w-full"
-                            priority={true}
+                            priority
+                            blurDataURL={article.image.url}
+                            placeholder="blur"
                           />
                         )}
                         <div className="absolute -bottom-[17px] lg:bottom-1 lg:left-5 font-montserrat">
-                          <h1 className="text-btn my-2 font-bold leading-7 text-xs lg:text-xl inviz p-1 rounded uppercase">
-                            {article.title}
-                          </h1>
+                          <Link
+                            href={`/blog/articles/${article.slug}`}
+                            className="hover:text-primary hover:underline"
+                            aria-label={`Read "${article.title}"`}
+                          >
+                            <h1 className="text-btn my-2 font-bold leading-7 text-xs lg:text-xl inviz p-1 rounded uppercase">
+                              {article.title}
+                            </h1>
+                          </Link>
                           {article.buttons.length > 0 && (
                             <BlogButton article={article} />
                           )}

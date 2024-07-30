@@ -16,7 +16,7 @@ interface CommentFormProps {
   subtitle?: string;
   fields: FormField[];
   buttons: FormButton[];
-  slug: string;
+  id: string;
 }
 
 interface FormState {
@@ -29,7 +29,7 @@ function SubmitButton({ buttons }: { buttons: FormButton[] }) {
 
   return (
     <Button
-      className="w-full mt-2"
+      className="w-full mt-4 hover:text-success"
       disabled={pending}
       aria-disabled={pending}
       type="submit"
@@ -44,12 +44,12 @@ const CommentForm: React.FC<CommentFormProps> = ({
   subtitle,
   fields,
   buttons,
-  slug,
+  id,
 }) => {
   const initialState: FormState = { message: "" };
-  const submitCommentWithSlug = submitCommentForm.bind(null, slug);
+  const submitCommentWithId = submitCommentForm.bind(null, id);
   // Then, utilize useFormState with the binded action
-  const [state, formAction] = useFormState(submitCommentWithSlug, initialState);
+  const [state, formAction] = useFormState(submitCommentWithId, initialState);
   const [isMessageVisible, setIsMessageVisible] = useState(false);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
               // Render input fields
               return (
                 <li key={id} className="py-3">
-                  <Label className="text-start">
+                  <Label className="">
                     <span className="font-semibold">{field.inputLabel}</span>
                   </Label>
                   <Input

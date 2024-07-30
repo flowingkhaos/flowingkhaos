@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Oswald, Montserrat } from "next/font/google";
+import { Inter, Sora, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/ThemeProvider";
 import Navbar from "@/components/navigation/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,8 +21,17 @@ const montserrat = Montserrat({
   weight: ["400", "700", "800", "900"],
 });
 
-const title = "FlowingKhaos - Change the way you learn.";
-const description = "Learn to navigate the web efficiently by Luke Sidney";
+const sora = Sora({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sora",
+  weight: ["400", "700", "800"],
+});
+
+const title =
+  "New Media Intelligence - Changez votre approche entrepreunariale.";
+const description =
+  "Adaptez vous aux nouvelles technologies. Étudiez votre public. Offrez de meilleurs produits. Triplez vos chiffres d'affaire!";
 const openGraphImage = {
   url: "/favicon.ico",
   width: 1200,
@@ -54,6 +64,7 @@ export const metadata: Metadata = {
     site: twitterHandle,
     images: [openGraphImage],
   },
+  metadataBase: new URL("https://flowingkhaos.com"),
 };
 
 export default function RootLayout({
@@ -63,13 +74,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta
-          name="google-site-verification"
-          content="bgdpGL1HGN5C9laV0KRHDClTQSTE2hNePwFqMLIJ-xQ"
-        />
-      </head>
-      <body className={`${inter.variable} ${montserrat.variable}`}>
+      <head></head>
+      <body
+        className={`${inter.variable} ${montserrat.variable} ${sora.variable}`}
+      >
         <header>
           <Navbar />
         </header>
@@ -81,6 +89,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            {/* <GoogleAnalytics gaId="G-KPMETBMFNG" /> */}
             <Analytics />
             <SpeedInsights />
           </ThemeProvider>
