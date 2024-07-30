@@ -3,7 +3,6 @@ import { GET_POSTS } from "@/lib/gql/queries/blog/posts";
 import { GET_CATEGORIES } from "@/lib/gql/queries/blog/categories";
 import { GET_PAGES } from "@/lib/gql/queries/pages";
 import { GET_ALL_AUTHORS } from "@/lib/gql/queries/blog/authors";
-import { GET_PRODUCTS } from "@/lib/gql/queries/products";
 
 export default async function sitemap() {
   const baseUrl = "https://newmediaintelligence.com/";
@@ -11,7 +10,6 @@ export default async function sitemap() {
   const categoriesConnection = await GET_CATEGORIES();
   const pagesConnection = await GET_PAGES();
   const authorsConnection = await GET_ALL_AUTHORS();
-  const productsConnection = await GET_PRODUCTS();
   const terms = await generateStaticParams();
   //console.log(terms);
   //console.log(productsConnection);
@@ -52,13 +50,6 @@ export default async function sitemap() {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
-    })),
-
-    ...productsConnection.map((product) => ({
-      url: `${baseUrl}booking/${product.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.2,
     })),
   ];
 }
