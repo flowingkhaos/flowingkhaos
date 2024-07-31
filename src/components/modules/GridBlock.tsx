@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import createGlobe from "cobe";
@@ -10,6 +10,7 @@ import { IoCopyOutline, IoDownload } from "react-icons/io5";
 import Lottie from "react-lottie";
 import animationData from "@/lib/assets/confetti.json";
 import MagicButton from "../aceternity/MagicButton";
+import DecryptLoader from "../loaders/DecryptLoader";
 
 export function Grid() {
   const features = [
@@ -60,13 +61,15 @@ export function Grid() {
 
       <div className="relative">
         <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md border-content/20 shadow-xl">
-          {features.map((feature) => (
-            <FeatureCard key={feature.title} className={feature.className}>
-              <FeatureTitle>{feature.title}</FeatureTitle>
-              <FeatureDescription>{feature.description}</FeatureDescription>
-              <div className=" h-full w-full">{feature.skeleton}</div>
-            </FeatureCard>
-          ))}
+          <Suspense fallback={<DecryptLoader />}>
+            {features.map((feature) => (
+              <FeatureCard key={feature.title} className={feature.className}>
+                <FeatureTitle>{feature.title}</FeatureTitle>
+                <FeatureDescription>{feature.description}</FeatureDescription>
+                <div className=" h-full w-full">{feature.skeleton}</div>
+              </FeatureCard>
+            ))}
+          </Suspense>
         </div>
       </div>
     </div>
