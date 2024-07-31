@@ -58,8 +58,8 @@ export function Grid() {
         </p>
       </div>
 
-      <div className="relative ">
-        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md border-content/20">
+      <div className="relative">
+        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md border-content/20 shadow-xl">
           {features.map((feature) => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>

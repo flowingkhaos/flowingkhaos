@@ -38,7 +38,7 @@ export async function GET_PERK_GRID(): Promise<Perk[]> {
       },
       body: JSON.stringify({
         query: PerkQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -123,7 +123,7 @@ export async function GET_PROJECTS(): Promise<Project[]> {
       },
       body: JSON.stringify({
         query: ProjectQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -211,7 +211,7 @@ export async function GET_TESTIMONIALS(): Promise<Testimonial[]> {
       },
       body: JSON.stringify({
         query: TestimonialQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -287,7 +287,7 @@ export async function GET_COMPANIES(): Promise<Company[]> {
       },
       body: JSON.stringify({
         query: CompanyQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -358,7 +358,7 @@ export async function GET_EXPERIENCE(): Promise<Experience[]> {
       },
       body: JSON.stringify({
         query: ExperienceQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -432,7 +432,7 @@ export async function GET_SOCIALS(): Promise<Socials[]> {
       },
       body: JSON.stringify({
         query: SocialQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -497,7 +497,7 @@ export async function GET_FOOTER(): Promise<Footer[]> {
       },
       body: JSON.stringify({
         query: FooterQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -564,7 +564,7 @@ export async function GET_SEARCH(): Promise<Search[]> {
       },
       body: JSON.stringify({
         query: SearchQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -650,7 +650,7 @@ export async function GET_DEAL(): Promise<Deal[]> {
       },
       body: JSON.stringify({
         query: DealQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
@@ -830,7 +830,7 @@ export async function GET_GLOBE(): Promise<Globe[]> {
       },
       body: JSON.stringify({
         query: GlobeQuery,
-        next: { revalidate: 3600 },
+        //next: { revalidate: 3600 },
       }),
     });
 
