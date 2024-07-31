@@ -19,23 +19,23 @@ import {
   Socials,
   Testimonial,
   Typewriter,
-  GET_BENTO_GRID,
-  Bento,
+  GET_PERK_GRID,
+  Perk,
 } from "../gql/queries/blocks";
 
-export async function fetchGridItems(): Promise<Bento[]> {
+export async function fetchGridItems(): Promise<Perk[]> {
   try {
-    const bentoItems = await GET_BENTO_GRID();
-    //console.log(bentoItems);
-    return bentoItems;
+    const perkItems = await GET_PERK_GRID();
+    //console.log(perkItems);
+    return perkItems;
   } catch (error) {
-    console.error("Error fetching grid items:", error);
+    console.error("Error fetching perk grid items:", error);
     return [];
   }
 }
 
 // Placeholder grid items array, initial empty
-export let gridItems: Bento[] = [];
+export let gridItems: Perk[] = [];
 
 // Populate the gridItems array
 fetchGridItems().then((items) => {

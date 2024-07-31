@@ -5,7 +5,12 @@ import Hero from "@/components/modules/Hero";
 import RecentProjects from "@/components/modules/RecentProjects";
 import Clients from "@/components/modules/Clients";
 import { FloatingNav } from "@/components/aceternity/FloatingNavbar";
-import { footerItems, globeItems, navItems } from "@/lib/assets";
+import {
+  fetchGridItems,
+  footerItems,
+  globeItems,
+  navItems,
+} from "@/lib/assets";
 import { Suspense } from "react";
 import DecryptLoader from "@/components/loaders/DecryptLoader";
 import StatBar from "@/components/modules/Stat";
@@ -14,6 +19,7 @@ import { Globe } from "@/components/modules/GlobeBlock";
 import Footer from "@/components/modules/FooterBlock";
 import Experience from "@/components/modules/ExperienceBlock";
 import { Grid } from "@/components/modules/GridBlock";
+import { PerkBlock } from "@/components/modules/Perks";
 
 const slug = "home";
 
@@ -124,6 +130,7 @@ function generateSchemaMarkup(pageData: any) {
 export default async function Page() {
   //? Fetch data on the server-side (SSR)
   const pageData = await GET_PAGE(slug);
+  const perkItems = await fetchGridItems();
   //console.log(pageData);
   //console.log(pageData?.slug);
 
@@ -151,6 +158,7 @@ export default async function Page() {
           )}
         </Suspense>
         <Grid />
+        <PerkBlock perks={perkItems} />
         {/* <Suspense fallback={<DecryptLoader />}>
           {globeItems.map((item, i) => (
             <Globe

@@ -1,6 +1,6 @@
-export const BentoQuery = `
-query BENTO_QUERY {
-  genericBlocksConnection(where: {slug_contains: "bento"}, locales: en) {
+export const PerkQuery = `
+query PERK_QUERY {
+  genericBlocksConnection(where: {slug_contains: "perk"}, locales: en) {
     edges {
       node {
         description
@@ -27,7 +27,7 @@ query BENTO_QUERY {
 }
   `;
 
-export async function GET_BENTO_GRID(): Promise<Bento[]> {
+export async function GET_PERK_GRID(): Promise<Perk[]> {
   const apiRequest = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT as string;
 
   try {
@@ -37,27 +37,27 @@ export async function GET_BENTO_GRID(): Promise<Bento[]> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: BentoQuery,
-        next: { revalidate: 3400 },
+        query: PerkQuery,
+        next: { revalidate: 3600 },
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`Error fetching bento data: ${response.statusText}`);
+      throw new Error(`Error fetching perk data: ${response.statusText}`);
     }
 
-    const bentoData = await response.json();
-    //console.log(bentoData);
+    const perkData = await response.json();
+    //console.log(perkData);
 
-    if (bentoData.errors) {
+    if (perkData.errors) {
       console.error(
-        "Errors occurred while fetching bento data:",
-        bentoData.errors
+        "Errors occurred while fetching perk data:",
+        perkData.errors
       );
-      throw new Error("Errors occurred while fetching bento data");
+      throw new Error("Errors occurred while fetching perk data");
     }
 
-    return bentoData.data.genericBlocksConnection.edges.map((edge: any) => ({
+    return perkData.data.genericBlocksConnection.edges.map((edge: any) => ({
       id: edge.node.id,
       title: edge.node.title,
       description: edge.node.description,
@@ -68,12 +68,12 @@ export async function GET_BENTO_GRID(): Promise<Bento[]> {
       spareImg: edge.node.spareImg?.url ?? "",
     }));
   } catch (error) {
-    console.error("GET_BENTO error:", error);
+    console.error("GET_PERK error:", error);
     throw error; // Re-throw the error to be handled by the calling function.
   }
 }
 
-export interface Bento {
+export interface Perk {
   id: string;
   title: string;
   description: string;
