@@ -262,6 +262,7 @@ export default async function Page({ params: { slug } }: Props) {
                   priority
                   blurDataURL={article.image.url}
                   placeholder="blur"
+                  quality={100}
                 />
               </div>
             )}
