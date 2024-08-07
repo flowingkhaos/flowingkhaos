@@ -74,7 +74,7 @@ export async function generateMetadata({
     width: 1200,
     height: 630,
   };
-  const site = `https://newmediaintelligence.com/blog/category/${slug}`;
+  const site = `https://flowingkhaos.com/blog/category/${slug}`;
   const robots = "index, follow";
   const type = "website";
   const twitterCard = "summary_large_image";
@@ -98,7 +98,7 @@ export async function generateMetadata({
     openGraph: {
       type: type,
       url: site,
-      siteName: "newmediaintelligence",
+      siteName: "Flowingkhaos",
       title: title,
       description: description,
       images: [openGraphImage],
@@ -113,12 +113,10 @@ export async function generateMetadata({
     alternates: {
       canonical: site,
       languages: {
-        "fr-FR": site,
+        "en-US": site,
       },
     },
-    metadataBase: new URL(
-      `https://newmediaintelligence.com/blog/category/${slug}`
-    ),
+    metadataBase: new URL(`https://flowingkhaos.com/blog/category/${slug}`),
   };
 }
 
@@ -128,12 +126,12 @@ function generateSchemaMarkup(categoryPosts: Post[]) {
     "@type": "CollectionPage",
     name: `"${categoryPosts?.[0]?.category?.name} Category Page"`,
     description: `${categoryPosts?.[0]?.category?.name}`,
-    url: `https://newmediaintelligence.com/blog/categories/${categoryPosts?.[0]?.category?.slug}`,
+    url: `https://flowingkhaos.com/blog/categories/${categoryPosts?.[0]?.category?.slug}`,
     mainEntity: categoryPosts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
-      url: `https://newmediaintelligence.com/blog/articles/${post.slug}`,
+      url: `https://flowingkhaos.com/blog/articles/${post.slug}`,
       image: post.image.url,
       datePublished: post.createdAt,
       dateModified: post.updatedAt,
@@ -142,23 +140,22 @@ function generateSchemaMarkup(categoryPosts: Post[]) {
         name: post.author.name,
         url: `https://flowingkhaos.com/authors/${post.author.slug}`,
         sameAs: [
-          "https://newmediaintelligence.com/authors/luke-sidney",
+          "https://flowingkhaos.com/authors/luke-sidney",
           "https://linkedin.com/in/luke-sidney",
         ],
       },
       publisher: {
-        "@type": "Organization",
-        name: "New Media Intelligence",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://newmediaintelligence.com/favicon.ico",
-          width: 600,
-          height: 60,
-        },
+        "@type": "Person",
+        name: "Luke Sidney",
+        url: "https://flowingkhaos.com/authors/luke-sidney",
+        sameAs: [
+          "https://flowingkhaos.com/authors/luke-sidney",
+          "https://linkedin.com/in/luke-sidney",
+        ],
       },
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://newmediaintelligence.com/blog/${post.slug}`,
+        "@id": `https://flowingkhaos.com/blog/${post.slug}`,
       },
     })),
   };

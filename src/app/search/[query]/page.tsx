@@ -62,8 +62,8 @@ export async function generateMetadata({ params }: Params) {
   };
   const robots = "index, follow";
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@newmediaintelligence";
-  const site = `https://newmediaintelligence.com/search/${searchTerm}`;
+  const twitterHandle = "@flowingkhaos";
+  const site = `https://flowingkhaos.com/search/${searchTerm}`;
 
   // Check if there are any search results to include an image in metadata
   if (searchResults.length > 0) {
@@ -96,12 +96,10 @@ export async function generateMetadata({ params }: Params) {
     alternates: {
       canonical: site,
       languages: {
-        "fr-FR": site,
+        "en-US": site,
       },
     },
-    metadataBase: new URL(
-      `https://newmediaintelligence.com/search/${searchTerm}`
-    ),
+    metadataBase: new URL(`https://flowingkhaos.com/search/${searchTerm}`),
   };
 }
 
@@ -111,7 +109,7 @@ async function generateSchemaMarkup({ params }: Params) {
   const searchResults = data.edges.map((edge) => edge.node);
   const title = `Search results for "${searchTerm}" - New Media Intelligence`;
   const description = `Explore articles and posts related to "${searchTerm}" in our blog.`;
-  const site = `https://newmediaintelligence.com/search/${searchTerm}`;
+  const site = `https://flowingkhaos.com/search/${searchTerm}`;
 
   const schemaMarkup = {
     "@context": "https://schema.org",
@@ -128,7 +126,7 @@ async function generateSchemaMarkup({ params }: Params) {
           "@type": "Article",
           headline: result.title,
           description: result.excerpt,
-          url: `https://newmediaintelligence.com/blog/articles/${result.slug}`,
+          url: `https://flowingkhaos.com/blog/articles/${result.slug}`,
           image: result.image?.url,
           datePublished: result.publishedAt,
           dateModified: result.updatedAt,
@@ -137,17 +135,18 @@ async function generateSchemaMarkup({ params }: Params) {
             name: "Luke Sidney",
             url: "https://flowingkhaos.com/authors/luke-sidney",
             sameAs: [
-              "https://newmediaintelligence.com/authors/luke-sidney",
+              "https://flowingkhaos.com/authors/luke-sidney",
               "https://linkedin.com/in/luke-sidney",
             ],
           },
           publisher: {
-            "@type": "Organization",
-            name: "New Media Intelligence",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://newmediaintelligence.com/logo.png", // Replace with your actual logo URL
-            },
+            "@type": "Person",
+            name: "Luke Sidney",
+            url: "https://flowingkhaos.com/authors/luke-sidney",
+            sameAs: [
+              "https://flowingkhaos.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
         },
       })),
@@ -156,8 +155,7 @@ async function generateSchemaMarkup({ params }: Params) {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate:
-          "https://newmediaintelligence.com/search/{search_term_string}",
+        urlTemplate: "https://flowingkhaos.com/search/{search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
@@ -166,7 +164,7 @@ async function generateSchemaMarkup({ params }: Params) {
       name: "Luke Sidney",
       url: "https://flowingkhaos.com/authors/luke-sidney",
       sameAs: [
-        "https://newmediaintelligence.com/authors/luke-sidney",
+        "https://flowingkhaos.com/authors/luke-sidney",
         "https://linkedin.com/in/luke-sidney",
       ],
     },

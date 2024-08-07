@@ -131,7 +131,7 @@ const BlogNewsletter = () => {
           </form> */}
 
           <iframe
-            src="https://embeds.beehiiv.com/c1dfd59b-a5f7-4d30-95eb-e0f995bdcd16?slim=true"
+            src="https://embeds.beehiiv.com/91c2f66d-8c70-4550-b0cf-8e7e21f22b92?slim=true"
             data-test-id="beehiiv-embed"
             height="52"
             frameBorder="0"

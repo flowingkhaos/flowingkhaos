@@ -29,9 +29,9 @@ const sora = Sora({
 });
 
 const title =
-  "New Media Intelligence - Changez votre approche entrepreunariale.";
+  "Flowingkhaos - Bridging the gap between web development and making money online.";
 const description =
-  "Adaptez vous aux nouvelles technologies. Étudiez votre public. Offrez de meilleurs produits. Triplez vos chiffres d'affaire!";
+  "Learn how to use your web development skills to make money online efficiently!";
 const openGraphImage = {
   url: "/favicon.ico",
   width: 1200,
@@ -89,7 +89,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            {/* <GoogleAnalytics gaId="G-KPMETBMFNG" /> */}
+            <GoogleAnalytics gaId="G-BH0VPTWYZJ" />
             <Analytics />
             <SpeedInsights />
           </ThemeProvider>

@@ -98,7 +98,7 @@ const SearchPage = (): JSX.Element => {
 
   const renderMetaData = () => {
     const defaultImage = "/favicon.ico";
-    const siteName = "newmediaintelligence";
+    const siteName = "Flowingkhaos";
     const title = `Search results for "${searchTerm}" | ${siteName}`;
     const description = `Find the information you are looking for with our search tool. Results for "${searchTerm}".`;
     const image = articles.length > 0 ? articles[0].image.url : defaultImage;

@@ -48,7 +48,7 @@ export default async function Footer({
           </p>
           <Button type="button" size="xl">
             <Link
-              href="mailto:sales@newmediaintelligence.com"
+              href="mailto:flowingkhaos@gmail.com"
               className="flex items-center"
             >
               <span>Contact me!</span>

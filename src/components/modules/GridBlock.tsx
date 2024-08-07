@@ -124,6 +124,7 @@ export const SkeletonOne = () => {
             width={800}
             height={800}
             className="h-full w-full aspect-square object-cover object-left-top rounded"
+            objectFit="cover"
           />
         </div>
       </div>
@@ -148,7 +149,7 @@ export const SkeletonThree = () => {
   };
 
   const handleCopy = () => {
-    const text = "sales@newmediaintelligence.com";
+    const text = "flowingkhaos@gmail.com";
     navigator.clipboard.writeText(text);
     setCopied(true);
     //console.log(text);

@@ -53,27 +53,26 @@ interface SearchArticlesResult {
 export async function GET_POPULAR_SEACH_TERMS() {
   // Replace with actual logic to fetch popular search terms
   return [
-    "ia",
+    "ai",
     "blog",
     "scraper",
     "scraping",
     "image",
-    "emploi",
+    "job",
     "agent",
-    "modèle",
-    "base",
-    "donnée",
+    "model",
+    "llm",
+    "data",
     "bot",
     "code",
     "typescript",
     "javascript",
-    "entreprise",
-    "openai",
-    "llm",
+    "business",
     "seo",
     "app",
-    "contenu",
-    "productivité",
+    "content",
+    "productivity",
+    "web dev",
   ];
 }
 

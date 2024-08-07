@@ -32,8 +32,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@newmediaintelligence";
-  const site = `https://newmediaintelligence.com/${pageData.slug}`;
+  const twitterHandle = "@flowingkhaos";
+  const site = `https://flowingkhaos.com/${pageData.slug}`;
   const robots = "index, follow";
 
   return {
@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site,
       title: pageData.seoOverride?.title || pageData.title,
       description: pageData.seoOverride?.description || pageData.description,
-      siteName: "Newmediaintelligence",
+      siteName: "flowingkhaos",
       images: [
         {
           url:
@@ -77,10 +77,10 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: site,
       languages: {
-        "fr-FR": site,
+        "en-US": site,
       },
     },
-    metadataBase: new URL(`https://newmediaintelligence.com/${pageData.slug}`),
+    metadataBase: new URL(`https://flowingkhaos.com/${pageData.slug}`),
   };
 }
 
@@ -95,7 +95,7 @@ function generateSchemaMarkup(pageData: any) {
           name: pageData.seoOverride?.title || pageData.title,
           description:
             pageData.seoOverride?.description || pageData.description,
-          url: `https://newmediaintelligence.com/${pageData.slug}`,
+          url: `https://flowingkhaos.com/${pageData.slug}`,
           image:
             `${pageData.seoOverride?.image?.url}` || `${pageData.image?.url}`,
           author: {
@@ -103,23 +103,24 @@ function generateSchemaMarkup(pageData: any) {
             name: "Luke Sidney",
             url: "https://flowingkhaos.com/authors/luke-sidney",
             sameAs: [
-              "https://newmediaintelligence.com/authors/luke-sidney",
+              "https://flowingkhaos.com/authors/luke-sidney",
               "https://linkedin.com/in/luke-sidney",
             ],
           },
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
           publisher: {
-            "@type": "Organization",
-            name: "New Media Intelligence",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://newmediaintelligence.com/favicon.ico",
-            },
+            "@type": "Person",
+            name: "Luke Sidney",
+            url: "https://flowingkhaos.com/authors/luke-sidney",
+            sameAs: [
+              "https://flowingkhaos.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://newmediaintelligence.com/${pageData.slug}`,
+            "@id": `https://flowingkhaos.com/${pageData.slug}`,
           },
         }),
       }}

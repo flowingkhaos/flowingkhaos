@@ -5,7 +5,7 @@ import { GET_PAGES } from "@/lib/gql/queries/pages";
 import { GET_ALL_AUTHORS } from "@/lib/gql/queries/blog/authors";
 
 export default async function sitemap() {
-  const baseUrl = "https://newmediaintelligence.com/";
+  const baseUrl = "https://flowingkhaos.com/";
   const articlesConnection = await GET_POSTS();
   const categoriesConnection = await GET_CATEGORIES();
   const pagesConnection = await GET_PAGES();

@@ -103,8 +103,8 @@ export async function generateMetadata({ params: { slug } }: Props) {
   const article = await GET_POST_DATA(slug);
   //console.log(article);
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@newmediaintelligence";
-  const site = `https://newmediaintelligence.com/blog/articles/${slug}`;
+  const twitterHandle = "@flowingkhaos";
+  const site = `https://flowingkhaos.com/blog/articles/${slug}`;
   const robots = "index, follow";
 
   return {
@@ -120,7 +120,7 @@ export async function generateMetadata({ params: { slug } }: Props) {
       url: site,
       title: article?.seoOverride?.title || article?.title,
       description: article?.seoOverride?.description || article?.excerpt,
-      siteName: "newmediaintelligence",
+      siteName: "Flowingkhaos",
       images: [
         {
           url:
@@ -147,12 +147,10 @@ export async function generateMetadata({ params: { slug } }: Props) {
     alternates: {
       canonical: site,
       languages: {
-        "fr-FR": site,
+        "en-US": site,
       },
     },
-    metadataBase: new URL(
-      `https://newmediaintelligence.com/blog/articles/${slug}`
-    ),
+    metadataBase: new URL(`https://flowingkhaos.com/blog/articles/${slug}`),
   };
 }
 
@@ -170,23 +168,22 @@ function generateSchemaMarkup(article: Post) {
       name: article.author?.name,
       url: `https://flowingkhaos.com/authors/${article.author?.slug}`,
       sameAs: [
-        "https://newmediaintelligence.com/authors/luke-sidney",
+        "https://flowingkhaos.com/authors/luke-sidney",
         "https://linkedin.com/in/luke-sidney",
       ],
     },
     publisher: {
-      "@type": "Organization",
-      name: "New Media Intelligence",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://newmediaintelligence.com/favicon.ico",
-        width: 600,
-        height: 60,
-      },
+      "@type": "Person",
+      name: "Luke Sidney",
+      url: "https://flowingkhaos.com/authors/luke-sidney",
+      sameAs: [
+        "https://flowingkhaos.com/authors/luke-sidney",
+        "https://linkedin.com/in/luke-sidney",
+      ],
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://newmediaintelligence.com/blog/${article.slug}`,
+      "@id": `https://flowingkhaos.com/blog/${article.slug}`,
     },
   };
 

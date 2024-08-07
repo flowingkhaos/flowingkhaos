@@ -22,8 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   const twitterCard = "summary_large_image";
-  const twitterHandle = "@newmediaintelligence";
-  const site = `https://newmediaintelligence.com/${slug}`;
+  const twitterHandle = "@flowingkhaos";
+  const site = `https://flowingkhaos.com/${slug}`;
   const robots = "index, follow";
 
   return {
@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site,
       title: pageData.seoOverride?.title || pageData.title,
       description: pageData.seoOverride?.description || pageData.description,
-      siteName: "newmediaintelligence",
+      siteName: "flowingkhaos",
       images: [
         {
           url:
@@ -67,10 +67,10 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: site,
       languages: {
-        "fr-FR": site,
+        "en-US": site,
       },
     },
-    metadataBase: new URL(`https://newmediaintelligence.com/${slug}`),
+    metadataBase: new URL(`https://flowingkhaos.com/${slug}`),
   };
 }
 
@@ -79,12 +79,12 @@ function generateSchemaMarkup(pageData: any, dealItems: any[]) {
     "@type": "Offer",
     name: deal.title,
     description: deal.description,
-    url: `https://newmediaintelligence.com/deals/${deal.slug}`,
+    url: `https://flowingkhaos.com/deals/${deal.slug}`,
     image: deal.img,
     offeredBy: {
       "@type": "Organization",
       name: "New Media Intelligence",
-      url: "https://newmediaintelligence.com",
+      url: "https://flowingkhaos.com",
     },
   }));
 
@@ -98,19 +98,18 @@ function generateSchemaMarkup(pageData: any, dealItems: any[]) {
           name: pageData.seoOverride?.title || pageData.title,
           description:
             pageData.seoOverride?.description || pageData.description,
-          url: `https://newmediaintelligence.com/${pageData.slug}`,
+          url: `https://flowingkhaos.com/${pageData.slug}`,
           image: pageData.seoOverride?.image?.url || pageData.image?.url,
           datePublished: pageData.createdAt,
           dateModified: pageData.updatedAt,
           publisher: {
-            "@type": "Organization",
-            name: "New Media Intelligence",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://newmediaintelligence.com/favicon.ico",
-              width: 60,
-              height: 60,
-            },
+            "@type": "Person",
+            name: "Luke Sidney",
+            url: "https://flowingkhaos.com/authors/luke-sidney",
+            sameAs: [
+              "https://flowingkhaos.com/authors/luke-sidney",
+              "https://linkedin.com/in/luke-sidney",
+            ],
           },
           mainEntity: {
             "@type": "ItemList",
