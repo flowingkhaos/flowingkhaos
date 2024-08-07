@@ -49,7 +49,7 @@ const Author: React.FC<{ author: AuthorProps }> = ({ author }) => {
         </p>
         <div className="my-8">
           <h1 className="text-primary font-extrabold font-montserrat">
-            J&apos;ai rédigé plus de {getArticleCount()}+ Articles
+            I wrote more than {getArticleCount()}+ articles
           </h1>
         </div>
       </div>
